@@ -13,52 +13,37 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const InterpolationShowcase(),
+      home: MyHomePage(curve: Curves.easeInOutBack, title: 'EaseInOutBack'),
     );
   }
 }
 
-class InterpolationShowcase extends StatelessWidget {
-  const InterpolationShowcase({Key? key}) : super(key: key);
+// class InterpolationShowcase extends StatelessWidget {
+//   const InterpolationShowcase({Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Interpolation Nightmare')),
-      body: GridView.count(
-        crossAxisCount: 2,
-        mainAxisSpacing: 10,
-        crossAxisSpacing: 10,
-        children: [
-          MyHomePage(curve: Curves.linear, title: 'Linear'),
-          MyHomePage(curve: Curves.easeInOut, title: 'EaseInOut'),
-          MyHomePage(curve: Curves.bounceOut, title: 'BounceOut'),
-          MyHomePage(curve: Curves.easeInOutQuint, title: 'EaseInOutQuint'),
-          MyHomePage(curve: Curves.easeInOutBack, title: 'EaseInOutBack'),
-          MyHomePage(curve: Curves.elasticIn, title: 'ElasticIn'),
-        ],
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(title: const Text('Interpolation Nightmare')),
+//       body: GridView.count(
+//         crossAxisCount: 2,
+//         mainAxisSpacing: 10,
+//         crossAxisSpacing: 10,
+//         children: [
+//           MyHomePage(curve: Curves.linear, title: 'Linear'),
+//           MyHomePage(curve: Curves.easeInOut, title: 'EaseInOut'),
+//           MyHomePage(curve: Curves.bounceOut, title: 'BounceOut'),
+//           MyHomePage(curve: Curves.easeInOutQuint, title: 'EaseInOutQuint'),
+//           MyHomePage(curve: Curves.easeInOutBack, title: 'EaseInOutBack'),
+//           MyHomePage(curve: Curves.elasticIn, title: 'ElasticIn'),
+//         ],
+//       ),
+//     );
+//   }
+// }
 
 class MyHomePage extends StatefulWidget {
   final String title;
@@ -139,7 +124,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                       bottom: 40, // Aligns the bottom with the parent Stack
                       child: Transform(
                         transform: Matrix4.identity()
-                          ..setEntry(3, 2, 0.002)
+                          ..setEntry(3, 2, 0.005)
                           ..rotateX(1.3 * _animation.value),
                         // ..rotateX(_isExpanded ? angle * _animation.value : 0),
                         alignment: FractionalOffset.bottomCenter,
