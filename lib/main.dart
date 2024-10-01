@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fx_2_folder/folder_shape/gradient_shadow.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,30 +22,6 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// class InterpolationShowcase extends StatelessWidget {
-//   const InterpolationShowcase({Key? key}) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(title: const Text('Interpolation Nightmare')),
-//       body: GridView.count(
-//         crossAxisCount: 2,
-//         mainAxisSpacing: 10,
-//         crossAxisSpacing: 10,
-//         children: [
-//           MyHomePage(curve: Curves.linear, title: 'Linear'),
-//           MyHomePage(curve: Curves.easeInOut, title: 'EaseInOut'),
-//           MyHomePage(curve: Curves.bounceOut, title: 'BounceOut'),
-//           MyHomePage(curve: Curves.easeInOutQuint, title: 'EaseInOutQuint'),
-//           MyHomePage(curve: Curves.easeInOutBack, title: 'EaseInOutBack'),
-//           MyHomePage(curve: Curves.elasticIn, title: 'ElasticIn'),
-//         ],
-//       ),
-//     );
-//   }
-// }
-
 class MyHomePage extends StatefulWidget {
   final String title;
   final Curve curve;
@@ -57,8 +34,10 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _animation;
-  final Duration animationDuration = Duration(seconds: 1);
-  final Duration delayDuration = Duration(seconds: 2);
+  final Duration animationDuration = Duration(milliseconds: 800);
+  final Duration delayDuration = Duration(milliseconds: 2000);
+  late AnimationController _shawdowAnimationController;
+  late Animation<double> _shadowAnimation;
 
   @override
   void initState() {
@@ -69,21 +48,18 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       duration: animationDuration,
     );
 
+    _shawdowAnimationController = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 600),
+    );
+
     _animation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(parent: _animationController, curve: widget.curve),
     );
 
-    _startAnimation();
-    // _animationController.repeat(reverse: true);
-  }
-
-  void _startAnimation() async {
-    while (true) {
-      await _animationController.forward().orCancel;
-      await Future.delayed(delayDuration);
-      await _animationController.reverse().orCancel;
-      _animationController.reset(); // Reset to start for next iteration
-    }
+    _shadowAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _shawdowAnimationController, curve: widget.curve),
+    );
   }
 
   @override
@@ -92,10 +68,13 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     super.dispose();
   }
 
+  bool isOpen = false;
+
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Column(
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Column(
         children: [
           Padding(
             padding: const EdgeInsets.all(16.0),
@@ -108,37 +87,63 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                 _animation,
               ]),
               builder: (context, child) {
-                return Stack(
-                  alignment: Alignment.bottomCenter,
-                  children: [
-                    Container(
-                      width: 100,
-                      height: 75,
-                      margin: const EdgeInsets.only(bottom: 40),
-                      decoration: BoxDecoration(
-                        color: Colors.blue,
-                        border: Border.all(color: Colors.black, width: 2),
-                      ),
-                    ),
-                    Positioned(
-                      bottom: 40, // Aligns the bottom with the parent Stack
-                      child: Transform(
-                        transform: Matrix4.identity()
-                          ..setEntry(3, 2, 0.005)
-                          ..rotateX(1.3 * _animation.value),
-                        // ..rotateX(_isExpanded ? angle * _animation.value : 0),
-                        alignment: FractionalOffset.bottomCenter,
-                        child: Container(
-                          width: 100,
-                          height: 60,
-                          decoration: BoxDecoration(
-                            color: Colors.red,
-                            border: Border.all(color: Colors.black, width: 2),
-                          ),
+                return GestureDetector(
+                  onTap: () {
+                    print("Widget tapped!");
+                    if (isOpen) {
+                      _animationController.reverse().orCancel;
+                      _shawdowAnimationController.reverse();
+                    } else {
+                      _animationController.forward().orCancel;
+                      Future.delayed(Duration(milliseconds: 300), () {
+                        _shawdowAnimationController.forward().orCancel;
+                      });
+                    }
+                    isOpen = !isOpen;
+                  },
+                  child: Stack(
+                    alignment: Alignment.bottomCenter,
+                    children: [
+                      Positioned(
+                          top: 40, // Adjust this value to move shadow up/down
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Colors.black, // Color of the border
+                                width: 2, // Width of the border
+                              ),
+                              borderRadius: BorderRadius.circular(
+                                  10), // Optional: rounded corners
+                            ),
+                            child: CustomPaint(
+                              size: const Size(
+                                  150, 120), // Adjust height as needed
+                              painter: SVGPathPainter(),
+                            ),
+                          )),
+                      Positioned(
+                        bottom: 40,
+                        child: Image.asset(
+                          'assets/images/folder_backcover.png',
+                          width: 150,
+                          height: 120,
+                          fit: BoxFit.cover,
                         ),
                       ),
-                    ),
-                  ],
+                      Positioned(
+                        bottom: 40, // Adjust this value to move shadow up/down
+                        child: CustomPaint(
+                          size: const Size(150, 120), // Adjust height as needed
+                          painter:
+                              FolderBackCoverGradientPainter(_shadowAnimation),
+                        ),
+                      ),
+                      Positioned(
+                        bottom: 40,
+                        child: getFolderFrontCover(),
+                      ),
+                    ],
+                  ),
                 );
               },
             ),
@@ -146,5 +151,48 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
         ],
       ),
     );
+  }
+
+  Transform getFolderFrontCover() {
+    var transform = Transform(
+      transform: Matrix4.identity()
+        ..setEntry(3, 2, 0.003)
+        ..rotateX(1.3 * _animation.value),
+      alignment: FractionalOffset.bottomCenter,
+      child: SizedBox(
+        width: 150,
+        height: 100,
+        child: Stack(
+          alignment: Alignment.bottomCenter,
+          children: [
+            Image.asset(
+              'assets/images/folder_frontcover.png',
+              width: 150,
+              height: 100,
+              fit: BoxFit.cover,
+            ),
+            // ReflectionWidget(_animation, _shadowAnimation),
+            ClipPath(
+              clipper: LightningClipper(),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white, // Background color of the clipped area
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.8), // Shadow color
+                      spreadRadius: 5, // Spread radius of the shadow
+                      blurRadius: 7, // Blur radius of the shadow
+                      offset: Offset(0, 3), // Offset for the shadow
+                    ),
+                  ],
+                ),
+                child: ReflectionWidget(_animation, _shadowAnimation),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+    return transform;
   }
 }
