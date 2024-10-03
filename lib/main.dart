@@ -1,198 +1,124 @@
 import 'package:flutter/material.dart';
-import 'package:fx_2_folder/folder_shape/gradient_shadow.dart';
+import 'package:fx_2_folder/folder_shape/folder_home.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+void main() => runApp(AnimationShowcaseApp());
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
+class AnimationShowcaseApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+      title: 'fx-widget Showcase',
+      theme: ThemeData.dark().copyWith(
+        primaryColor: Color(0xFF1E1E1E),
+        scaffoldBackgroundColor: Color(0xFF121212),
+        cardColor: Color(0xFF2C2C2C),
+        textTheme: GoogleFonts.robotoMonoTextTheme(
+          Theme.of(context).textTheme,
+        ).apply(bodyColor: Colors.white),
       ),
-      home: MyHomePage(curve: Curves.easeInOutBack, title: 'EaseInOutBack'),
+      home: HomeScreen(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
+class AnimationExample {
   final String title;
-  final Curve curve;
-  const MyHomePage({super.key, required this.title, required this.curve});
+  final Widget Function(BuildContext) builder;
 
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  AnimationExample({required this.title, required this.builder});
 }
 
-class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
-  late AnimationController _animationController;
-  late Animation<double> _animation;
-  final Duration animationDuration = Duration(milliseconds: 800);
-  final Duration delayDuration = Duration(milliseconds: 2000);
-  late AnimationController _shawdowAnimationController;
-  late Animation<double> _shadowAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _animationController = AnimationController(
-      vsync: this,
-      duration: animationDuration,
-    );
-
-    _shawdowAnimationController = AnimationController(
-      vsync: this,
-      duration: Duration(milliseconds: 600),
-    );
-
-    _animation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _animationController, curve: widget.curve),
-    );
-
-    _shadowAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _shawdowAnimationController, curve: widget.curve),
-    );
-  }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
-  }
-
-  bool isOpen = false;
+class HomeScreen extends StatelessWidget {
+  final List<AnimationExample> examples = [
+    AnimationExample(
+      title: 'Folder',
+      builder: (context) => const FolderHomeWidget(
+          curve: Curves.easeInOutBack, title: 'EaseInOutBack'),
+    ),
+    AnimationExample(
+      title: 'Books',
+      builder: (context) => const FolderHomeWidget(
+          curve: Curves.easeInOutBack, title: 'EaseInOutBack'),
+    ),
+    AnimationExample(
+      title: 'Smoke',
+      builder: (context) => const FolderHomeWidget(
+          curve: Curves.easeInOutBack, title: 'EaseInOutBack'),
+    ),
+    // Add more examples here
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text(widget.title,
-                style: Theme.of(context).textTheme.titleMedium),
-          ),
-          Expanded(
-            child: AnimatedBuilder(
-              animation: Listenable.merge([
-                _animation,
-              ]),
-              builder: (context, child) {
-                return GestureDetector(
-                  onTap: () {
-                    print("Widget tapped!");
-                    if (isOpen) {
-                      _animationController.reverse().orCancel;
-                      _shawdowAnimationController.reverse();
-                    } else {
-                      _animationController.forward().orCancel;
-                      Future.delayed(Duration(milliseconds: 300), () {
-                        _shawdowAnimationController.forward().orCancel;
-                      });
-                    }
-                    isOpen = !isOpen;
-                  },
-                  child: Stack(
-                    alignment: Alignment.bottomCenter,
-                    children: [
-                      Positioned(
-                          top: 40, // Adjust this value to move shadow up/down
-                          child: Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Colors.black, // Color of the border
-                                width: 2, // Width of the border
-                              ),
-                              borderRadius: BorderRadius.circular(
-                                  10), // Optional: rounded corners
-                            ),
-                            child: CustomPaint(
-                              size: const Size(
-                                  150, 120), // Adjust height as needed
-                              painter: SVGPathPainter(),
-                            ),
-                          )),
-                      Positioned(
-                        bottom: 40,
-                        child: Image.asset(
-                          'assets/images/folder_backcover.png',
-                          width: 150,
-                          height: 120,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      Positioned(
-                        bottom: 40, // Adjust this value to move shadow up/down
-                        child: CustomPaint(
-                          size: const Size(150, 120), // Adjust height as needed
-                          painter:
-                              FolderBackCoverGradientPainter(_shadowAnimation),
-                        ),
-                      ),
-                      Positioned(
-                        bottom: 40,
-                        child: getFolderFrontCover(),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
-          ),
-        ],
+      appBar: AppBar(
+        title: Text('Animation Showcase'),
+        elevation: 0,
       ),
-    );
-  }
-
-  Transform getFolderFrontCover() {
-    var transform = Transform(
-      transform: Matrix4.identity()
-        ..setEntry(3, 2, 0.003)
-        ..rotateX(1.3 * _animation.value),
-      alignment: FractionalOffset.bottomCenter,
-      child: SizedBox(
-        width: 150,
-        height: 100,
-        child: Stack(
-          alignment: Alignment.bottomCenter,
-          children: [
-            Image.asset(
-              'assets/images/folder_frontcover.png',
-              width: 150,
-              height: 100,
-              fit: BoxFit.cover,
-            ),
-            // ReflectionWidget(_animation, _shadowAnimation),
-            ClipPath(
-              clipper: LightningClipper(),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white, // Background color of the clipped area
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.8), // Shadow color
-                      spreadRadius: 5, // Spread radius of the shadow
-                      blurRadius: 7, // Blur radius of the shadow
-                      offset: Offset(0, 3), // Offset for the shadow
+      body: GridView.builder(
+        padding: const EdgeInsets.all(16),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: 1,
+          crossAxisSpacing: 16,
+          mainAxisSpacing: 16,
+        ),
+        itemCount: examples.length,
+        itemBuilder: (context, index) {
+          return Hero(
+            tag: 'example_${examples[index].title}',
+            child: Card(
+              elevation: 4,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: InkWell(
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        DetailScreen(example: examples[index]),
+                  ),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.animation,
+                        size: 48, color: Colors.white70),
+                    const SizedBox(height: 8),
+                    Text(
+                      examples[index].title,
+                      style: Theme.of(context).textTheme.titleMedium,
+                      textAlign: TextAlign.center,
                     ),
                   ],
                 ),
-                child: ReflectionWidget(_animation, _shadowAnimation),
               ),
             ),
-          ],
-        ),
+          );
+        },
       ),
     );
-    return transform;
+  }
+}
+
+class DetailScreen extends StatelessWidget {
+  final AnimationExample example;
+
+  const DetailScreen({super.key, required this.example});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(example.title),
+        elevation: 0,
+      ),
+      body: Hero(
+        tag: 'example_${example.title}',
+        child: example.builder(context),
+      ),
+    );
   }
 }
