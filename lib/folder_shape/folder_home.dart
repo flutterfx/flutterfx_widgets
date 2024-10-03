@@ -85,23 +85,6 @@ class _FolderHomeWidgetState extends State<FolderHomeWidget>
                     alignment: Alignment.bottomCenter,
                     children: [
                       Positioned(
-                          top: 40, // Adjust this value to move shadow up/down
-                          child: Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Colors.black, // Color of the border
-                                width: 2, // Width of the border
-                              ),
-                              borderRadius: BorderRadius.circular(
-                                  10), // Optional: rounded corners
-                            ),
-                            child: CustomPaint(
-                              size: const Size(
-                                  150, 120), // Adjust height as needed
-                              painter: SVGPathPainter(),
-                            ),
-                          )),
-                      Positioned(
                         bottom: 40,
                         child: Image.asset(
                           'assets/images/folder_backcover.png',

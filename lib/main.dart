@@ -42,11 +42,11 @@ class HomeScreen extends StatelessWidget {
       builder: (context) =>
           const BookShelfPage(title: 'Flutter Demo Home Page'),
     ),
-    AnimationExample(
-      title: 'Smoke',
-      builder: (context) => const FolderHomeWidget(
-          curve: Curves.easeInOutBack, title: 'EaseInOutBack'),
-    ),
+    // AnimationExample(
+    //   title: 'Smoke',
+    //   builder: (context) => const FolderHomeWidget(
+    //       curve: Curves.easeInOutBack, title: 'EaseInOutBack'),
+    // ),
     // Add more examples here
   ];
 
