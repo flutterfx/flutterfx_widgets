@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fx_2_folder/books/books.dart';
 import 'package:fx_2_folder/folder_shape/folder_home.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -38,8 +39,8 @@ class HomeScreen extends StatelessWidget {
     ),
     AnimationExample(
       title: 'Books',
-      builder: (context) => const FolderHomeWidget(
-          curve: Curves.easeInOutBack, title: 'EaseInOutBack'),
+      builder: (context) =>
+          const BookShelfPage(title: 'Flutter Demo Home Page'),
     ),
     AnimationExample(
       title: 'Smoke',

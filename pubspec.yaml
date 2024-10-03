@@ -66,6 +66,14 @@ flutter:
   assets:
     - assets/images/folder_backcover.png
     - assets/images/folder_frontcover.png
+    - assets/images/1_stoic.png
+    - assets/images/1_stoic_spine.png
+    - assets/images/2_moon.png
+    - assets/images/2_moon_spine.png
+    - assets/images/3_dog.png
+    - assets/images/3_dog_spine.png
+    - assets/images/4_bird.png
+    - assets/images/4_bird_spine.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
