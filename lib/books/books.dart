@@ -109,7 +109,9 @@ class _BookWidgetState extends State<BookWidget>
       duration: const Duration(milliseconds: 500),
       vsync: this,
     );
-    _animation = Tween<double>(begin: -pi / 2, end: 0).animate(_controller);
+    _animation = Tween<double>(begin: -pi / 2, end: 0)
+        .chain(CurveTween(curve: Curves.easeInOut))
+        .animate(_controller);
     _updateAnimationState();
   }
 
