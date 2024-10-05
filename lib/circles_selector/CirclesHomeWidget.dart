@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 class CirclesHomeWidget extends StatefulWidget {
@@ -24,7 +26,7 @@ class PannableCircleGrid extends StatefulWidget {
 class _PannableCircleGridState extends State<PannableCircleGrid> {
   Offset _offset = Offset.zero;
   int? _selectedIndex;
-  final double _circleSize = 60;
+  final double _circleSize = 40;
   final double _spacing = 20;
   final int _columns = 1000; // Arbitrary large number for columns
 
@@ -61,7 +63,6 @@ class _PannableCircleGridState extends State<PannableCircleGrid> {
     int row =
         ((tapPosition.dy - _offset.dy) / (_circleSize + _spacing)).floor();
     int index = row * _columns + col;
-
     setState(() {
       _selectedIndex = (_selectedIndex == index) ? null : index;
     });
@@ -104,17 +105,40 @@ class CircleGridPainter extends CustomPainter {
 
     for (int row = startRow; row <= endRow; row++) {
       for (int col = startCol; col <= endCol; col++) {
-        final circleOffset = Offset(
+        int index = row * columns + col;
+        bool isSelected = selectedIndex == index;
+
+        Offset circleOffset = Offset(
           col * (circleSize + spacing) + offset.dx,
           row * (circleSize + spacing) + offset.dy,
         );
 
-        int index = row * columns + col;
-        bool isSelected = selectedIndex == index;
+        // If a circle is selected, adjust positions of surrounding circles
+        if (selectedIndex != null) {
+          int selectedCol = selectedIndex! % columns;
+          int selectedRow = selectedIndex! ~/ columns;
+
+          double distanceX = (col - selectedCol).abs() * (circleSize + spacing);
+          double distanceY = (row - selectedRow).abs() * (circleSize + spacing);
+          double distance = sqrt(distanceX * distanceX + distanceY * distanceY);
+
+          if (distance > 0 && distance <= 2 * (circleSize + spacing)) {
+            double angle = atan2(row - selectedRow, col - selectedCol);
+            double pushDistance = circleSize *
+                0.5; // Adjust this value to control the push effect
+
+            circleOffset += Offset(
+              cos(angle) * pushDistance,
+              sin(angle) * pushDistance,
+            );
+          }
+        }
+
+        double currentCircleSize = isSelected ? circleSize : circleSize * 0.8;
 
         canvas.drawCircle(
           circleOffset,
-          isSelected ? circleSize * 0.6 : circleSize * 0.5,
+          currentCircleSize,
           isSelected ? selectedPaint : paint,
         );
 
