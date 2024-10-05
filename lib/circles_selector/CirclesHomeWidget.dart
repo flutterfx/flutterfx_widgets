@@ -103,6 +103,32 @@ class CircleGridPainter extends CustomPainter {
     final startRow = (-offset.dy / (circleSize + spacing)).floor() - 1;
     final endRow = ((size.height - offset.dy) / (circleSize + spacing)).ceil();
 
+    // Calculate displacements for all affected circles
+    Map<Point<int>, Offset> displacements = {};
+    if (selectedIndex != null) {
+      int selectedCol = selectedIndex! % columns;
+      int selectedRow = selectedIndex! ~/ columns;
+
+      for (int row = startRow - 1; row <= endRow + 1; row++) {
+        for (int col = startCol - 1; col <= endCol + 1; col++) {
+          int dx = (col - selectedCol).abs();
+          int dy = (row - selectedRow).abs();
+          int maxDist = max(dx, dy);
+
+          if (maxDist > 0) {
+            double angle = atan2(row - selectedRow, col - selectedCol);
+            double pushDistance = max(0, circleSize * 0.5 * (3 - maxDist) / 2);
+
+            displacements[Point(col, row)] = Offset(
+              cos(angle) * pushDistance,
+              sin(angle) * pushDistance,
+            );
+          }
+        }
+      }
+    }
+
+    // Draw circles with calculated displacements
     for (int row = startRow; row <= endRow; row++) {
       for (int col = startCol; col <= endCol; col++) {
         int index = row * columns + col;
@@ -113,25 +139,9 @@ class CircleGridPainter extends CustomPainter {
           row * (circleSize + spacing) + offset.dy,
         );
 
-        // If a circle is selected, adjust positions of surrounding circles
-        if (selectedIndex != null) {
-          int selectedCol = selectedIndex! % columns;
-          int selectedRow = selectedIndex! ~/ columns;
-
-          double distanceX = (col - selectedCol).abs() * (circleSize + spacing);
-          double distanceY = (row - selectedRow).abs() * (circleSize + spacing);
-          double distance = sqrt(distanceX * distanceX + distanceY * distanceY);
-
-          if (distance > 0 && distance <= 2 * (circleSize + spacing)) {
-            double angle = atan2(row - selectedRow, col - selectedCol);
-            double pushDistance = circleSize *
-                0.5; // Adjust this value to control the push effect
-
-            circleOffset += Offset(
-              cos(angle) * pushDistance,
-              sin(angle) * pushDistance,
-            );
-          }
+        // Apply displacement if exists
+        if (displacements.containsKey(Point(col, row))) {
+          circleOffset += displacements[Point(col, row)]!;
         }
 
         double currentCircleSize = isSelected ? circleSize : circleSize * 0.8;
