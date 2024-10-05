@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fx_2_folder/books/books.dart';
+import 'package:fx_2_folder/circles_selector/CirclesHomeWidget.dart';
 import 'package:fx_2_folder/folder_shape/folder_home.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -42,12 +43,10 @@ class HomeScreen extends StatelessWidget {
       builder: (context) =>
           const BookShelfPage(title: 'Flutter Demo Home Page'),
     ),
-    // AnimationExample(
-    //   title: 'Smoke',
-    //   builder: (context) => const FolderHomeWidget(
-    //       curve: Curves.easeInOutBack, title: 'EaseInOutBack'),
-    // ),
-    // Add more examples here
+    AnimationExample(
+      title: 'CircleSelector',
+      builder: (context) => CirclesHomeWidget(),
+    ),
   ];
 
   @override
