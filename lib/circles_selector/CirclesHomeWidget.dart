@@ -1,7 +1,13 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:fx_2_folder/circles_selector/CircleGrid.dart';
+
+//Code snips
+//              print("""distance == sqrt(2) \n
+// | Displacement: $displacement \n
+// | currentDistance($currentDistance) = distance($distance) * defaultSpacing($defaultSpacing) \n
+// | desiredDistance($desiredDistance) = defaultSpacing($defaultSpacing) * expansionAmount($expansionAmount)
+// """);
 
 class CirclesHomeWidget extends StatefulWidget {
   @override
@@ -29,7 +35,7 @@ class _PannableCircleGridState extends State<PannableCircleGrid> {
   int? _selectedIndex;
   final double _circleSize = 80;
   final double _selectedCircleMultiplier = 2;
-  final double _spacing = 1;
+  final double _spacing = 10;
   final int _columns = 1000; // Arbitrary large number for columns
 
   @override
@@ -79,6 +85,7 @@ class CircleGridPainter extends CustomPainter {
   final double spacing;
   final int? selectedIndex;
   final int columns;
+  Map<Point<int>, Offset> displacements = {};
 
   CircleGridPainter({
     required this.offset,
@@ -88,6 +95,25 @@ class CircleGridPainter extends CustomPainter {
     required this.columns,
     this.selectedIndex,
   });
+
+  double calculateDisplacement(
+      double distance, double expansionAmount, double defaultSpacing) {
+    int intDistance = distance.floor();
+    double fractionalPart = distance - intDistance;
+
+    if (fractionalPart == 0) {
+      // Integer distances (1, 2, 3, ...)
+      return expansionAmount;
+    } else if (fractionalPart <= 0.5) {
+      // Distances like sqrt(2), sqrt(5), sqrt(10), ...
+      double currentDistance = distance * defaultSpacing;
+      double desiredDistance = intDistance * defaultSpacing + expansionAmount;
+      return max(0, desiredDistance - currentDistance);
+    } else {
+      // Other distances
+      return expansionAmount / distance;
+    }
+  }
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -126,22 +152,46 @@ class CircleGridPainter extends CustomPainter {
 
             double displacement = 0;
             if (distance <= 1) {
-              // 1st order neighbors (directly adjacent)
+              // Directly adjacent neighbors
               displacement = expansionAmount;
             } else if (distance <= sqrt(2)) {
-              // 1st order neighbors (diagonal)
+              // Diagonal neighbors
+              // ### This block seems to be right.
               double currentDistance = distance * defaultSpacing;
               double desiredDistance = defaultSpacing + expansionAmount;
-              displacement = desiredDistance - currentDistance;
-            } else if (distance <= 2) {
-              // 2nd order neighbors (directly adjacent to 1st order)
-              displacement = expansionAmount * 0.75;
+              if (currentDistance < desiredDistance) {
+                displacement = desiredDistance - currentDistance;
+              }
+            } else if (distance == 2) {
+              // Directly adjacent neighbors
+              displacement = expansionAmount;
             } else if (distance <= sqrt(5)) {
-              // 2nd order neighbors (diagonal to 1st order)
-              displacement = expansionAmount * 0.5;
-            } else {
-              // Other circles
-              displacement = expansionAmount / distance;
+              // Diagonal neighbors
+              double currentDistance = distance * defaultSpacing;
+              double desiredDistance = defaultSpacing + expansionAmount;
+              if (currentDistance < desiredDistance) {
+                displacement = desiredDistance - currentDistance;
+              }
+            } else if (distance == 3) {
+              // Directly adjacent neighbors
+              displacement = expansionAmount;
+            } else if (distance <= sqrt(10)) {
+              // Diagonal neighbors
+              double currentDistance = distance * defaultSpacing;
+              double desiredDistance = defaultSpacing + expansionAmount;
+              if (currentDistance < desiredDistance) {
+                displacement = desiredDistance - currentDistance;
+              }
+            } else if (distance == 4) {
+              // Directly adjacent neighbors
+              displacement = expansionAmount;
+            } else if (distance <= sqrt(13)) {
+              // Diagonal neighbors
+              double currentDistance = distance * defaultSpacing;
+              double desiredDistance = defaultSpacing + expansionAmount;
+              if (currentDistance < desiredDistance) {
+                displacement = desiredDistance - currentDistance;
+              }
             }
 
             if (displacement > 0) {
@@ -154,7 +204,6 @@ class CircleGridPainter extends CustomPainter {
         }
       }
     }
-    printDisplacements(displacements);
     // printDisplacements(displacements);
 
     // Draw circles with calculated displacements
