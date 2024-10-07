@@ -9,12 +9,9 @@ import 'package:flutter/material.dart';
 // | desiredDistance($desiredDistance) = defaultSpacing($defaultSpacing) * expansionAmount($expansionAmount)
 // """);
 
-class CirclesHomeWidget extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() => _CircleHomeState();
-}
+class CirclesHomeWidget extends StatelessWidget {
+  const CirclesHomeWidget({Key? key}) : super(key: key);
 
-class _CircleHomeState extends State<CirclesHomeWidget> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
@@ -31,21 +28,18 @@ class PannableCircleGrid extends StatefulWidget {
 }
 
 class _PannableCircleGridState extends State<PannableCircleGrid> {
+  static const double _circleSize = 80;
+  static const double _selectedCircleMultiplier = 2;
+  static const double _spacing = 10;
+  static const int _columns = 1000;
+
   Offset _offset = Offset.zero;
   int? _selectedIndex;
-  final double _circleSize = 80;
-  final double _selectedCircleMultiplier = 2;
-  final double _spacing = 10;
-  final int _columns = 1000; // Arbitrary large number for columns
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onPanUpdate: (details) {
-        setState(() {
-          _offset += details.delta;
-        });
-      },
+      onPanUpdate: _handlePan,
       child: ClipRect(
         child: CustomPaint(
           painter: CircleGridPainter(
@@ -57,16 +51,21 @@ class _PannableCircleGridState extends State<PannableCircleGrid> {
             columns: _columns,
           ),
           child: GestureDetector(
-            onTapUp: (details) {
-              _handleTap(details.localPosition);
-            },
+            onTapUp: _handleTap,
           ),
         ),
       ),
     );
   }
 
-  void _handleTap(Offset tapPosition) {
+  void _handlePan(DragUpdateDetails details) {
+    setState(() {
+      _offset += details.delta;
+    });
+  }
+
+  void _handleTap(TapUpDetails details) {
+    final tapPosition = details.localPosition;
     int col =
         ((tapPosition.dx - _offset.dx) / (_circleSize + _spacing)).floor();
     int row =
@@ -85,7 +84,6 @@ class CircleGridPainter extends CustomPainter {
   final double spacing;
   final int? selectedIndex;
   final int columns;
-  Map<Point<int>, Offset> displacements = {};
 
   CircleGridPainter({
     required this.offset,
@@ -95,25 +93,6 @@ class CircleGridPainter extends CustomPainter {
     required this.columns,
     this.selectedIndex,
   });
-
-  double calculateDisplacement(
-      double distance, double expansionAmount, double defaultSpacing) {
-    int intDistance = distance.floor();
-    double fractionalPart = distance - intDistance;
-
-    if (fractionalPart == 0) {
-      // Integer distances (1, 2, 3, ...)
-      return expansionAmount;
-    } else if (fractionalPart <= 0.5) {
-      // Distances like sqrt(2), sqrt(5), sqrt(10), ...
-      double currentDistance = distance * defaultSpacing;
-      double desiredDistance = intDistance * defaultSpacing + expansionAmount;
-      return max(0, desiredDistance - currentDistance);
-    } else {
-      // Other distances
-      return expansionAmount / distance;
-    }
-  }
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -129,12 +108,23 @@ class CircleGridPainter extends CustomPainter {
       textDirection: TextDirection.ltr,
     );
 
-    final startCol = (-offset.dx / (circleSize + spacing)).floor() - 1;
-    final endCol = ((size.width - offset.dx) / (circleSize + spacing)).ceil();
-    final startRow = (-offset.dy / (circleSize + spacing)).floor() - 1;
-    final endRow = ((size.height - offset.dy) / (circleSize + spacing)).ceil();
+    final visibleArea = _calculateVisibleArea(size);
+    final displacements = _calculateDisplacements(visibleArea);
 
-    // Calculate displacements for all affected circles
+    _drawCircles(
+        canvas, visibleArea, displacements, paint, selectedPaint, textPainter);
+  }
+
+  _VisibleArea _calculateVisibleArea(Size size) {
+    return _VisibleArea(
+      startCol: (-offset.dx / (circleSize + spacing)).floor() - 1,
+      endCol: ((size.width - offset.dx) / (circleSize + spacing)).ceil(),
+      startRow: (-offset.dy / (circleSize + spacing)).floor() - 1,
+      endRow: ((size.height - offset.dy) / (circleSize + spacing)).ceil(),
+    );
+  }
+
+  Map<Point<int>, Offset> _calculateDisplacements(_VisibleArea visibleArea) {
     Map<Point<int>, Offset> displacements = {};
     if (selectedIndex != null) {
       int selectedCol = selectedIndex! % columns;
@@ -142,73 +132,72 @@ class CircleGridPainter extends CustomPainter {
       double expansionAmount = circleSize * (selectedCircleMultiplier - 1) / 2;
       double defaultSpacing = circleSize + spacing;
 
-      for (int row = startRow - 2; row <= endRow + 2; row++) {
-        for (int col = startCol - 2; col <= endCol + 2; col++) {
+      for (int row = visibleArea.startRow - 2;
+          row <= visibleArea.endRow + 2;
+          row++) {
+        for (int col = visibleArea.startCol - 2;
+            col <= visibleArea.endCol + 2;
+            col++) {
           if (row != selectedRow || col != selectedCol) {
-            int dx = col - selectedCol;
-            int dy = row - selectedRow;
-            double distance = sqrt(dx * dx + dy * dy);
-            double angle = atan2(dy.toDouble(), dx.toDouble());
-
-            double displacement = 0;
-            if (distance <= 1) {
-              // Directly adjacent neighbors
-              displacement = expansionAmount;
-            } else if (distance <= sqrt(2)) {
-              // Diagonal neighbors
-              // ### This block seems to be right.
-              double currentDistance = distance * defaultSpacing;
-              double desiredDistance = defaultSpacing + expansionAmount;
-              if (currentDistance < desiredDistance) {
-                displacement = desiredDistance - currentDistance;
-              }
-            } else if (distance == 2) {
-              // Directly adjacent neighbors
-              displacement = expansionAmount;
-            } else if (distance <= sqrt(5)) {
-              // Diagonal neighbors
-              double currentDistance = distance * defaultSpacing;
-              double desiredDistance = defaultSpacing + expansionAmount;
-              if (currentDistance < desiredDistance) {
-                displacement = desiredDistance - currentDistance;
-              }
-            } else if (distance == 3) {
-              // Directly adjacent neighbors
-              displacement = expansionAmount;
-            } else if (distance <= sqrt(10)) {
-              // Diagonal neighbors
-              double currentDistance = distance * defaultSpacing;
-              double desiredDistance = defaultSpacing + expansionAmount;
-              if (currentDistance < desiredDistance) {
-                displacement = desiredDistance - currentDistance;
-              }
-            } else if (distance == 4) {
-              // Directly adjacent neighbors
-              displacement = expansionAmount;
-            } else if (distance <= sqrt(13)) {
-              // Diagonal neighbors
-              double currentDistance = distance * defaultSpacing;
-              double desiredDistance = defaultSpacing + expansionAmount;
-              if (currentDistance < desiredDistance) {
-                displacement = desiredDistance - currentDistance;
-              }
-            }
-
-            if (displacement > 0) {
-              displacements[Point(col, row)] = Offset(
-                cos(angle) * displacement,
-                sin(angle) * displacement,
-              );
-            }
+            _calculateDisplacement(col, row, selectedCol, selectedRow,
+                expansionAmount, defaultSpacing, displacements);
           }
         }
       }
     }
-    // printDisplacements(displacements);
+    return displacements;
+  }
 
-    // Draw circles with calculated displacements
-    for (int row = startRow; row <= endRow; row++) {
-      for (int col = startCol; col <= endCol; col++) {
+  void _calculateDisplacement(
+      int col,
+      int row,
+      int selectedCol,
+      int selectedRow,
+      double expansionAmount,
+      double defaultSpacing,
+      Map<Point<int>, Offset> displacements) {
+    int dx = col - selectedCol;
+    int dy = row - selectedRow;
+    double distance = sqrt(dx * dx + dy * dy);
+    double angle = atan2(dy.toDouble(), dx.toDouble());
+
+    double displacement =
+        _getDisplacement(distance, expansionAmount, defaultSpacing);
+
+    if (displacement > 0) {
+      displacements[Point(col, row)] = Offset(
+        cos(angle) * displacement,
+        sin(angle) * displacement,
+      );
+    }
+  }
+
+  double _getDisplacement(
+      double distance, double expansionAmount, double defaultSpacing) {
+    if (distance % 1 == 0 && distance >= 1) {
+      return expansionAmount;
+    } else if (distance <= sqrt(2) ||
+        distance <= sqrt(5) ||
+        distance <= sqrt(10) ||
+        distance <= sqrt(13)) {
+      double currentDistance = distance * defaultSpacing;
+      double desiredDistance = defaultSpacing + expansionAmount;
+      return currentDistance < desiredDistance
+          ? desiredDistance - currentDistance
+          : 0;
+    }
+    return 0;
+  }
+
+  void _drawCircles(
+      Canvas canvas,
+      _VisibleArea visibleArea,
+      Map<Point<int>, Offset> displacements,
+      Paint paint,
+      Paint selectedPaint,
+      TextPainter textPainter) {
+    for (int row = visibleArea.startRow; row <= visibleArea.endRow; row++) {
+      for (int col = visibleArea.startCol; col <= visibleArea.endCol; col++) {
         int index = row * columns + col;
         bool isSelected = selectedIndex == index;
 
@@ -217,7 +206,6 @@ class CircleGridPainter extends CustomPainter {
           row * (circleSize + spacing) + offset.dy,
         );
 
-        // Apply displacement if exists
         if (!isSelected && displacements.containsKey(Point(col, row))) {
           circleOffset += displacements[Point(col, row)]!;
         }
@@ -230,33 +218,43 @@ class CircleGridPainter extends CustomPainter {
           currentCircleSize / 2,
           isSelected ? selectedPaint : paint,
         );
-        textPainter.text = TextSpan(
-          text: '$index',
-          style: TextStyle(
-              color: isSelected ? Colors.black : Colors.white, fontSize: 12),
-        );
-        textPainter.layout();
-        textPainter.paint(
-          canvas,
-          circleOffset - Offset(textPainter.width / 2, textPainter.height / 2),
-        );
+
+        _drawText(
+            canvas, textPainter, circleOffset, index.toString(), isSelected);
       }
     }
+  }
+
+  void _drawText(Canvas canvas, TextPainter textPainter, Offset position,
+      String text, bool isSelected) {
+    textPainter.text = TextSpan(
+      text: text,
+      style: TextStyle(
+          color: isSelected ? Colors.black : Colors.white, fontSize: 12),
+    );
+    textPainter.layout();
+    textPainter.paint(
+      canvas,
+      position - Offset(textPainter.width / 2, textPainter.height / 2),
+    );
   }
 
   @override
   bool shouldRepaint(covariant CircleGridPainter oldDelegate) =>
       offset != oldDelegate.offset ||
       selectedIndex != oldDelegate.selectedIndex;
+}
 
-  void printDisplacements(Map<Point<int>, Offset> displacements) {
-    print(
-        '============================== Displacements start==============================');
-    displacements.forEach((point, offset) {
-      print(
-          'Point(${point.x}, ${point.y}): Offset(${offset.dx}, ${offset.dy})');
-    });
-    print(
-        '============================== Displacements end ==============================');
-  }
+class _VisibleArea {
+  final int startCol;
+  final int endCol;
+  final int startRow;
+  final int endRow;
+
+  _VisibleArea({
+    required this.startCol,
+    required this.endCol,
+    required this.startRow,
+    required this.endRow,
+  });
 }
