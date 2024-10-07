@@ -28,7 +28,7 @@ class _PannableCircleGridState extends State<PannableCircleGrid> {
   Offset _offset = Offset.zero;
   int? _selectedIndex;
   final double _circleSize = 80;
-  final double _selectedCircleMultiplier = 1.5;
+  final double _selectedCircleMultiplier = 2;
   final double _spacing = 1;
   final int _columns = 1000; // Arbitrary large number for columns
 
@@ -113,26 +113,49 @@ class CircleGridPainter extends CustomPainter {
     if (selectedIndex != null) {
       int selectedCol = selectedIndex! % columns;
       int selectedRow = selectedIndex! ~/ columns;
-      double growthAmount = circleSize * (selectedCircleMultiplier - 1);
+      double expansionAmount = circleSize * (selectedCircleMultiplier - 1) / 2;
+      double defaultSpacing = circleSize + spacing;
 
       for (int row = startRow - 2; row <= endRow + 2; row++) {
         for (int col = startCol - 2; col <= endCol + 2; col++) {
-          int dx = col - selectedCol;
-          int dy = row - selectedRow;
-          double distance = sqrt(dx * dx + dy * dy);
-
-          if (distance > 0) {
+          if (row != selectedRow || col != selectedCol) {
+            int dx = col - selectedCol;
+            int dy = row - selectedRow;
+            double distance = sqrt(dx * dx + dy * dy);
             double angle = atan2(dy.toDouble(), dx.toDouble());
-            double displacement = growthAmount / distance;
 
-            displacements[Point(col, row)] = Offset(
-              cos(angle) * displacement,
-              sin(angle) * displacement,
-            );
+            double displacement = 0;
+            if (distance <= 1) {
+              // 1st order neighbors (directly adjacent)
+              displacement = expansionAmount;
+            } else if (distance <= sqrt(2)) {
+              // 1st order neighbors (diagonal)
+              double currentDistance = distance * defaultSpacing;
+              double desiredDistance = defaultSpacing + expansionAmount;
+              displacement = desiredDistance - currentDistance;
+            } else if (distance <= 2) {
+              // 2nd order neighbors (directly adjacent to 1st order)
+              displacement = expansionAmount * 0.75;
+            } else if (distance <= sqrt(5)) {
+              // 2nd order neighbors (diagonal to 1st order)
+              displacement = expansionAmount * 0.5;
+            } else {
+              // Other circles
+              displacement = expansionAmount / distance;
+            }
+
+            if (displacement > 0) {
+              displacements[Point(col, row)] = Offset(
+                cos(angle) * displacement,
+                sin(angle) * displacement,
+              );
+            }
           }
         }
       }
     }
+    printDisplacements(displacements);
+    // printDisplacements(displacements);
 
     // Draw circles with calculated displacements
     for (int row = startRow; row <= endRow; row++) {
@@ -146,7 +169,7 @@ class CircleGridPainter extends CustomPainter {
         );
 
         // Apply displacement if exists
-        if (displacements.containsKey(Point(col, row))) {
+        if (!isSelected && displacements.containsKey(Point(col, row))) {
           circleOffset += displacements[Point(col, row)]!;
         }
 
@@ -176,4 +199,15 @@ class CircleGridPainter extends CustomPainter {
   bool shouldRepaint(covariant CircleGridPainter oldDelegate) =>
       offset != oldDelegate.offset ||
       selectedIndex != oldDelegate.selectedIndex;
+
+  void printDisplacements(Map<Point<int>, Offset> displacements) {
+    print(
+        '============================== Displacements start==============================');
+    displacements.forEach((point, offset) {
+      print(
+          'Point(${point.x}, ${point.y}): Offset(${offset.dx}, ${offset.dy})');
+    });
+    print(
+        '============================== Displacements end ==============================');
+  }
 }
