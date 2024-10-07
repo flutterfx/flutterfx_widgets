@@ -161,8 +161,11 @@ class CircleGridPainter extends CustomPainter {
     double distance = sqrt(dx * dx + dy * dy);
     double angle = atan2(dy.toDouble(), dx.toDouble());
 
+    // Replace this line with the fixed version
+    // double displacement =
+    //     _getDisplacement(distance, expansionAmount, defaultSpacing);
     double displacement =
-        _getDisplacement(distance, expansionAmount, defaultSpacing);
+        _getDisplacementFixed(distance, expansionAmount, defaultSpacing);
 
     if (displacement > 0) {
       displacements[Point(col, row)] = Offset(
@@ -172,21 +175,67 @@ class CircleGridPainter extends CustomPainter {
     }
   }
 
-  double _getDisplacement(
+  // double _getDisplacement(
+  //     double distance, double expansionAmount, double defaultSpacing) {
+  //   if (distance % 1 == 0 && distance >= 1) {
+  //     return expansionAmount;
+  //   } else if (distance <= sqrt(2) ||
+  //       distance <= sqrt(5) ||
+  //       distance <= sqrt(10) ||
+  //       distance <= sqrt(13)) {
+  //     double currentDistance = distance * defaultSpacing;
+  //     double desiredDistance = defaultSpacing + expansionAmount;
+  //     return currentDistance < desiredDistance
+  //         ? desiredDistance - currentDistance
+  //         : 0;
+  //   }
+  //   return 0;
+  // }
+
+  // Suggested fix
+  // double _getDisplacementFixed(
+  //     double distance, double expansionAmount, double defaultSpacing) {
+  //   if (distance % 1 == 0 && distance >= 1) {
+  //     return expansionAmount;
+  //   } else if (distance <= sqrt(2)) {
+  //     double currentDistance = distance * defaultSpacing;
+  //     double desiredDistance = defaultSpacing + expansionAmount;
+  //     return currentDistance < desiredDistance
+  //         ? desiredDistance - currentDistance
+  //         : 0;
+  //   } else if (distance % 1 == 0 && distance >= 2) {
+  //     return expansionAmount;
+  //   } else {
+  //     return 0;
+  //   }
+  // }
+
+  static const double maxDisplacementDistance =
+      6.0; // Maximum distance for displacement effect
+  static const double fullDisplacementDistance =
+      0.5; // Distance for full displacement
+  static const double falloffExponent =
+      1.0; // Controls the steepness of falloff
+
+  double _getDisplacementFixed(
       double distance, double expansionAmount, double defaultSpacing) {
-    if (distance % 1 == 0 && distance >= 1) {
-      return expansionAmount;
-    } else if (distance <= sqrt(2) ||
-        distance <= sqrt(5) ||
-        distance <= sqrt(10) ||
-        distance <= sqrt(13)) {
-      double currentDistance = distance * defaultSpacing;
-      double desiredDistance = defaultSpacing + expansionAmount;
-      return currentDistance < desiredDistance
-          ? desiredDistance - currentDistance
-          : 0;
+    if (distance <= maxDisplacementDistance) {
+      double falloffFactor = _calculateFalloffFactor(distance);
+      return expansionAmount * falloffFactor;
     }
     return 0;
+  }
+
+  double _calculateFalloffFactor(double distance) {
+    if (distance <= fullDisplacementDistance) {
+      return 1.0;
+    } else if (distance >= maxDisplacementDistance) {
+      return 0.0;
+    } else {
+      double t = (distance - fullDisplacementDistance) /
+          (maxDisplacementDistance - fullDisplacementDistance);
+      return pow(1 - t, falloffExponent).toDouble();
+    }
   }
 
   void _drawCircles(
