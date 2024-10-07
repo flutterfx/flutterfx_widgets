@@ -2,13 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-//Code snips
-//              print("""distance == sqrt(2) \n
-// | Displacement: $displacement \n
-// | currentDistance($currentDistance) = distance($distance) * defaultSpacing($defaultSpacing) \n
-// | desiredDistance($desiredDistance) = defaultSpacing($defaultSpacing) * expansionAmount($expansionAmount)
-// """);
-
 class CirclesHomeWidget extends StatelessWidget {
   const CirclesHomeWidget({Key? key}) : super(key: key);
 
@@ -84,6 +77,13 @@ class CircleGridPainter extends CustomPainter {
   final double spacing;
   final int? selectedIndex;
   final int columns;
+
+  static const double maxDisplacementDistance =
+      6.0; // Maximum distance for displacement effect
+  static const double fullDisplacementDistance =
+      0.5; // Distance for full displacement
+  static const double falloffExponent =
+      1.0; // Controls the steepness of falloff
 
   CircleGridPainter({
     required this.offset,
@@ -161,11 +161,19 @@ class CircleGridPainter extends CustomPainter {
     double distance = sqrt(dx * dx + dy * dy);
     double angle = atan2(dy.toDouble(), dx.toDouble());
 
-    // Replace this line with the fixed version
-    // double displacement =
-    //     _getDisplacement(distance, expansionAmount, defaultSpacing);
+    // Determine if the circle is diagonal or orthogonal
+    bool isDiagonal = dx != 0 && dy != 0;
+
+    // Calculate the base displacement
     double displacement =
         _getDisplacementFixed(distance, expansionAmount, defaultSpacing);
+
+    // diagonal adjustment
+    if (isDiagonal) {
+      double diagonalCorrectionFactor =
+          0.1; // or use 1 / sqrt(2) ≈ 0.707 for exact diagonal adjustment
+      displacement *= diagonalCorrectionFactor;
+    }
 
     if (displacement > 0) {
       displacements[Point(col, row)] = Offset(
@@ -174,48 +182,6 @@ class CircleGridPainter extends CustomPainter {
       );
     }
   }
-
-  // double _getDisplacement(
-  //     double distance, double expansionAmount, double defaultSpacing) {
-  //   if (distance % 1 == 0 && distance >= 1) {
-  //     return expansionAmount;
-  //   } else if (distance <= sqrt(2) ||
-  //       distance <= sqrt(5) ||
-  //       distance <= sqrt(10) ||
-  //       distance <= sqrt(13)) {
-  //     double currentDistance = distance * defaultSpacing;
-  //     double desiredDistance = defaultSpacing + expansionAmount;
-  //     return currentDistance < desiredDistance
-  //         ? desiredDistance - currentDistance
-  //         : 0;
-  //   }
-  //   return 0;
-  // }
-
-  // Suggested fix
-  // double _getDisplacementFixed(
-  //     double distance, double expansionAmount, double defaultSpacing) {
-  //   if (distance % 1 == 0 && distance >= 1) {
-  //     return expansionAmount;
-  //   } else if (distance <= sqrt(2)) {
-  //     double currentDistance = distance * defaultSpacing;
-  //     double desiredDistance = defaultSpacing + expansionAmount;
-  //     return currentDistance < desiredDistance
-  //         ? desiredDistance - currentDistance
-  //         : 0;
-  //   } else if (distance % 1 == 0 && distance >= 2) {
-  //     return expansionAmount;
-  //   } else {
-  //     return 0;
-  //   }
-  // }
-
-  static const double maxDisplacementDistance =
-      6.0; // Maximum distance for displacement effect
-  static const double fullDisplacementDistance =
-      0.5; // Distance for full displacement
-  static const double falloffExponent =
-      1.0; // Controls the steepness of falloff
 
   double _getDisplacementFixed(
       double distance, double expansionAmount, double defaultSpacing) {
