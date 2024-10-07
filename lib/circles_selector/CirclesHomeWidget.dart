@@ -26,8 +26,8 @@ class PannableCircleGrid extends StatefulWidget {
 class _PannableCircleGridState extends State<PannableCircleGrid> {
   Offset _offset = Offset.zero;
   int? _selectedIndex;
-  final double _circleSize = 40;
-  final double _spacing = 20;
+  final double _circleSize = 80;
+  final double _spacing = 1;
   final int _columns = 1000; // Arbitrary large number for columns
 
   @override
@@ -111,18 +111,39 @@ class CircleGridPainter extends CustomPainter {
 
       for (int row = startRow - 1; row <= endRow + 1; row++) {
         for (int col = startCol - 1; col <= endCol + 1; col++) {
-          int dx = (col - selectedCol).abs();
-          int dy = (row - selectedRow).abs();
-          int maxDist = max(dx, dy);
+          int dx = col - selectedCol;
+          int dy = row - selectedRow;
 
-          if (maxDist > 0) {
-            double angle = atan2(row - selectedRow, col - selectedCol);
-            double pushDistance = max(0, circleSize * 0.5 * (3 - maxDist) / 2);
+          int index = row * columns + col;
+          bool isSelected = selectedIndex == index;
 
-            displacements[Point(col, row)] = Offset(
-              cos(angle) * pushDistance,
-              sin(angle) * pushDistance,
-            );
+          // Check if the circle is in the first coat
+          if (dx.abs() <= 1 && dy.abs() <= 1 && (dx != 0 || dy != 0)) {
+            double currentCenterDistance =
+                sqrt(dx * dx + dy * dy) * (circleSize + spacing);
+            double selectedCircleRadius =
+                isSelected ? circleSize * 1.5 : circleSize;
+            double neighborCircleRadius = circleSize * 0.5;
+
+            double currentEdgeDistance = currentCenterDistance -
+                selectedCircleRadius -
+                neighborCircleRadius;
+            double minRequiredEdgeDistance = spacing;
+
+            // Only displace if current edge distance is less than required
+            if (currentEdgeDistance < minRequiredEdgeDistance) {
+              double angle = atan2(dy.toDouble(), dx.toDouble());
+              double targetCenterDistance = selectedCircleRadius +
+                  neighborCircleRadius +
+                  minRequiredEdgeDistance;
+              double displacement =
+                  targetCenterDistance - currentCenterDistance;
+
+              displacements[Point(col, row)] = Offset(
+                cos(angle) * displacement,
+                sin(angle) * displacement,
+              );
+            }
           }
         }
       }
@@ -144,14 +165,13 @@ class CircleGridPainter extends CustomPainter {
           circleOffset += displacements[Point(col, row)]!;
         }
 
-        double currentCircleSize = isSelected ? circleSize : circleSize * 0.8;
+        double currentCircleSize = isSelected ? circleSize * 1.5 : circleSize;
 
         canvas.drawCircle(
           circleOffset,
-          currentCircleSize,
+          currentCircleSize / 2,
           isSelected ? selectedPaint : paint,
         );
-
         textPainter.text = TextSpan(
           text: '$index',
           style: TextStyle(
