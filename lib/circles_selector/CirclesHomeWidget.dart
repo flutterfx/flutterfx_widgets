@@ -27,6 +27,7 @@ class _PannableCircleGridState extends State<PannableCircleGrid> {
   Offset _offset = Offset.zero;
   int? _selectedIndex;
   final double _circleSize = 80;
+  final double _selectedCircleMultiplier = 1.5;
   final double _spacing = 1;
   final int _columns = 1000; // Arbitrary large number for columns
 
@@ -43,6 +44,7 @@ class _PannableCircleGridState extends State<PannableCircleGrid> {
           painter: CircleGridPainter(
             offset: _offset,
             circleSize: _circleSize,
+            selectedCircleMultiplier: _selectedCircleMultiplier,
             spacing: _spacing,
             selectedIndex: _selectedIndex,
             columns: _columns,
@@ -72,6 +74,7 @@ class _PannableCircleGridState extends State<PannableCircleGrid> {
 class CircleGridPainter extends CustomPainter {
   final Offset offset;
   final double circleSize;
+  final double selectedCircleMultiplier;
   final double spacing;
   final int? selectedIndex;
   final int columns;
@@ -79,6 +82,7 @@ class CircleGridPainter extends CustomPainter {
   CircleGridPainter({
     required this.offset,
     required this.circleSize,
+    required this.selectedCircleMultiplier,
     required this.spacing,
     required this.columns,
     this.selectedIndex,
@@ -122,7 +126,7 @@ class CircleGridPainter extends CustomPainter {
             double currentCenterDistance =
                 sqrt(dx * dx + dy * dy) * (circleSize + spacing);
             double selectedCircleRadius =
-                isSelected ? circleSize * 1.5 : circleSize;
+                isSelected ? circleSize * selectedCircleMultiplier : circleSize;
             double neighborCircleRadius = circleSize * 0.5;
 
             double currentEdgeDistance = currentCenterDistance -
@@ -165,7 +169,8 @@ class CircleGridPainter extends CustomPainter {
           circleOffset += displacements[Point(col, row)]!;
         }
 
-        double currentCircleSize = isSelected ? circleSize * 1.5 : circleSize;
+        double currentCircleSize =
+            isSelected ? circleSize * selectedCircleMultiplier : circleSize;
 
         canvas.drawCircle(
           circleOffset,
