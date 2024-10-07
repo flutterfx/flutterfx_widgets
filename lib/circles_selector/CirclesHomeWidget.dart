@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:fx_2_folder/circles_selector/CircleGrid.dart';
 
 class CirclesHomeWidget extends StatefulWidget {
   @override
@@ -112,42 +113,22 @@ class CircleGridPainter extends CustomPainter {
     if (selectedIndex != null) {
       int selectedCol = selectedIndex! % columns;
       int selectedRow = selectedIndex! ~/ columns;
+      double growthAmount = circleSize * (selectedCircleMultiplier - 1);
 
-      for (int row = startRow - 1; row <= endRow + 1; row++) {
-        for (int col = startCol - 1; col <= endCol + 1; col++) {
+      for (int row = startRow - 2; row <= endRow + 2; row++) {
+        for (int col = startCol - 2; col <= endCol + 2; col++) {
           int dx = col - selectedCol;
           int dy = row - selectedRow;
+          double distance = sqrt(dx * dx + dy * dy);
 
-          int index = row * columns + col;
-          bool isSelected = selectedIndex == index;
+          if (distance > 0) {
+            double angle = atan2(dy.toDouble(), dx.toDouble());
+            double displacement = growthAmount / distance;
 
-          // Check if the circle is in the first coat
-          if (dx.abs() <= 1 && dy.abs() <= 1 && (dx != 0 || dy != 0)) {
-            double currentCenterDistance =
-                sqrt(dx * dx + dy * dy) * (circleSize + spacing);
-            double selectedCircleRadius =
-                isSelected ? circleSize * selectedCircleMultiplier : circleSize;
-            double neighborCircleRadius = circleSize * 0.5;
-
-            double currentEdgeDistance = currentCenterDistance -
-                selectedCircleRadius -
-                neighborCircleRadius;
-            double minRequiredEdgeDistance = spacing;
-
-            // Only displace if current edge distance is less than required
-            if (currentEdgeDistance < minRequiredEdgeDistance) {
-              double angle = atan2(dy.toDouble(), dx.toDouble());
-              double targetCenterDistance = selectedCircleRadius +
-                  neighborCircleRadius +
-                  minRequiredEdgeDistance;
-              double displacement =
-                  targetCenterDistance - currentCenterDistance;
-
-              displacements[Point(col, row)] = Offset(
-                cos(angle) * displacement,
-                sin(angle) * displacement,
-              );
-            }
+            displacements[Point(col, row)] = Offset(
+              cos(angle) * displacement,
+              sin(angle) * displacement,
+            );
           }
         }
       }
