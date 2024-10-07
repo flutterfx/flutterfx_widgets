@@ -1,4 +1,4 @@
-# Flutterfx Widget Showcase
+# Flutterfx Widget Showcase [WIP]
 
 
 We're on a mission here. The flutterfx project is all about showing how easy it is to create stunning visuals in Flutter. Let's flood the app stores with gorgeous, eye-catching designs!
