@@ -4,17 +4,19 @@ import 'package:fx_2_folder/circles_selector/CirclesHomeWidget.dart';
 import 'package:fx_2_folder/folder_shape/folder_home.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-void main() => runApp(AnimationShowcaseApp());
+void main() => runApp(const AnimationShowcaseApp());
 
 class AnimationShowcaseApp extends StatelessWidget {
+  const AnimationShowcaseApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'fx-widget Showcase',
       theme: ThemeData.dark().copyWith(
-        primaryColor: Color(0xFF1E1E1E),
-        scaffoldBackgroundColor: Color(0xFF121212),
-        cardColor: Color(0xFF2C2C2C),
+        primaryColor: const Color(0xFF1E1E1E),
+        scaffoldBackgroundColor: const Color(0xFF121212),
+        cardColor: const Color(0xFF2C2C2C),
         textTheme: GoogleFonts.robotoMonoTextTheme(
           Theme.of(context).textTheme,
         ).apply(bodyColor: Colors.white),
@@ -27,8 +29,13 @@ class AnimationShowcaseApp extends StatelessWidget {
 class AnimationExample {
   final String title;
   final Widget Function(BuildContext) builder;
+  final Color? appBarColor;
 
-  AnimationExample({required this.title, required this.builder});
+  AnimationExample({
+    required this.title,
+    required this.builder,
+    this.appBarColor,
+  });
 }
 
 class HomeScreen extends StatelessWidget {
@@ -45,9 +52,12 @@ class HomeScreen extends StatelessWidget {
     ),
     AnimationExample(
       title: 'CircleSelector',
-      builder: (context) => CirclesHomeWidget(),
+      builder: (context) => const CirclesHomeWidget(),
+      appBarColor: Colors.black,
     ),
   ];
+
+  HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -114,6 +124,7 @@ class DetailScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(example.title),
         elevation: 0,
+        backgroundColor: example.appBarColor ?? Theme.of(context).primaryColor,
       ),
       body: Hero(
         tag: 'example_${example.title}',
