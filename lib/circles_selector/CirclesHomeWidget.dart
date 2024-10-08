@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/physics.dart';
 
 class CirclesHomeWidget extends StatelessWidget {
   const CirclesHomeWidget({Key? key}) : super(key: key);
@@ -31,71 +32,257 @@ class _PannableCircleGridState extends State<PannableCircleGrid>
   Map<int, AnimationController> _animationControllers = {};
   int? _selectedIndex;
 
+  late AnimationController _flingAnimationController;
+  Offset _flingVelocity = Offset.zero;
+
+  Offset? _tapPosition;
+
+  final SpringDescription spring = const SpringDescription(
+    mass: 2,
+    stiffness: 150,
+    damping: 20,
+  );
+
+  final SpringDescription quickOvershootSpring = const SpringDescription(
+    mass: 2,
+    stiffness: 600,
+    damping: 8,
+  );
+
+  @override
+  void initState() {
+    super.initState();
+    _flingAnimationController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 500));
+    _flingAnimationController.addListener(_handleFlingAnimation);
+  }
+
   @override
   void dispose() {
     for (var controller in _animationControllers.values) {
       controller.dispose();
     }
+    _flingAnimationController.dispose();
     super.dispose();
   }
-
-  // void _handleAnimationStatus(AnimationStatus status) {
-  //   if (status == AnimationStatus.completed ||
-  //       status == AnimationStatus.dismissed) {
-  //     setState(() {
-  //       if (_animationController.status == AnimationStatus.dismissed) {
-  //         _deselectedIndex = null;
-  //       }
-  //     }); // Trigger a rebuild to ensure final state is painted
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onPanUpdate: _handlePan,
-      child: ClipRect(
-        child: AnimatedBuilder(
-          animation: Listenable.merge(_animationControllers.values.toList()),
-          builder: (context, child) {
-            return CustomPaint(
-              painter: CircleGridPainter(
-                offset: _offset,
-                circleSize: _circleSize,
-                selectedCircleMultiplier: _selectedCircleMultiplier,
-                spacing: _spacing,
-                selectedIndex: _selectedIndex,
-                columns: _columns,
-                animationControllers: _animationControllers,
+      onPanEnd: _handlePanEnd,
+      child: Container(
+        color: Colors.black,
+        child: Stack(
+          children: [
+            ClipRect(
+              child: Stack(
+                children: [
+                  AnimatedBuilder(
+                    animation:
+                        Listenable.merge(_animationControllers.values.toList()),
+                    builder: (context, child) {
+                      return CustomPaint(
+                        painter: CircleGridPainter(
+                          offset: _offset,
+                          circleSize: _circleSize,
+                          selectedCircleMultiplier: _selectedCircleMultiplier,
+                          spacing: _spacing,
+                          selectedIndex: _selectedIndex,
+                          columns: _columns,
+                          animationControllers: _animationControllers,
+                        ),
+                        child: GestureDetector(
+                          onTapUp: _handleTap,
+                        ),
+                      );
+                    },
+                  ),
+                  // CustomPaint( //Enable for debugging
+                  //   painter: DebugPainter(
+                  //     tapPosition: _tapPosition,
+                  //     gridOffset: _offset,
+                  //     circleSize: _circleSize,
+                  //     spacing: _spacing,
+                  //     columns: _columns,
+                  //   ),
+                  // ),
+                ],
               ),
-              child: GestureDetector(
-                onTapUp: _handleTap,
+            ),
+            // Bottom gradient overlay
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                height: 200,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Colors.black,
+                      Colors.black,
+                      Colors.black,
+                      Colors.black.withOpacity(0.9),
+                      Colors.black.withOpacity(0.8),
+                      Colors.black.withOpacity(0.7),
+                      Colors.black.withOpacity(0.5),
+                      Colors.black.withOpacity(0.3),
+                      Colors.black.withOpacity(0.1),
+                      Colors.transparent,
+                      Colors.transparent,
+                    ],
+                    stops: const [
+                      0.0,
+                      0.1,
+                      0.2,
+                      0.3,
+                      0.4,
+                      0.5,
+                      0.6,
+                      0.7,
+                      0.8,
+                      0.9,
+                      1.0
+                    ],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  ),
+                ),
               ),
-            );
-          },
+            ),
+          ],
         ),
       ),
     );
   }
+  // @override
+  // Widget build(BuildContext context) {
+  //   return GestureDetector(
+  //     onPanUpdate: _handlePan,
+  //     onPanEnd: _handlePanEnd,
+  //     child: Container(
+  //       // Added Container for background color
+  //       color: Colors.black,
+  //       child: ClipRect(
+  //         child: Stack(
+  //           children: [
+  //             AnimatedBuilder(
+  //               animation:
+  //                   Listenable.merge(_animationControllers.values.toList()),
+  //               builder: (context, child) {
+  //                 return CustomPaint(
+  //                   painter: CircleGridPainter(
+  //                     offset: _offset,
+  //                     circleSize: _circleSize,
+  //                     selectedCircleMultiplier: _selectedCircleMultiplier,
+  //                     spacing: _spacing,
+  //                     selectedIndex: _selectedIndex,
+  //                     columns: _columns,
+  //                     animationControllers: _animationControllers,
+  //                   ),
+  //                   child: GestureDetector(
+  //                     onTapUp: _handleTap,
+  //                   ),
+  //                 );
+
+  //                 // Stack(
+  //                 //   children: [
+
+  //                 //   ],
+  //                 // );
+  //               },
+  //             ),
+  //             CustomPaint(
+  //               painter: DebugPainter(
+  //                 tapPosition: _tapPosition,
+  //                 gridOffset: _offset,
+  //                 circleSize: _circleSize,
+  //                 spacing: _spacing,
+  //                 columns: _columns,
+  //               ),
+  //             ),
+  //             Positioned(
+  //               bottom: 0,
+  //               child: Container(
+  //                 height: 100,
+  //                 width: double.infinity,
+  //                 decoration: BoxDecoration(
+  //                   gradient: LinearGradient(
+  //                     colors: [Colors.blue, Colors.green],
+  //                     begin: Alignment.centerLeft,
+  //                     end: Alignment.centerRight,
+  //                   ),
+  //                 ),
+  //               ),
+  //             )
+  //           ],
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   void _handlePan(DragUpdateDetails details) {
     setState(() {
       _offset += details.delta;
     });
+    print('Pan update: ${details.delta}'); // De
+  }
+
+  void _handlePanEnd(DragEndDetails details) {
+    final velocity = details.velocity.pixelsPerSecond;
+    final speed = velocity.distance;
+
+    if (speed > 50) {
+      _flingVelocity = velocity * 0.006; // Adjust this factor to tune the feel
+
+      const double maxSpeed =
+          200; // Adjust this value to set the maximum fling speed
+      if (_flingVelocity.distance > maxSpeed) {
+        _flingVelocity = (_flingVelocity / _flingVelocity.distance) * maxSpeed;
+      }
+      print('Fling started - Velocity: $_flingVelocity');
+
+      _flingAnimationController.reset();
+      _flingAnimationController.forward();
+    }
+  }
+
+  void _handleFlingAnimation() {
+    if (!_flingAnimationController.isAnimating) return;
+
+    final double t = _flingAnimationController.value;
+    final double easeOutFactor = Curves.decelerate.transform(1 - t);
+
+    setState(() {
+      _offset += _flingVelocity * easeOutFactor;
+    });
+
+    // Stop the animation if the movement becomes very small
+    if (_flingVelocity.distance * easeOutFactor < 0.01) {
+      _flingAnimationController.stop();
+    }
   }
 
   void _handleTap(TapUpDetails details) {
+    setState(() {
+      _tapPosition = details.localPosition;
+    });
     final tapPosition = details.localPosition;
-    int col =
-        ((tapPosition.dx - _offset.dx) / (_circleSize + _spacing)).floor();
-    int row =
-        ((tapPosition.dy - _offset.dy) / (_circleSize + _spacing)).floor();
+    int col = ((tapPosition.dx - _offset.dx + _circleSize / 2) /
+            (_circleSize + _spacing))
+        .floor();
+    int row = ((tapPosition.dy - _offset.dy + _circleSize / 2) /
+            (_circleSize + _spacing))
+        .floor();
     int tappedIndex = row * _columns + col;
 
     setState(() {
       if (_selectedIndex == tappedIndex) {
         // Case 1: Tapping the same circle
-        _animationControllers[tappedIndex]?.reverse().then((_) {
+        final simulation = SpringSimulation(spring, 1, 0, -1);
+        _animationControllers[tappedIndex]?.animateWith(simulation).then((_) {
           if (mounted) {
             setState(() {
               _animationControllers.remove(tappedIndex);
@@ -108,7 +295,10 @@ class _PannableCircleGridState extends State<PannableCircleGrid>
         if (_selectedIndex != null) {
           int? __selectedIndex = _selectedIndex;
           // Collapse the previously selected circle
-          _animationControllers[_selectedIndex]?.reverse().then((_) {
+          final simulation = SpringSimulation(spring, 1, 0, -1);
+          _animationControllers[_selectedIndex]
+              ?.animateWith(simulation)
+              .then((_) {
             if (mounted) {
               setState(() {
                 _animationControllers.remove(__selectedIndex);
@@ -118,45 +308,16 @@ class _PannableCircleGridState extends State<PannableCircleGrid>
         }
 
         // Expand the newly tapped circle
+        final simulation = SpringSimulation(quickOvershootSpring, 0, 1, 1);
         _animationControllers[tappedIndex] = AnimationController(
           duration: const Duration(milliseconds: 300),
           vsync: this,
-        )..forward();
+        );
+        _animationControllers[tappedIndex]?.animateWith(simulation);
 
         _selectedIndex = tappedIndex;
       }
     });
-
-    // if (_animationControllers.containsKey(tappedIndex)) {
-    //   // Collapse the tapped circle
-    //   _animationControllers[tappedIndex]!.reverse().then((_) {
-    //     setState(() {
-    //       _animationControllers.remove(tappedIndex);
-    //       if (_selectedIndex == tappedIndex) {
-    //         _selectedIndex = null;
-    //       }
-    //     });
-    //   });
-    // } else {
-    //   // Expand the tapped circle
-    //   _animationControllers[tappedIndex] = AnimationController(
-    //     duration: const Duration(milliseconds: 300),
-    //     vsync: this,
-    //   )..forward();
-
-    //   // Collapse the previously selected circle, if any
-    //   if (_selectedIndex != null && _selectedIndex != tappedIndex) {
-    //     _animationControllers[_selectedIndex!]?.reverse().then((_) {
-    //       setState(() {
-    //         _animationControllers.remove(_selectedIndex);
-    //       });
-    //     });
-    //   }
-
-    //   setState(() {
-    //     _selectedIndex = tappedIndex;
-    //   });
-    // }
   }
 }
 
@@ -189,11 +350,11 @@ class CircleGridPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = Colors.grey
+      ..color = const Color.fromARGB(255, 53, 53, 53)
       ..style = PaintingStyle.fill;
 
     final selectedPaint = Paint()
-      ..color = Colors.white
+      ..color = const Color.fromARGB(255, 186, 186, 186)
       ..style = PaintingStyle.fill;
 
     final textPainter = TextPainter(
@@ -317,16 +478,12 @@ class CircleGridPainter extends CustomPainter {
     for (int row = visibleArea.startRow; row <= visibleArea.endRow; row++) {
       for (int col = visibleArea.startCol; col <= visibleArea.endCol; col++) {
         int index = row * columns + col;
-        bool isSelected = index == selectedIndex;
 
         Offset circleOffset = Offset(
           col * (circleSize + spacing) + offset.dx,
           row * (circleSize + spacing) + offset.dy,
         );
 
-        // if (!isSelected && displacements.containsKey(Point(col, row))) {
-        //   circleOffset += displacements[Point(col, row)]! * animationValue;
-        // }
         if (displacements.containsKey(Point(col, row))) {
           circleOffset += displacements[Point(col, row)]!;
         }
@@ -344,31 +501,34 @@ class CircleGridPainter extends CustomPainter {
             ..style = PaintingStyle.fill;
         }
 
-        // double currentCircleSize = isSelected
-        //     ? circleSize +
-        //         (circleSize *
-        //             (selectedCircleMultiplier - 1) *
-        //             animationControllers[index]!.value)
-        //     : circleSize;
-
         canvas.drawCircle(
           circleOffset,
           currentCircleSize / 2,
           currentPaint,
         );
 
-        _drawText(
-            canvas, textPainter, circleOffset, index.toString(), isSelected);
+        // _drawText(canvas, textPainter, circleOffset, index.toString(),
+        //     isSelected, animationControllers[index]?.value);
       }
     }
   }
 
+  Color lerpColor(Color a, Color b, double t) {
+    return Color.lerp(a, b, t)!;
+  }
+
   void _drawText(Canvas canvas, TextPainter textPainter, Offset position,
-      String text, bool isSelected) {
+      String text, bool isSelected, double? animValue) {
+    const Color startColor = Colors.white;
+    const Color endColor = Colors.black;
+    Color lerpedColor = isSelected ? endColor : startColor;
+    if (animValue != null) {
+      lerpedColor = lerpColor(startColor, endColor, animValue);
+    }
+
     textPainter.text = TextSpan(
       text: text,
-      style: TextStyle(
-          color: isSelected ? Colors.black : Colors.white, fontSize: 12),
+      style: TextStyle(color: lerpedColor, fontSize: 12),
     );
     textPainter.layout();
     textPainter.paint(
@@ -396,4 +556,81 @@ class _VisibleArea {
     required this.startRow,
     required this.endRow,
   });
+}
+
+class DebugPainter extends CustomPainter {
+  final Offset? tapPosition;
+  final Offset gridOffset;
+  final double circleSize;
+  final double spacing;
+  final int columns;
+
+  DebugPainter({
+    this.tapPosition,
+    required this.gridOffset,
+    required this.circleSize,
+    required this.spacing,
+    required this.columns,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = Colors.red
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1;
+
+    // Draw tap position
+    if (tapPosition != null) {
+      canvas.drawCircle(tapPosition!, 5, paint..style = PaintingStyle.fill);
+
+      // Draw crosshair
+      canvas.drawLine(
+        Offset(tapPosition!.dx - 10, tapPosition!.dy),
+        Offset(tapPosition!.dx + 10, tapPosition!.dy),
+        paint..style = PaintingStyle.stroke,
+      );
+      canvas.drawLine(
+        Offset(tapPosition!.dx, tapPosition!.dy - 10),
+        Offset(tapPosition!.dx, tapPosition!.dy + 10),
+        paint,
+      );
+
+      // Calculate and draw the grid cell
+      int col = ((tapPosition!.dx - gridOffset.dx + circleSize / 2) /
+              (circleSize + spacing))
+          .floor();
+      int row = ((tapPosition!.dy - gridOffset.dy + circleSize / 2) /
+              (circleSize + spacing))
+          .floor();
+
+      Rect cellRect = Rect.fromLTWH(
+        gridOffset.dx + (col - 0.5) * (circleSize + spacing),
+        gridOffset.dy + (row - 0.5) * (circleSize + spacing),
+        circleSize + spacing,
+        circleSize + spacing,
+      );
+      canvas.drawRect(cellRect, paint..color = Colors.green);
+
+      // Draw text for coordinates and calculated index
+      final textPainter = TextPainter(
+        text: TextSpan(
+          text:
+              'Tap: (${tapPosition!.dx.toStringAsFixed(1)}, ${tapPosition!.dy.toStringAsFixed(1)})\n'
+              'Cell: ($col, $row)\n'
+              'Index: ${row * columns + col}',
+          style: TextStyle(color: Colors.white, fontSize: 12),
+        ),
+        textDirection: TextDirection.ltr,
+      );
+      textPainter.layout();
+      textPainter.paint(canvas, Offset(10, 10));
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant DebugPainter oldDelegate) {
+    return tapPosition != oldDelegate.tapPosition ||
+        gridOffset != oldDelegate.gridOffset;
+  }
 }
