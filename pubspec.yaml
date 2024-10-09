@@ -74,6 +74,7 @@ flutter:
     - assets/images/3_dog_spine.png
     - assets/images/4_bird.png
     - assets/images/4_bird_spine.png
+    - assets/images/tracing_cards.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

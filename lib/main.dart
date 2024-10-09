@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fx_2_folder/books/books.dart';
 import 'package:fx_2_folder/circles_selector/CirclesHomeWidget.dart';
 import 'package:fx_2_folder/folder_shape/folder_home.dart';
+import 'package:fx_2_folder/vinyl/vinyl.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main() => runApp(const AnimationShowcaseApp());
@@ -55,6 +56,8 @@ class HomeScreen extends StatelessWidget {
       builder: (context) => const CirclesHomeWidget(),
       appBarColor: Colors.black,
     ),
+    AnimationExample(
+        title: '3D Vinyl', builder: (context) => const VinylHomeWidget()),
   ];
 
   HomeScreen({super.key});
