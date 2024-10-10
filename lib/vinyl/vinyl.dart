@@ -43,9 +43,10 @@ class _TransformAppState extends State<TransformApp>
   late Animation<double> _topJumpAnimation;
   late Animation<double> _topMoveForwardAnimation;
 
-  final List<VinylItem> _vinylItems = vinylItems;
+  final List<VinylItem> _vinylItems = List.from(vinylItems);
 
-  // double _manualValue = 0;
+  String firstVinylId = vinylItems[0].id;
+
   @override
   void initState() {
     super.initState();
@@ -106,11 +107,6 @@ class _TransformAppState extends State<TransformApp>
             .chain(CurveTween(curve: Curves.linear)),
         weight: 50.0,
       ),
-      // TweenSequenceItem(
-      //   tween: Tween<double>(begin: -120, end: -120)
-      //       .chain(CurveTween(curve: Curves.linear)),
-      //   weight: 20.0,
-      // ),
       TweenSequenceItem(
         tween: Tween<double>(begin: -120, end: 0.0)
             .chain(CurveTween(curve: Curves.linear)),
@@ -136,7 +132,7 @@ class _TransformAppState extends State<TransformApp>
   Widget build(BuildContext context) {
     return Scaffold(
       body: GestureDetector(
-        onTap: () => _changeOrder(),
+        onTap: () => _changeStackOrder(),
         child: Expanded(
           child: Stack(
             fit: StackFit.expand,
@@ -182,11 +178,10 @@ class _TransformAppState extends State<TransformApp>
                     padding:
                         EdgeInsets.symmetric(horizontal: 40.0, vertical: 20.0),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(
-                          4.0), // Change this value for different radii
+                      borderRadius: BorderRadius.circular(4.0),
                     ),
-                    foregroundColor: Colors.black, // Text color
-                    backgroundColor: Colors.white, // Background color
+                    foregroundColor: Colors.black,
+                    backgroundColor: Colors.white,
                   ),
                   onPressed: () {
                     animController.forward();
@@ -213,29 +208,29 @@ class _TransformAppState extends State<TransformApp>
       builder: (context, child) {
         return Stack(
           children: List.generate(_vinylItems.length, (index) {
-            var verticalAnimationValue = 0.0;
-            var zPositionValue = 0.0;
-            var rotateX = 0.0;
-            if (_vinylItems[index].id == 'vinyl_3') {
-              verticalAnimationValue = _combinedVerticalAnimation.value;
-              zPositionValue =
+            var vinylItem = _vinylItems[index];
+            if (vinylItem.id == 'vinyl_3') {
+              vinylItem.verticalAnimationValue =
+                  _combinedVerticalAnimation.value;
+              vinylItem.zPositionValue =
                   lerpDouble(-100.0, 0.0, _pushBackAnimation.value)!;
-              rotateX = _flipAnimation.value;
-              // lerpDouble(0.0, 2 * pi, _flipAnimation.value)!;
+              vinylItem.rotateX = _flipAnimation.value;
             } else if (_vinylItems[index].id == 'vinyl_2') {
-              verticalAnimationValue = _topJumpAnimation.value;
-              zPositionValue = -50.0 + _topMoveForwardAnimation.value;
-              rotateX = 0.0;
+              vinylItem.verticalAnimationValue = _topJumpAnimation.value;
+              vinylItem.zPositionValue = -50.0 + _topMoveForwardAnimation.value;
+              vinylItem.rotateX = 0.0;
             } else if (_vinylItems[index].id == 'vinyl_1') {
-              verticalAnimationValue = _topJumpAnimation.value;
-              zPositionValue = (-0 * 50.0) + _topMoveForwardAnimation.value;
-              rotateX = 0.0;
+              vinylItem.verticalAnimationValue = _topJumpAnimation.value;
+              vinylItem.zPositionValue =
+                  (-0 * 50.0) + _topMoveForwardAnimation.value;
+              vinylItem.rotateX = 0.0;
             }
 
             return Transform(
               transform: Matrix4.identity()
-                ..translate(0.0, verticalAnimationValue, zPositionValue)
-                ..rotateX(rotateX),
+                ..translate(0.0, vinylItem.verticalAnimationValue,
+                    vinylItem.zPositionValue)
+                ..rotateX(vinylItem.rotateX),
               alignment: Alignment.center, // -index * 50.0
               child: Container(
                 width: 200,
@@ -251,74 +246,8 @@ class _TransformAppState extends State<TransformApp>
             );
           }),
         );
-
-        // Stack(
-        //   children: [
-        //     Transform(
-        //       transform: Matrix4.identity()
-        //         ..translate(0.0, 0.0, 0.0), // -index * 50.0
-        //       child: Container(
-        //         width: 200,
-        //         height: 200,
-        //         color: Colors.green,
-        //         child: Center(
-        //           child: Text(
-        //             'Layer 1',
-        //             style: TextStyle(color: Colors.white),
-        //           ),
-        //         ),
-        //       ),
-        //     ),
-        //     Transform(
-        //       transform: Matrix4.identity()
-        //         ..translate(0.0, 0.0, -50.0), // -index * 50.0
-        //       child: Container(
-        //         width: 200,
-        //         height: 200,
-        //         color: Colors.yellow,
-        //         child: Center(
-        //           child: Text(
-        //             'Layer 2',
-        //             style: TextStyle(color: Colors.white),
-        //           ),
-        //         ),
-        //       ),
-        //     ),
-        //     Transform(
-        //       transform: Matrix4.identity()
-        //         ..translate(
-        //             0.0,
-        //             _combinedVerticalAnimation.value,
-        //             // combinedLerp(
-        //             //     0.0, 200.0, _freeFallAnimation, _goBackUPAnimation),
-        //             // lerpDouble(0.0, 200.0, _freeFallAnimation.value)!,
-        //             lerpDouble(-100.0, 0.0, _pushBackAnimation.value)!)
-        //         ..rotateX(lerpDouble(
-        //             0.0, 2 * pi, _flipAnimation.value)!), // -index * 50.0
-        //       alignment: Alignment.center,
-        //       child: Container(
-        //         width: 200,
-        //         height: 200,
-        //         color: Colors.purple,
-        //         child: Center(
-        //           child: Text(
-        //             'Layer 3',
-        //             style: TextStyle(color: Colors.white),
-        //           ),
-        //         ),
-        //       ),
-        //     ),
-        //   ],
-        // );
       },
     );
-  }
-
-  _choreo() {
-    //------------------
-    //First vinyl translates down by Y + 200
-    //First vinyl rotates
-    //------------------
   }
 
   Widget _buildSlider({
@@ -344,18 +273,32 @@ class _TransformAppState extends State<TransformApp>
   bool _isStackReordered = false;
   _animationHooks() {
     if (animController.value >= 0.5 && !_isStackReordered) {
-      _changeOrder();
+      _changeStackOrder();
       _isStackReordered = true;
     } else if (animController.value < 0.5) {
       _isStackReordered = false;
     }
+
+    if (animController.isCompleted) {
+      _changeAnimationListOrder();
+    }
   }
 
-  void _changeOrder() {
-    print("_changeOrder");
+  // Update called in the middle of animation to make the card go behind another card!
+  void _changeStackOrder() {
+    print("_changeStackOrder");
     setState(() {
-      VinylItem item = vinylItems.removeAt(2);
-      vinylItems.insert(0, item);
+      VinylItem item = _vinylItems.removeAt(_vinylItems.length - 1);
+      _vinylItems.insert(0, item);
+    });
+  }
+
+  // Update called after the animation has finished
+  void _changeAnimationListOrder() {
+    print("_changeAnimationListOrder");
+    setState(() {
+      String firstElement = vinylOrder.removeAt(0);
+      vinylOrder.add(firstElement);
     });
   }
 }
@@ -363,12 +306,42 @@ class _TransformAppState extends State<TransformApp>
 class VinylItem {
   final String id;
   final Color color;
+  double verticalAnimationValue = 0.0;
+  double zPositionValue = 0.0;
+  double rotateX = 0.0;
 
-  VinylItem({required this.id, required this.color});
+  VinylItem(
+      {required this.id,
+      required this.color,
+      this.verticalAnimationValue = 0.0,
+      this.zPositionValue = 0.0,
+      this.rotateX = 0.0});
 }
 
+// verticalAnimationValue = _combinedVerticalAnimation.value;
+//               zPositionValue =
+//                   lerpDouble(-100.0, 0.0, _pushBackAnimation.value)!;
+//               rotateX = _flipAnimation.value;
+
 final List<VinylItem> vinylItems = [
-  VinylItem(id: 'vinyl_1', color: Colors.green),
-  VinylItem(id: 'vinyl_2', color: Colors.yellow),
-  VinylItem(id: 'vinyl_3', color: Colors.purple),
+  VinylItem(
+      id: 'vinyl_1',
+      color: Colors.green,
+      verticalAnimationValue: 0.0,
+      zPositionValue: 0.0,
+      rotateX: 0.0),
+  VinylItem(
+      id: 'vinyl_2',
+      color: Colors.yellow,
+      verticalAnimationValue: 0.0,
+      zPositionValue: 0.0,
+      rotateX: 0.0),
+  VinylItem(
+      id: 'vinyl_3',
+      color: Colors.purple,
+      verticalAnimationValue: 0.0,
+      zPositionValue: 0.0,
+      rotateX: 0.0),
 ];
+
+final vinylOrder = ['vinyl_3', 'vinyl_2', 'vinyl_1'];
