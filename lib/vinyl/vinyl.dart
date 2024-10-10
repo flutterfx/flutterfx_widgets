@@ -27,7 +27,7 @@ class VinylHomeWidget extends StatelessWidget {
 
       // body: SpringAnimationsPage(),
       body: TransformApp(),
-      // body: SpringAnimationsDemo()
+      // body: SpringAnimationsDemo(),
     );
   }
 }
@@ -67,11 +67,22 @@ class _TransformAppState extends State<TransformApp>
     super.dispose();
   }
 
+  double _rotateX = 0;
+  double _rotateY = 0;
+
+  void _onPanUpdate(DragUpdateDetails details) {
+    setState(() {
+      _rotateY += details.delta.dx / 100;
+      _rotateX -= details.delta.dy / 100;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final double baseRotationX = 355 * pi / 180;
     return Scaffold(
       body: GestureDetector(
+        onPanUpdate: _onPanUpdate,
         onTap: () => _changeStackOrder(),
         child: Expanded(
           child: Stack(
@@ -95,7 +106,8 @@ class _TransformAppState extends State<TransformApp>
                               sin(_headBowForwardAnimation.value * pi) *
                                   5 *
                                   pi /
-                                  180) // vertical
+                                  180 +
+                              _rotateX) // vertical
                           ..rotateZ(6 * pi / 180) //z : 32
                           ..scale(1.0),
                         alignment: Alignment.center,
@@ -286,17 +298,17 @@ class _TransformAppState extends State<TransformApp>
       TweenSequenceItem(
         tween: Tween<double>(begin: 0.0, end: -100)
             .chain(CurveTween(curve: SnappySpringCurve())),
-        weight: 30.0,
+        weight: 40.0,
       ),
       TweenSequenceItem(
         tween: Tween<double>(begin: -100, end: -100)
             .chain(CurveTween(curve: Curves.linear)),
-        weight: 40.0,
+        weight: 30.0,
       ),
       TweenSequenceItem(
         tween: Tween<double>(begin: -100, end: 0.0)
             .chain(CurveTween(curve: SnappySpringCurve())),
-        weight: 30.0,
+        weight: 40.0,
       ),
     ]).animate(animController);
 
