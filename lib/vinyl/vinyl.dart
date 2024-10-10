@@ -192,6 +192,12 @@ class _TransformAppState extends State<TransformApp>
     // animController.forward();
   }
 
+  final SpringDescription spring = const SpringDescription(
+    mass: 2,
+    stiffness: 150,
+    damping: 20,
+  );
+
   initAnimations() {
     animController = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 1000))
@@ -208,19 +214,19 @@ class _TransformAppState extends State<TransformApp>
     // Combine vertical animations on the first Vinyl!
     _combinedVerticalAnimation = TweenSequence<double>([
       TweenSequenceItem(
-        tween: Tween<double>(begin: 0.0, end: 120.0).chain(
-            CurveTween(curve: Interval(0.0, 0.33, curve: Curves.linear))),
-        weight: 33.0,
+        tween: Tween<double>(begin: 0.0, end: 120.0)
+            .chain(CurveTween(curve: Curves.linear)),
+        weight: 35.0,
       ),
       TweenSequenceItem(
-        tween: Tween<double>(begin: 120.0, end: 120.0).chain(
-            CurveTween(curve: Interval(0.33, 0.5, curve: Curves.linear))),
-        weight: 17.0,
+        tween: Tween<double>(begin: 120.0, end: 120.0)
+            .chain(CurveTween(curve: Curves.linear)),
+        weight: 30.0,
       ),
       TweenSequenceItem(
         tween: Tween<double>(begin: 120.0, end: 0.0)
-            .chain(CurveTween(curve: Interval(0.5, 1.0, curve: Curves.linear))),
-        weight: 50.0,
+            .chain(CurveTween(curve: Curves.linear)),
+        weight: 35.0,
       ),
     ]).animate(animController);
 
@@ -231,17 +237,17 @@ class _TransformAppState extends State<TransformApp>
       TweenSequenceItem(
         tween: Tween<double>(begin: 0.0, end: pi / 2)
             .chain(CurveTween(curve: Curves.linear)),
-        weight: 25.0,
+        weight: 40.0,
       ),
       TweenSequenceItem(
         tween: Tween<double>(begin: pi / 2, end: 3 * pi / 2)
             .chain(CurveTween(curve: Curves.linear)),
-        weight: 50.0,
+        weight: 20.0,
       ),
       TweenSequenceItem(
         tween: Tween<double>(begin: 3 * pi / 2, end: 2 * pi)
             .chain(CurveTween(curve: Curves.linear)),
-        weight: 25.0,
+        weight: 40.0,
       ),
     ]).animate(animController);
 
@@ -252,23 +258,30 @@ class _TransformAppState extends State<TransformApp>
       ),
     );
 
+    // final normalSpringOpen = SpringSimulation(spring, 0, 1, 1);
+    // final normalSpringClose = SpringSimulation(spring, 1, 0, 1);
     _topJumpAnimation = TweenSequence<double>([
       TweenSequenceItem(
         tween: Tween<double>(begin: 0.0, end: -120)
+            .chain(CurveTween(curve: Curves.easeOut)),
+        weight: 30.0,
+      ),
+      TweenSequenceItem(
+        tween: Tween<double>(begin: -120, end: -120)
             .chain(CurveTween(curve: Curves.linear)),
-        weight: 50.0,
+        weight: 40.0,
       ),
       TweenSequenceItem(
         tween: Tween<double>(begin: -120, end: 0.0)
-            .chain(CurveTween(curve: Curves.linear)),
-        weight: 50.0,
+            .chain(CurveTween(curve: Curves.easeOut)),
+        weight: 30.0,
       ),
     ]).animate(animController);
 
     _topMoveForwardAnimation = Tween<double>(begin: 0.0, end: -50).animate(
       CurvedAnimation(
         parent: animController,
-        curve: Interval(0.0, 1.0, curve: Curves.linear),
+        curve: Interval(0.0, 0.3, curve: Curves.easeOut),
       ),
     );
   }
@@ -364,3 +377,7 @@ final List<VinylItem> vinylItems = [
 ];
 
 final vinylOrder = ['vinyl_3', 'vinyl_2', 'vinyl_1'];
+
+double degreesToRadians(double degrees) {
+  return degrees * (pi / 180);
+}
