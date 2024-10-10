@@ -104,24 +104,24 @@ class _TransformAppState extends State<TransformApp>
       TweenSequenceItem(
         tween: Tween<double>(begin: 0.0, end: -120)
             .chain(CurveTween(curve: Curves.linear)),
-        weight: 40.0,
+        weight: 50.0,
       ),
-      TweenSequenceItem(
-        tween: Tween<double>(begin: -120, end: -120)
-            .chain(CurveTween(curve: Curves.linear)),
-        weight: 20.0,
-      ),
+      // TweenSequenceItem(
+      //   tween: Tween<double>(begin: -120, end: -120)
+      //       .chain(CurveTween(curve: Curves.linear)),
+      //   weight: 20.0,
+      // ),
       TweenSequenceItem(
         tween: Tween<double>(begin: -120, end: 0.0)
             .chain(CurveTween(curve: Curves.linear)),
-        weight: 40.0,
+        weight: 50.0,
       ),
     ]).animate(animController);
 
     _topMoveForwardAnimation = Tween<double>(begin: 0.0, end: -50).animate(
       CurvedAnimation(
         parent: animController,
-        curve: Interval(0.0, 0.33, curve: Curves.linear),
+        curve: Interval(0.0, 1.0, curve: Curves.linear),
       ),
     );
   }
