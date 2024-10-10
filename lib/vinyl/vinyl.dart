@@ -8,6 +8,7 @@ import 'package:flutter/widgets.dart';
 import 'package:fx_2_folder/vinyl/camera_simulation.dart';
 import 'package:fx_2_folder/vinyl/card_stack_4_angles.dart';
 import 'package:fx_2_folder/vinyl/easing/super_duper_ease_in.dart';
+import 'package:fx_2_folder/vinyl/exmaples/glass_card.dart';
 import 'package:fx_2_folder/vinyl/exmaples/spring_examples.dart';
 import 'package:fx_2_folder/vinyl/exmaples/spring_playground.dart';
 import 'package:fx_2_folder/vinyl/transform_examples.dart';
@@ -26,7 +27,10 @@ class VinylHomeWidget extends StatelessWidget {
       // body: TransformDemo(),
 
       // body: SpringAnimationsPage(),
+
       body: TransformApp(),
+      // body: GlassCardPage(),
+
       // body: SpringAnimationsDemo(),
     );
   }
@@ -49,6 +53,9 @@ class _TransformAppState extends State<TransformApp>
 
   late AnimationController animParentController;
   late Animation<double> _headBowForwardAnimation;
+
+  late AnimationController vinylController;
+  late Animation<double> _vinylJumpAnimation;
 
   final List<VinylItem> _vinylItems = List.from(vinylItems);
 
@@ -102,7 +109,7 @@ class _TransformAppState extends State<TransformApp>
                           ..rotateY(323 * pi / 180) // horixontal
                           ..rotateX(baseRotationX +
                               sin(_headBowForwardAnimation.value * pi) *
-                                  5 *
+                                  10 *
                                   pi /
                                   180 +
                               _rotateX) // vertical
@@ -163,12 +170,15 @@ class _TransformAppState extends State<TransformApp>
         _combinedVerticalAnimation,
         _topJumpAnimation,
         _topMoveForwardAnimation,
+        _vinylJumpAnimation,
       ]),
       builder: (context, child) {
         return Stack(
           children: List.generate(_vinylItems.length, (index) {
             var vinylItem = _vinylItems[index];
             // if (vinylItem.id == 'vinyl_3') {
+            bool isSecond =
+                false; // At this moment, the second card is the first one in the stack
             if (vinylItem.id == vinylOrder[0]) {
               vinylItem.verticalAnimationValue =
                   _combinedVerticalAnimation.value;
@@ -177,6 +187,7 @@ class _TransformAppState extends State<TransformApp>
               vinylItem.rotateX = _flipAnimation.value;
               // } else if (_vinylItems[index].id == 'vinyl_2') {
             } else if (_vinylItems[index].id == vinylOrder[1]) {
+              isSecond = true;
               vinylItem.verticalAnimationValue = _topJumpAnimation.value;
               vinylItem.zPositionValue = -50.0 + _topMoveForwardAnimation.value;
               vinylItem.rotateX = 0.0;
@@ -190,26 +201,69 @@ class _TransformAppState extends State<TransformApp>
 
             return Transform(
               transform: Matrix4.identity()
+                ..setEntry(3, 2, 0.001)
                 ..translate(0.0, vinylItem.verticalAnimationValue,
                     vinylItem.zPositionValue)
                 ..rotateX(vinylItem.rotateX),
               alignment: Alignment.center, // -index * 50.0
-              child: Container(
-                width: 200,
-                height: 200,
-                color: _vinylItems[index].color,
-                child: Center(
-                  child: Text(
-                    'Layer ${index + 1} + id ${_vinylItems[index].id}',
-                    style: TextStyle(color: Colors.white),
+              child: Stack(
+                children: [
+                  // Container(
+                  //   width: 200,
+                  //   height: 200,
+                  //   color: _vinylItems[index].color,
+                  //   child: Text(
+                  //     'Layer ${index + 1} + id ${_vinylItems[index].id}',
+                  //     style: TextStyle(color: Colors.white),
+                  //   ),
+                  // ),
+                  Container(
+                    width: 200,
+                    height: 200,
+                    child: Image.asset(
+                      vinylItem.asset,
+                      fit: BoxFit.fill,
+                    ),
                   ),
-                ),
+                  Transform.translate(
+                    offset: Offset(
+                        0,
+                        isSecond
+                            ? _vinylJumpAnimation.value
+                            : 0), // Move up and down
+                    child: Container(
+                      width: 200,
+                      height: 200,
+                      // color: _vinylItems[index].color,
+                      child: Image.asset(
+                        "assets/images/vinyl/vinyl.png",
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                  ),
+
+                  if (isFrontImage(vinylItem.rotateX))
+                    Container(
+                      width: 200,
+                      height: 200,
+                      child: Image.asset(
+                        vinylItem.asset,
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                ],
               ),
             );
           }),
         );
       },
     );
+  }
+
+  bool isFrontImage(double angle) {
+    const degrees90 = pi / 2;
+    const degrees270 = 3 * pi / 2;
+    return angle <= degrees90 || angle >= degrees270;
   }
 
   void resetAnimation() {
@@ -228,10 +282,13 @@ class _TransformAppState extends State<TransformApp>
 
   initAnimations() {
     animController = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 1000))
+        vsync: this, duration: const Duration(milliseconds: 1200))
       ..addListener(_animationHooks);
 
     animParentController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 600));
+
+    vinylController = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 300));
 
     // Add a status listener
@@ -249,23 +306,25 @@ class _TransformAppState extends State<TransformApp>
         animController.forward();
       }
     });
+    // Start the animation and reverse it
+    // _controller.forward().then((_) => _controller.reverse());
 
     // Combine vertical animations on the first Vinyl!
     _combinedVerticalAnimation = TweenSequence<double>([
       TweenSequenceItem(
         tween: Tween<double>(begin: 0.0, end: 150.0)
             .chain(CurveTween(curve: Curves.linear)),
-        weight: 25.0,
+        weight: 30.0,
       ),
       TweenSequenceItem(
         tween: Tween<double>(begin: 150.0, end: 150.0)
             .chain(CurveTween(curve: Curves.linear)),
-        weight: 50.0,
+        weight: 40.0,
       ),
       TweenSequenceItem(
         tween: Tween<double>(begin: 150.0, end: 0.0)
             .chain(CurveTween(curve: Curves.linear)),
-        weight: 25.0,
+        weight: 30.0,
       ),
     ]).animate(animController);
 
@@ -276,17 +335,17 @@ class _TransformAppState extends State<TransformApp>
       TweenSequenceItem(
         tween: Tween<double>(begin: 0.0, end: pi / 2)
             .chain(CurveTween(curve: Curves.linear)),
-        weight: 25.0,
+        weight: 30.0,
       ),
       TweenSequenceItem(
         tween: Tween<double>(begin: pi / 2, end: 3 * pi / 2)
             .chain(CurveTween(curve: Curves.linear)),
-        weight: 50.0,
+        weight: 40.0,
       ),
       TweenSequenceItem(
         tween: Tween<double>(begin: 3 * pi / 2, end: 2 * pi)
             .chain(CurveTween(curve: Curves.linear)),
-        weight: 25.0,
+        weight: 30.0,
       ),
     ]).animate(animController);
 
@@ -327,8 +386,16 @@ class _TransformAppState extends State<TransformApp>
     _headBowForwardAnimation = Tween<double>(begin: 0, end: 1).animate(
       CurvedAnimation(
           parent: animParentController,
-          curve: SnappySpringCurve() //BouncyElasticCurve()
+          curve: Interval(0.0, 0.75,
+              curve: SnappySpringCurve()) //BouncyElasticCurve()
           ),
+    );
+
+    _vinylJumpAnimation = Tween<double>(begin: 0, end: -50).animate(
+      CurvedAnimation(
+        parent: vinylController,
+        curve: Interval(0.0, 1.0, curve: SnappySpringCurve()),
+      ),
     );
   }
 
@@ -359,6 +426,8 @@ class _TransformAppState extends State<TransformApp>
       _isStackReordered = true;
     } else if (animController.value < 0.5) {
       _isStackReordered = false;
+    } else if (animController.value > 0.74) {
+      vinylController.forward().then((_) => vinylController.reverse());
     }
   }
 
@@ -384,6 +453,7 @@ class _TransformAppState extends State<TransformApp>
 class VinylItem {
   final String id;
   final Color color;
+  final String asset;
   double verticalAnimationValue = 0.0;
   double zPositionValue = 0.0;
   double rotateX = 0.0;
@@ -391,6 +461,7 @@ class VinylItem {
   VinylItem(
       {required this.id,
       required this.color,
+      required this.asset,
       this.verticalAnimationValue = 0.0,
       this.zPositionValue = 0.0,
       this.rotateX = 0.0});
@@ -405,18 +476,21 @@ final List<VinylItem> vinylItems = [
   VinylItem(
       id: 'vinyl_1',
       color: Colors.green,
+      asset: "assets/images/vinyl/cover_1.png",
       verticalAnimationValue: 0.0,
       zPositionValue: 0.0,
       rotateX: 0.0),
   VinylItem(
       id: 'vinyl_2',
       color: Colors.yellow,
+      asset: "assets/images/vinyl/cover_2.png",
       verticalAnimationValue: 0.0,
       zPositionValue: 0.0,
       rotateX: 0.0),
   VinylItem(
       id: 'vinyl_3',
       color: Colors.purple,
+      asset: "assets/images/vinyl/cover_3.png",
       verticalAnimationValue: 0.0,
       zPositionValue: 0.0,
       rotateX: 0.0),
