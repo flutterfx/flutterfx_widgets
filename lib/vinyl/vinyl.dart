@@ -92,12 +92,10 @@ class _TransformAppState extends State<TransformApp>
               AnimatedBuilder(
                 animation: Listenable.merge([_headBowForwardAnimation]),
                 builder: (context, child) {
-                  return Positioned(
-                    top: 0,
-                    bottom: 0,
-                    right: 0,
-                    left: 0,
-                    child: Center(
+                  return Align(
+                    alignment: Alignment.center,
+                    child: Padding(
+                      padding: EdgeInsets.only(right: 100),
                       child: Transform(
                         transform: Matrix4.identity()
                           ..setEntry(3, 2, 0.0003512553609721081)
