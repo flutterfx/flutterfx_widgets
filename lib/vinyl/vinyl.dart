@@ -8,6 +8,8 @@ import 'package:flutter/widgets.dart';
 import 'package:fx_2_folder/vinyl/camera_simulation.dart';
 import 'package:fx_2_folder/vinyl/card_stack_4_angles.dart';
 import 'package:fx_2_folder/vinyl/easing/super_duper_ease_in.dart';
+import 'package:fx_2_folder/vinyl/exmaples/spring_examples.dart';
+import 'package:fx_2_folder/vinyl/exmaples/spring_playground.dart';
 import 'package:fx_2_folder/vinyl/transform_examples.dart';
 import 'package:fx_2_folder/vinyl/widget_viewer.dart';
 
@@ -23,7 +25,9 @@ class VinylHomeWidget extends StatelessWidget {
 
       // body: TransformDemo(),
 
+      // body: SpringAnimationsPage(),
       body: TransformApp(),
+      // body: SpringAnimationsDemo()
     );
   }
 }
@@ -42,6 +46,9 @@ class _TransformAppState extends State<TransformApp>
       _combinedVerticalAnimation; // First item falls down + rotate + move back up
   late Animation<double> _topJumpAnimation;
   late Animation<double> _topMoveForwardAnimation;
+
+  late AnimationController animParentController;
+  late Animation<double> _headBowForwardAnimation;
 
   final List<VinylItem> _vinylItems = List.from(vinylItems);
 
@@ -62,6 +69,7 @@ class _TransformAppState extends State<TransformApp>
 
   @override
   Widget build(BuildContext context) {
+    final double baseRotationX = 355 * pi / 180;
     return Scaffold(
       body: GestureDetector(
         onTap: () => _changeStackOrder(),
@@ -70,23 +78,32 @@ class _TransformAppState extends State<TransformApp>
             fit: StackFit.expand,
             alignment: Alignment.center,
             children: [
-              Positioned(
-                top: 0,
-                bottom: 0,
-                right: 0,
-                left: 0,
-                child: Center(
-                  child: Transform(
-                    transform: Matrix4.identity()
-                      ..setEntry(3, 2, 0.0003512553609721081)
-                      ..rotateY(323 * pi / 180) // horixontal
-                      ..rotateX(355 * pi / 180) // vertical
-                      ..rotateZ(6 * pi / 180) //z : 32
-                      ..scale(1.0),
-                    alignment: Alignment.center,
-                    child: _buildCardStack(),
-                  ),
-                ),
+              AnimatedBuilder(
+                animation: Listenable.merge([_headBowForwardAnimation]),
+                builder: (context, child) {
+                  return Positioned(
+                    top: 0,
+                    bottom: 0,
+                    right: 0,
+                    left: 0,
+                    child: Center(
+                      child: Transform(
+                        transform: Matrix4.identity()
+                          ..setEntry(3, 2, 0.0003512553609721081)
+                          ..rotateY(323 * pi / 180) // horixontal
+                          ..rotateX(baseRotationX +
+                              sin(_headBowForwardAnimation.value * pi) *
+                                  5 *
+                                  pi /
+                                  180) // vertical
+                          ..rotateZ(6 * pi / 180) //z : 32
+                          ..scale(1.0),
+                        alignment: Alignment.center,
+                        child: _buildCardStack(),
+                      ),
+                    ),
+                  );
+                },
               ),
               Positioned(
                 bottom: 0,
@@ -187,6 +204,7 @@ class _TransformAppState extends State<TransformApp>
 
   void resetAnimation() {
     animController.dispose();
+    animParentController.dispose();
     // animController.reset();
     initAnimations();
     // animController.forward();
@@ -202,6 +220,9 @@ class _TransformAppState extends State<TransformApp>
     animController = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 1000))
       ..addListener(_animationHooks);
+
+    animParentController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 300));
     // Add a status listener
     animController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
@@ -209,24 +230,25 @@ class _TransformAppState extends State<TransformApp>
         print("animation completed | resetting now");
         resetAnimation();
         _changeAnimationListOrder();
+        animParentController.forward();
       }
     });
     // Combine vertical animations on the first Vinyl!
     _combinedVerticalAnimation = TweenSequence<double>([
       TweenSequenceItem(
-        tween: Tween<double>(begin: 0.0, end: 120.0)
+        tween: Tween<double>(begin: 0.0, end: 150.0)
             .chain(CurveTween(curve: Curves.linear)),
-        weight: 35.0,
+        weight: 25.0,
       ),
       TweenSequenceItem(
-        tween: Tween<double>(begin: 120.0, end: 120.0)
+        tween: Tween<double>(begin: 150.0, end: 150.0)
             .chain(CurveTween(curve: Curves.linear)),
-        weight: 30.0,
+        weight: 50.0,
       ),
       TweenSequenceItem(
-        tween: Tween<double>(begin: 120.0, end: 0.0)
+        tween: Tween<double>(begin: 150.0, end: 0.0)
             .chain(CurveTween(curve: Curves.linear)),
-        weight: 35.0,
+        weight: 25.0,
       ),
     ]).animate(animController);
 
@@ -237,17 +259,17 @@ class _TransformAppState extends State<TransformApp>
       TweenSequenceItem(
         tween: Tween<double>(begin: 0.0, end: pi / 2)
             .chain(CurveTween(curve: Curves.linear)),
-        weight: 40.0,
+        weight: 25.0,
       ),
       TweenSequenceItem(
         tween: Tween<double>(begin: pi / 2, end: 3 * pi / 2)
             .chain(CurveTween(curve: Curves.linear)),
-        weight: 20.0,
+        weight: 50.0,
       ),
       TweenSequenceItem(
         tween: Tween<double>(begin: 3 * pi / 2, end: 2 * pi)
             .chain(CurveTween(curve: Curves.linear)),
-        weight: 40.0,
+        weight: 25.0,
       ),
     ]).animate(animController);
 
@@ -262,18 +284,18 @@ class _TransformAppState extends State<TransformApp>
     // final normalSpringClose = SpringSimulation(spring, 1, 0, 1);
     _topJumpAnimation = TweenSequence<double>([
       TweenSequenceItem(
-        tween: Tween<double>(begin: 0.0, end: -120)
-            .chain(CurveTween(curve: Curves.easeOut)),
+        tween: Tween<double>(begin: 0.0, end: -100)
+            .chain(CurveTween(curve: SnappySpringCurve())),
         weight: 30.0,
       ),
       TweenSequenceItem(
-        tween: Tween<double>(begin: -120, end: -120)
+        tween: Tween<double>(begin: -100, end: -100)
             .chain(CurveTween(curve: Curves.linear)),
         weight: 40.0,
       ),
       TweenSequenceItem(
-        tween: Tween<double>(begin: -120, end: 0.0)
-            .chain(CurveTween(curve: Curves.easeOut)),
+        tween: Tween<double>(begin: -100, end: 0.0)
+            .chain(CurveTween(curve: SnappySpringCurve())),
         weight: 30.0,
       ),
     ]).animate(animController);
@@ -281,8 +303,15 @@ class _TransformAppState extends State<TransformApp>
     _topMoveForwardAnimation = Tween<double>(begin: 0.0, end: -50).animate(
       CurvedAnimation(
         parent: animController,
-        curve: Interval(0.0, 0.3, curve: Curves.easeOut),
+        curve: Interval(0.0, 0.3, curve: SnappySpringCurve()),
       ),
+    );
+
+    _headBowForwardAnimation = Tween<double>(begin: 0, end: 1).animate(
+      CurvedAnimation(
+          parent: animParentController,
+          curve: SnappySpringCurve() //BouncyElasticCurve()
+          ),
     );
   }
 
@@ -380,4 +409,18 @@ final vinylOrder = ['vinyl_3', 'vinyl_2', 'vinyl_1'];
 
 double degreesToRadians(double degrees) {
   return degrees * (pi / 180);
+}
+
+class BouncyElasticCurve extends Curve {
+  @override
+  double transform(double t) {
+    return -pow(e, -8 * t) * cos(t * 12) + 1;
+  }
+}
+
+class SnappySpringCurve extends Curve {
+  @override
+  double transform(double t) {
+    return t * t * (3 - 2 * t) + sin(t * pi * 3) * 0.1 * (1 - t);
+  }
 }
