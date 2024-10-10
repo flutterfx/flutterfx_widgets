@@ -233,16 +233,23 @@ class _TransformAppState extends State<TransformApp>
 
     animParentController = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 300));
+
     // Add a status listener
     animController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        // Trigger your function here
-        print("animation completed | resetting now");
-        resetAnimation();
-        _changeAnimationListOrder();
         animParentController.forward();
       }
     });
+
+    animParentController.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        print("animation completed | resetting now");
+        resetAnimation();
+        _changeAnimationListOrder();
+        animController.forward();
+      }
+    });
+
     // Combine vertical animations on the first Vinyl!
     _combinedVerticalAnimation = TweenSequence<double>([
       TweenSequenceItem(
