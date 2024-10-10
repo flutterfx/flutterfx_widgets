@@ -46,7 +46,7 @@ Each animation is implemented as a separate widget, making it easy to understand
 
 # Contributing
 
-Found a bug? Have a suggestion? Don't just sit there, open a PR. But make sure your code is clean, or I'll reject it faster than you can say "setState".
+Found a bug? Have a suggestion? Don't just sit there, open a PR. But make sure your code works!
 
 # License
 This project is licensed under the MIT License - see the LICENSE file for details. Not that anyone cares about licenses in a demo project.
