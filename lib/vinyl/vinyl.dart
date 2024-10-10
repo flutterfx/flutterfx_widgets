@@ -34,7 +34,7 @@ class TransformApp extends StatefulWidget {
 }
 
 class _TransformAppState extends State<TransformApp>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   late AnimationController animController;
   late Animation<double> _flipAnimation;
   late Animation<double> _pushBackAnimation;
@@ -50,76 +50,8 @@ class _TransformAppState extends State<TransformApp>
   @override
   void initState() {
     super.initState();
-    animController = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 1000))
-      ..addListener(_animationHooks);
 
-    // Combine vertical animations on the first Vinyl!
-    _combinedVerticalAnimation = TweenSequence<double>([
-      TweenSequenceItem(
-        tween: Tween<double>(begin: 0.0, end: 120.0).chain(
-            CurveTween(curve: Interval(0.0, 0.33, curve: Curves.linear))),
-        weight: 33.0,
-      ),
-      TweenSequenceItem(
-        tween: Tween<double>(begin: 120.0, end: 120.0).chain(
-            CurveTween(curve: Interval(0.33, 0.5, curve: Curves.linear))),
-        weight: 17.0,
-      ),
-      TweenSequenceItem(
-        tween: Tween<double>(begin: 120.0, end: 0.0)
-            .chain(CurveTween(curve: Interval(0.5, 1.0, curve: Curves.linear))),
-        weight: 50.0,
-      ),
-    ]).animate(animController);
-
-    //1. Top to down from 0 to 90*
-    //2. from 90* to 270*
-    //3. from 270* to 0
-    _flipAnimation = TweenSequence<double>([
-      TweenSequenceItem(
-        tween: Tween<double>(begin: 0.0, end: pi / 2)
-            .chain(CurveTween(curve: Curves.linear)),
-        weight: 25.0,
-      ),
-      TweenSequenceItem(
-        tween: Tween<double>(begin: pi / 2, end: 3 * pi / 2)
-            .chain(CurveTween(curve: Curves.linear)),
-        weight: 50.0,
-      ),
-      TweenSequenceItem(
-        tween: Tween<double>(begin: 3 * pi / 2, end: 2 * pi)
-            .chain(CurveTween(curve: Curves.linear)),
-        weight: 25.0,
-      ),
-    ]).animate(animController);
-
-    _pushBackAnimation = Tween<double>(begin: 0, end: 1).animate(
-      CurvedAnimation(
-        parent: animController,
-        curve: Interval(0.13, 0.85, curve: Curves.linear),
-      ),
-    );
-
-    _topJumpAnimation = TweenSequence<double>([
-      TweenSequenceItem(
-        tween: Tween<double>(begin: 0.0, end: -120)
-            .chain(CurveTween(curve: Curves.linear)),
-        weight: 50.0,
-      ),
-      TweenSequenceItem(
-        tween: Tween<double>(begin: -120, end: 0.0)
-            .chain(CurveTween(curve: Curves.linear)),
-        weight: 50.0,
-      ),
-    ]).animate(animController);
-
-    _topMoveForwardAnimation = Tween<double>(begin: 0.0, end: -50).animate(
-      CurvedAnimation(
-        parent: animController,
-        curve: Interval(0.0, 1.0, curve: Curves.linear),
-      ),
-    );
+    initAnimations();
   }
 
   @override
@@ -209,17 +141,20 @@ class _TransformAppState extends State<TransformApp>
         return Stack(
           children: List.generate(_vinylItems.length, (index) {
             var vinylItem = _vinylItems[index];
-            if (vinylItem.id == 'vinyl_3') {
+            // if (vinylItem.id == 'vinyl_3') {
+            if (vinylItem.id == vinylOrder[0]) {
               vinylItem.verticalAnimationValue =
                   _combinedVerticalAnimation.value;
               vinylItem.zPositionValue =
                   lerpDouble(-100.0, 0.0, _pushBackAnimation.value)!;
               vinylItem.rotateX = _flipAnimation.value;
-            } else if (_vinylItems[index].id == 'vinyl_2') {
+              // } else if (_vinylItems[index].id == 'vinyl_2') {
+            } else if (_vinylItems[index].id == vinylOrder[1]) {
               vinylItem.verticalAnimationValue = _topJumpAnimation.value;
               vinylItem.zPositionValue = -50.0 + _topMoveForwardAnimation.value;
               vinylItem.rotateX = 0.0;
-            } else if (_vinylItems[index].id == 'vinyl_1') {
+              // } else if (_vinylItems[index].id == 'vinyl_1') {
+            } else if (_vinylItems[index].id == vinylOrder[2]) {
               vinylItem.verticalAnimationValue = _topJumpAnimation.value;
               vinylItem.zPositionValue =
                   (-0 * 50.0) + _topMoveForwardAnimation.value;
@@ -250,6 +185,94 @@ class _TransformAppState extends State<TransformApp>
     );
   }
 
+  void resetAnimation() {
+    animController.dispose();
+    // animController.reset();
+    initAnimations();
+    // animController.forward();
+  }
+
+  initAnimations() {
+    animController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 1000))
+      ..addListener(_animationHooks);
+    // Add a status listener
+    animController.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        // Trigger your function here
+        print("animation completed | resetting now");
+        resetAnimation();
+        _changeAnimationListOrder();
+      }
+    });
+    // Combine vertical animations on the first Vinyl!
+    _combinedVerticalAnimation = TweenSequence<double>([
+      TweenSequenceItem(
+        tween: Tween<double>(begin: 0.0, end: 120.0).chain(
+            CurveTween(curve: Interval(0.0, 0.33, curve: Curves.linear))),
+        weight: 33.0,
+      ),
+      TweenSequenceItem(
+        tween: Tween<double>(begin: 120.0, end: 120.0).chain(
+            CurveTween(curve: Interval(0.33, 0.5, curve: Curves.linear))),
+        weight: 17.0,
+      ),
+      TweenSequenceItem(
+        tween: Tween<double>(begin: 120.0, end: 0.0)
+            .chain(CurveTween(curve: Interval(0.5, 1.0, curve: Curves.linear))),
+        weight: 50.0,
+      ),
+    ]).animate(animController);
+
+    //1. Top to down from 0 to 90*
+    //2. from 90* to 270*
+    //3. from 270* to 0
+    _flipAnimation = TweenSequence<double>([
+      TweenSequenceItem(
+        tween: Tween<double>(begin: 0.0, end: pi / 2)
+            .chain(CurveTween(curve: Curves.linear)),
+        weight: 25.0,
+      ),
+      TweenSequenceItem(
+        tween: Tween<double>(begin: pi / 2, end: 3 * pi / 2)
+            .chain(CurveTween(curve: Curves.linear)),
+        weight: 50.0,
+      ),
+      TweenSequenceItem(
+        tween: Tween<double>(begin: 3 * pi / 2, end: 2 * pi)
+            .chain(CurveTween(curve: Curves.linear)),
+        weight: 25.0,
+      ),
+    ]).animate(animController);
+
+    _pushBackAnimation = Tween<double>(begin: 0, end: 1).animate(
+      CurvedAnimation(
+        parent: animController,
+        curve: Interval(0.13, 0.85, curve: Curves.linear),
+      ),
+    );
+
+    _topJumpAnimation = TweenSequence<double>([
+      TweenSequenceItem(
+        tween: Tween<double>(begin: 0.0, end: -120)
+            .chain(CurveTween(curve: Curves.linear)),
+        weight: 50.0,
+      ),
+      TweenSequenceItem(
+        tween: Tween<double>(begin: -120, end: 0.0)
+            .chain(CurveTween(curve: Curves.linear)),
+        weight: 50.0,
+      ),
+    ]).animate(animController);
+
+    _topMoveForwardAnimation = Tween<double>(begin: 0.0, end: -50).animate(
+      CurvedAnimation(
+        parent: animController,
+        curve: Interval(0.0, 1.0, curve: Curves.linear),
+      ),
+    );
+  }
+
   Widget _buildSlider({
     required double value,
     required ValueChanged<double> onChanged,
@@ -277,10 +300,6 @@ class _TransformAppState extends State<TransformApp>
       _isStackReordered = true;
     } else if (animController.value < 0.5) {
       _isStackReordered = false;
-    }
-
-    if (animController.isCompleted) {
-      _changeAnimationListOrder();
     }
   }
 
