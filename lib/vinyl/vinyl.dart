@@ -6,12 +6,8 @@ import 'package:flutter/physics.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fx_2_folder/vinyl/examples/tools/camera_simulation.dart';
-import 'package:fx_2_folder/vinyl/card_stack_4_angles.dart';
-import 'package:fx_2_folder/vinyl/easing/super_duper_ease_in.dart';
-import 'package:fx_2_folder/vinyl/exmaples/glass_card.dart';
 import 'package:fx_2_folder/vinyl/examples/spring_examples.dart';
 import 'package:fx_2_folder/vinyl/examples/spring_playground.dart';
-import 'package:fx_2_folder/vinyl/transform_examples.dart';
 import 'package:fx_2_folder/vinyl/examples/tools/widget_viewer.dart';
 
 class VinylHomeWidget extends StatelessWidget {
@@ -21,18 +17,7 @@ class VinylHomeWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      // body: WidgetViewer()
-      // Stacked3DCardsLayout() //Stacked3DCardsLayout()
-      // body: CameraSimulation(),
-
-      // body: TransformDemo(),
-
-      // body: SpringAnimationsPage(),
-
       body: TransformApp(),
-      // body: GlassCardPage(),
-
-      // body: SpringAnimationsDemo(),
     );
   }
 }

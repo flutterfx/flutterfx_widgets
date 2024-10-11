@@ -431,9 +431,6 @@ class CircleGridPainter extends CustomPainter {
           currentCircleSize / 2,
           currentPaint,
         );
-
-        // _drawText(canvas, textPainter, circleOffset, index.toString(),
-        //     isSelected, animationControllers[index]?.value);
       }
     }
   }
@@ -462,11 +459,9 @@ class CircleGridPainter extends CustomPainter {
     );
   }
 
+  //Optimize this for better performance
   @override
   bool shouldRepaint(covariant CircleGridPainter oldDelegate) => true;
-  // =>
-  //     offset != oldDelegate.offset ||
-  //     animationControllers != oldDelegate.animationControllers;
 }
 
 class _VisibleArea {
