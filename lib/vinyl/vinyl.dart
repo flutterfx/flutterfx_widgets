@@ -5,14 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/physics.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:fx_2_folder/vinyl/camera_simulation.dart';
+import 'package:fx_2_folder/vinyl/examples/tools/camera_simulation.dart';
 import 'package:fx_2_folder/vinyl/card_stack_4_angles.dart';
 import 'package:fx_2_folder/vinyl/easing/super_duper_ease_in.dart';
 import 'package:fx_2_folder/vinyl/exmaples/glass_card.dart';
-import 'package:fx_2_folder/vinyl/exmaples/spring_examples.dart';
-import 'package:fx_2_folder/vinyl/exmaples/spring_playground.dart';
+import 'package:fx_2_folder/vinyl/examples/spring_examples.dart';
+import 'package:fx_2_folder/vinyl/examples/spring_playground.dart';
 import 'package:fx_2_folder/vinyl/transform_examples.dart';
-import 'package:fx_2_folder/vinyl/widget_viewer.dart';
+import 'package:fx_2_folder/vinyl/examples/tools/widget_viewer.dart';
 
 class VinylHomeWidget extends StatelessWidget {
   const VinylHomeWidget({Key? key}) : super(key: key);
@@ -20,6 +20,7 @@ class VinylHomeWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       // body: WidgetViewer()
       // Stacked3DCardsLayout() //Stacked3DCardsLayout()
       // body: CameraSimulation(),
@@ -61,6 +62,8 @@ class _TransformAppState extends State<TransformApp>
 
   String firstVinylId = vinylItems[0].id;
 
+  bool isAnimateButtonVisible = true;
+
   @override
   void initState() {
     super.initState();
@@ -71,26 +74,18 @@ class _TransformAppState extends State<TransformApp>
   @override
   void dispose() {
     animController.dispose();
+    vinylController.dispose();
+    animParentController.dispose();
     super.dispose();
-  }
-
-  double _rotateX = 0;
-  double _rotateY = 0;
-
-  void _onPanUpdate(DragUpdateDetails details) {
-    setState(() {
-      _rotateY += details.delta.dx / 100;
-      _rotateX -= details.delta.dy / 100;
-    });
   }
 
   @override
   Widget build(BuildContext context) {
-    final double baseRotationX = 355 * pi / 180;
+    const double baseRotationX = 355 * pi / 180;
     return Scaffold(
+      backgroundColor: Colors.black,
       body: GestureDetector(
-        onPanUpdate: _onPanUpdate,
-        onTap: () => _changeStackOrder(),
+        // onTap: () => _changeStackOrder(),
         child: Expanded(
           child: Stack(
             fit: StackFit.expand,
@@ -111,8 +106,7 @@ class _TransformAppState extends State<TransformApp>
                               sin(_headBowForwardAnimation.value * pi) *
                                   10 *
                                   pi /
-                                  180 +
-                              _rotateX) // vertical
+                                  180) // vertical
                           ..rotateZ(6 * pi / 180) //z : 32
                           ..scale(1.0),
                         alignment: Alignment.center,
@@ -122,39 +116,28 @@ class _TransformAppState extends State<TransformApp>
                   );
                 },
               ),
-              Positioned(
-                bottom: 0,
-                child: _buildSlider(
-                  value: animController.value,
-                  onChanged: (value) => setState(() {
-                    animController.value = value;
-                    print("animController Seekbar, value: $value");
-                  }),
-                  label:
-                      'Animation: ${animController.value.toStringAsFixed(3)}°',
-                  min: 0.0,
-                  max: 1.0,
-                ),
-              ),
-              Positioned(
-                bottom: 16,
-                right: 16,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 40.0, vertical: 20.0),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(4.0),
+              if (isAnimateButtonVisible)
+                Positioned(
+                  bottom: 32,
+                  right: 32,
+                  left: 32,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 40.0, vertical: 20.0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4.0),
+                      ),
+                      foregroundColor: Colors.black,
+                      backgroundColor: Colors.white,
                     ),
-                    foregroundColor: Colors.black,
-                    backgroundColor: Colors.white,
+                    onPressed: () {
+                      animController.forward();
+                      isAnimateButtonVisible = false;
+                    },
+                    child: const Text('Animate'),
                   ),
-                  onPressed: () {
-                    animController.forward();
-                  },
-                  child: const Text('Animate'),
-                ),
-              )
+                )
             ],
           ),
         ),
@@ -176,7 +159,6 @@ class _TransformAppState extends State<TransformApp>
         return Stack(
           children: List.generate(_vinylItems.length, (index) {
             var vinylItem = _vinylItems[index];
-            // if (vinylItem.id == 'vinyl_3') {
             bool isSecond =
                 false; // At this moment, the second card is the first one in the stack
             if (vinylItem.id == vinylOrder[0]) {
@@ -185,13 +167,11 @@ class _TransformAppState extends State<TransformApp>
               vinylItem.zPositionValue =
                   lerpDouble(-100.0, 0.0, _pushBackAnimation.value)!;
               vinylItem.rotateX = _flipAnimation.value;
-              // } else if (_vinylItems[index].id == 'vinyl_2') {
             } else if (_vinylItems[index].id == vinylOrder[1]) {
               isSecond = true;
               vinylItem.verticalAnimationValue = _topJumpAnimation.value;
               vinylItem.zPositionValue = -50.0 + _topMoveForwardAnimation.value;
               vinylItem.rotateX = 0.0;
-              // } else if (_vinylItems[index].id == 'vinyl_1') {
             } else if (_vinylItems[index].id == vinylOrder[2]) {
               vinylItem.verticalAnimationValue = _topJumpAnimation.value;
               vinylItem.zPositionValue =
@@ -208,15 +188,6 @@ class _TransformAppState extends State<TransformApp>
               alignment: Alignment.center, // -index * 50.0
               child: Stack(
                 children: [
-                  // Container(
-                  //   width: 200,
-                  //   height: 200,
-                  //   color: _vinylItems[index].color,
-                  //   child: Text(
-                  //     'Layer ${index + 1} + id ${_vinylItems[index].id}',
-                  //     style: TextStyle(color: Colors.white),
-                  //   ),
-                  // ),
                   Container(
                     width: 200,
                     height: 200,
@@ -241,7 +212,6 @@ class _TransformAppState extends State<TransformApp>
                       ),
                     ),
                   ),
-
                   if (isFrontImage(vinylItem.rotateX))
                     Container(
                       width: 200,
@@ -269,9 +239,8 @@ class _TransformAppState extends State<TransformApp>
   void resetAnimation() {
     animController.dispose();
     animParentController.dispose();
-    // animController.reset();
+    vinylController.dispose();
     initAnimations();
-    // animController.forward();
   }
 
   final SpringDescription spring = const SpringDescription(
@@ -282,7 +251,7 @@ class _TransformAppState extends State<TransformApp>
 
   initAnimations() {
     animController = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 1200))
+        vsync: this, duration: const Duration(milliseconds: 1000))
       ..addListener(_animationHooks);
 
     animParentController = AnimationController(
@@ -306,8 +275,6 @@ class _TransformAppState extends State<TransformApp>
         animController.forward();
       }
     });
-    // Start the animation and reverse it
-    // _controller.forward().then((_) => _controller.reverse());
 
     // Combine vertical animations on the first Vinyl!
     _combinedVerticalAnimation = TweenSequence<double>([
@@ -356,8 +323,6 @@ class _TransformAppState extends State<TransformApp>
       ),
     );
 
-    // final normalSpringOpen = SpringSimulation(spring, 0, 1, 1);
-    // final normalSpringClose = SpringSimulation(spring, 1, 0, 1);
     _topJumpAnimation = TweenSequence<double>([
       TweenSequenceItem(
         tween: Tween<double>(begin: 0.0, end: -100)
@@ -466,11 +431,6 @@ class VinylItem {
       this.zPositionValue = 0.0,
       this.rotateX = 0.0});
 }
-
-// verticalAnimationValue = _combinedVerticalAnimation.value;
-//               zPositionValue =
-//                   lerpDouble(-100.0, 0.0, _pushBackAnimation.value)!;
-//               rotateX = _flipAnimation.value;
 
 final List<VinylItem> vinylItems = [
   VinylItem(

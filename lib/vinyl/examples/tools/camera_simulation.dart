@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'dart:convert';
 import 'package:flutter/services.dart';
 
+//make this into web tools for working quickly with flutter animation with transform
 class CameraSimulation extends StatefulWidget {
   @override
   _CameraSimulationState createState() => _CameraSimulationState();
@@ -233,97 +234,3 @@ class _CameraSimulationState extends State<CameraSimulation> {
     );
   }
 }
-// import 'package:flutter/material.dart';
-// import 'dart:math' as math;
-
-// class CameraSimulation extends StatefulWidget {
-//   @override
-//   _CameraSimulationState createState() => _CameraSimulationState();
-// }
-
-// class _CameraSimulationState extends State<CameraSimulation> {
-//   double _rotateX = 0;
-//   double _rotateY = 0;
-//   double _translateZ = 0;
-//   double _perspective = 0;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Column(
-//       children: [
-//         Container(
-//           height: 300,
-//           child: Transform(
-//             transform: Matrix4.identity()
-//               ..setEntry(3, 2, 0.001) // perspective
-//               ..rotateX(_rotateX)
-//               ..rotateY(_rotateY)
-//               ..translate(0.0, 0.0, _translateZ),
-//             alignment: FractionalOffset.center,
-//             child: _build3DScene(),
-//           ),
-//         ),
-//         _buildControls(),
-//       ],
-//     );
-//   }
-
-//   Widget _build3DScene() {
-//     return Stack(
-//       children: [
-//         // Back plane (blue)
-//         Transform(
-//           transform: Matrix4.translationValues(0, 0, -100),
-//           child: Container(color: Colors.blue, width: 200, height: 200),
-//         ),
-//         // Left plane (red)
-//         Transform(
-//           transform: Matrix4.identity()
-//             ..translate(-100.0, 0.0, -50)
-//             ..rotateY(math.pi / 2),
-//           child: Container(color: Colors.red, width: 200, height: 200),
-//         ),
-//         // Right plane (green)
-//         Transform(
-//           transform: Matrix4.identity()
-//             ..translate(100.0, 0.0, -50)
-//             ..rotateY(-math.pi / 2),
-//           child: Container(color: Colors.green, width: 200, height: 200),
-//         ),
-//         // Front object (yellow cube)
-//         Transform(
-//           transform: Matrix4.translationValues(0, 0, 50),
-//           child: Container(color: Colors.yellow, width: 50, height: 50),
-//         ),
-//       ],
-//     );
-//   }
-
-//   Widget _buildControls() {
-//     return Column(
-//       children: [
-//         Slider(
-//           value: _rotateX,
-//           min: -math.pi / 4,
-//           max: math.pi / 4,
-//           onChanged: (value) => setState(() => _rotateX = value),
-//           label: 'Rotate X: ${_rotateX.toStringAsFixed(2)}',
-//         ),
-//         Slider(
-//           value: _rotateY,
-//           min: -math.pi / 4,
-//           max: math.pi / 4,
-//           onChanged: (value) => setState(() => _rotateY = value),
-//           label: 'Rotate Y: ${_rotateY.toStringAsFixed(2)}',
-//         ),
-//         Slider(
-//           value: _translateZ,
-//           min: -200,
-//           max: 200,
-//           onChanged: (value) => setState(() => _translateZ = value),
-//           label: 'Translate Z: ${_translateZ.toStringAsFixed(2)}',
-//         ),
-//       ],
-//     );
-//   }
-// }

@@ -98,15 +98,6 @@ class _PannableCircleGridState extends State<PannableCircleGrid>
                       );
                     },
                   ),
-                  // CustomPaint( //Enable for debugging
-                  //   painter: DebugPainter(
-                  //     tapPosition: _tapPosition,
-                  //     gridOffset: _offset,
-                  //     circleSize: _circleSize,
-                  //     spacing: _spacing,
-                  //     columns: _columns,
-                  //   ),
-                  // ),
                 ],
               ),
             ),
@@ -156,72 +147,6 @@ class _PannableCircleGridState extends State<PannableCircleGrid>
       ),
     );
   }
-  // @override
-  // Widget build(BuildContext context) {
-  //   return GestureDetector(
-  //     onPanUpdate: _handlePan,
-  //     onPanEnd: _handlePanEnd,
-  //     child: Container(
-  //       // Added Container for background color
-  //       color: Colors.black,
-  //       child: ClipRect(
-  //         child: Stack(
-  //           children: [
-  //             AnimatedBuilder(
-  //               animation:
-  //                   Listenable.merge(_animationControllers.values.toList()),
-  //               builder: (context, child) {
-  //                 return CustomPaint(
-  //                   painter: CircleGridPainter(
-  //                     offset: _offset,
-  //                     circleSize: _circleSize,
-  //                     selectedCircleMultiplier: _selectedCircleMultiplier,
-  //                     spacing: _spacing,
-  //                     selectedIndex: _selectedIndex,
-  //                     columns: _columns,
-  //                     animationControllers: _animationControllers,
-  //                   ),
-  //                   child: GestureDetector(
-  //                     onTapUp: _handleTap,
-  //                   ),
-  //                 );
-
-  //                 // Stack(
-  //                 //   children: [
-
-  //                 //   ],
-  //                 // );
-  //               },
-  //             ),
-  //             CustomPaint(
-  //               painter: DebugPainter(
-  //                 tapPosition: _tapPosition,
-  //                 gridOffset: _offset,
-  //                 circleSize: _circleSize,
-  //                 spacing: _spacing,
-  //                 columns: _columns,
-  //               ),
-  //             ),
-  //             Positioned(
-  //               bottom: 0,
-  //               child: Container(
-  //                 height: 100,
-  //                 width: double.infinity,
-  //                 decoration: BoxDecoration(
-  //                   gradient: LinearGradient(
-  //                     colors: [Colors.blue, Colors.green],
-  //                     begin: Alignment.centerLeft,
-  //                     end: Alignment.centerRight,
-  //                   ),
-  //                 ),
-  //               ),
-  //             )
-  //           ],
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
 
   void _handlePan(DragUpdateDetails details) {
     setState(() {

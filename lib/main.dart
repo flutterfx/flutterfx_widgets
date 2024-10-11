@@ -13,6 +13,7 @@ class AnimationShowcaseApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'fx-widget Showcase',
       theme: ThemeData.dark().copyWith(
         primaryColor: const Color(0xFF1E1E1E),
@@ -57,7 +58,10 @@ class HomeScreen extends StatelessWidget {
       appBarColor: Colors.black,
     ),
     AnimationExample(
-        title: '3D Vinyl', builder: (context) => const VinylHomeWidget()),
+      title: '3D Vinyl',
+      builder: (context) => const VinylHomeWidget(),
+      appBarColor: Colors.black,
+    ),
   ];
 
   HomeScreen({super.key});
@@ -90,8 +94,8 @@ class HomeScreen extends StatelessWidget {
                 onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) =>
-                        DetailScreen(example: examples[index]),
+                    builder: (context) => DetailScreen(
+                        key: UniqueKey(), example: examples[index]),
                   ),
                 ),
                 child: Column(
