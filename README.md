@@ -40,7 +40,25 @@ Each animation is implemented as a separate widget, making it easy to understand
       <img src="https://github.com/flutterfx/flutterfx_widgets/blob/main/external_asset/gif_short.gif" alt="Scale Animation" style="max-width:200px;">
     </td>
   </tr>
-  
+    <tr>
+    <td><strong>Circle selector</strong></td>
+    <td>
+      A pannable, zoomable grid of interactive circles built using <code>CustomPaint</code>, <code>GestureDetector</code>, and <code>AnimationController</code>.
+      Shows how to create a complex, animated UI component with panning, tapping, and neighbor displacement effects.
+    </td>
+    <td align="center">
+      <img src="https://github.com/flutterfx/flutterfx_widgets/blob/main/external_asset/showcase_circle_selector.gif" alt="Scale Animation" style="max-width:200px;">
+    </td>
+  </tr>
+    <tr>
+    <td><strong>3d Vinyl</strong></td>
+    <td>
+      A 3D vinyl stack shuffle animation built using <code>AnimatedBuilder</code> and <code>Transform</code>. Demonstrates how to create complex 3D-looking animations by combining multiple transforms, custom curves, and z-index manipulation to simulate depth and realistic record flipping effects.
+    </td>
+    <td align="center">
+      <img src="https://github.com/flutterfx/flutterfx_widgets/blob/main/external_asset/showcase_3d_vinyl.gif" alt="Scale Animation" style="max-width:200px;">
+    </td>
+  </tr>
   <!-- Add more rows here as we create new fx-widgets -->
 </table>
 
