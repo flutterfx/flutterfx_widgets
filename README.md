@@ -18,7 +18,16 @@ Each animation is implemented as a separate widget, making it easy to understand
       Demonstrates the usage of Flutter's transform apis.
     </td>
     <td align="center">
-      <img src="https://github.com/flutterfx/flutterfx_widgets/blob/main/external_asset/showcase_white_bg.gif" alt="Fade Animation" style="max-width:200px;">
+      <img src="https://github.com/flutterfx/flutterfx_widgets/blob/main/external_asset/showcase_smoke.gif" alt="Fade Animation" style="max-width:200px;">
+    </td>
+  </tr>
+    <tr>
+    <td><strong>Smoke</strong></td>
+    <td>
+      Using circles with blur to make some smoke! Using <code>Blur</code> and <code>Canvas</code>.
+    </td>
+    <td align="center">
+      <img src="https://github.com/flutterfx/flutterfx_widgets/blob/main/external_asset/gif_short.gif" alt="Scale Animation" style="max-width:200px;">
     </td>
   </tr>
   <tr>
@@ -31,6 +40,7 @@ Each animation is implemented as a separate widget, making it easy to understand
       <img src="https://github.com/flutterfx/flutterfx_widgets/blob/main/external_asset/gif_short.gif" alt="Scale Animation" style="max-width:200px;">
     </td>
   </tr>
+  
   <!-- Add more rows here as we create new fx-widgets -->
 </table>
 
