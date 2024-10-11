@@ -18,6 +18,7 @@ class VinylHomeWidget extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       body: TransformApp(),
+      // SpringAnimationsDemo(),
     );
   }
 }

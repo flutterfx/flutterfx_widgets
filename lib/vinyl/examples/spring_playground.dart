@@ -6,6 +6,7 @@ class SpringAnimationsDemo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text('Spring Animations Demo'),
       ),
@@ -28,23 +29,23 @@ class SpringAnimationsDemo extends StatelessWidget {
             //   curve: QuickBounceCurve(),
             //   child: Text('Quick Bounce', style: TextStyle(fontSize: 18)),
             // ),
-            // SpringButton(
-            //   onPressed: () => _showAnimation(context, 'Snappy Spring'),
-            //   curve: SnappySpringCurve(),
-            //   child: Text('Snappy Spring', style: TextStyle(fontSize: 18)),
-            // ),
+            SpringButton(
+              onPressed: () => _showAnimation(context, 'Snappy Spring'),
+              curve: SnappySpringCurve(),
+              child: Text('Snappy Spring', style: TextStyle(fontSize: 18)),
+            ),
             // SpringButton(
             //   onPressed: () => _showAnimation(context, 'Elastic Snap'),
             //   curve: ElasticSnapCurve(),
             //   child: Text('Elastic Snap', style: TextStyle(fontSize: 18)),
             // ),
 
-            SpringButton(
-              onPressed: () => _showAnimation(context, 'High Velocity Spring'),
-              curve: HighVelocitySpringCurve(),
-              child:
-                  Text('High Velocity Spring', style: TextStyle(fontSize: 18)),
-            ),
+            // SpringButton(
+            //   onPressed: () => _showAnimation(context, 'High Velocity Spring'),
+            //   curve: HighVelocitySpringCurve(),
+            //   child:
+            //       Text('High Velocity Spring', style: TextStyle(fontSize: 18)),
+            // ),
           ],
         ),
       ),

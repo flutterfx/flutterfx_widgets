@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fx_2_folder/books/books.dart';
 import 'package:fx_2_folder/circles_selector/CirclesHomeWidget.dart';
 import 'package:fx_2_folder/folder_shape/folder_home.dart';
+import 'package:fx_2_folder/smoke/smoke.dart';
 import 'package:fx_2_folder/vinyl/vinyl.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -32,11 +34,13 @@ class AnimationExample {
   final String title;
   final Widget Function(BuildContext) builder;
   final Color? appBarColor;
+  final bool isFullScreen;
 
   AnimationExample({
     required this.title,
     required this.builder,
     this.appBarColor,
+    this.isFullScreen = false,
   });
 }
 
@@ -46,6 +50,12 @@ class HomeScreen extends StatelessWidget {
       title: 'Folder',
       builder: (context) => const FolderHomeWidget(
           curve: Curves.easeInOutBack, title: 'EaseInOutBack'),
+    ),
+    AnimationExample(
+      title: 'Smoke',
+      builder: (context) => const SmokeHomeWidget(),
+      appBarColor: Colors.black,
+      isFullScreen: true,
     ),
     AnimationExample(
       title: 'Books',
@@ -65,6 +75,15 @@ class HomeScreen extends StatelessWidget {
   ];
 
   HomeScreen({super.key});
+
+  void enterFullScreen() {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
+  }
+
+  void exitFullScreen() {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+        overlays: SystemUiOverlay.values);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,13 +110,22 @@ class HomeScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12),
               ),
               child: InkWell(
-                onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => DetailScreen(
-                        key: UniqueKey(), example: examples[index]),
-                  ),
-                ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        if (examples[index].isFullScreen) {
+                          return FullScreen(
+                              key: UniqueKey(), example: examples[index]);
+                        } else {
+                          return DetailScreen(
+                              key: UniqueKey(), example: examples[index]);
+                        }
+                      },
+                    ),
+                  );
+                },
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -138,5 +166,16 @@ class DetailScreen extends StatelessWidget {
         child: example.builder(context),
       ),
     );
+  }
+}
+
+class FullScreen extends StatelessWidget {
+  final AnimationExample example;
+
+  const FullScreen({super.key, required this.example});
+
+  @override
+  Widget build(BuildContext context) {
+    return example.builder(context);
   }
 }
