@@ -32,7 +32,7 @@ Each animation is implemented as a separate widget, making it easy to understand
   </tr>
   <tr>
     <td align="center">
-      <img src="https://github.com/flutterfx/flutterfx_widgets/blob/main/external_asset/gif_short.gif" alt="Scale Animation" style="max-width:200px;">
+      <img src="https://github.com/flutterfx/flutterfx_widgets/blob/main/external_asset/gif_short.gif" alt="Book shelf 3d Animation" style="max-width:200px;">
     </td>
     <td><strong>Bookshelf</strong></td>
     <td>
@@ -42,7 +42,7 @@ Each animation is implemented as a separate widget, making it easy to understand
   </tr>
   <tr>
     <td align="center">
-      <img src="https://github.com/flutterfx/flutterfx_widgets/blob/main/external_asset/showcase_circle_selector.gif" alt="Scale Animation" style="max-width:200px;">
+      <img src="https://github.com/flutterfx/flutterfx_widgets/blob/main/external_asset/showcase_circle_selector.gif" alt="Circle selector Animation" style="max-width:200px;">
     </td>
     <td><strong>Circle selector</strong></td>
     <td>
@@ -52,11 +52,21 @@ Each animation is implemented as a separate widget, making it easy to understand
   </tr>
   <tr>
     <td align="center">
-      <img src="https://github.com/flutterfx/flutterfx_widgets/blob/main/external_asset/showcase_3d_vinyl.gif" alt="Scale Animation" style="max-width:200px;">
+      <img src="https://github.com/flutterfx/flutterfx_widgets/blob/main/external_asset/showcase_3d_vinyl.gif" alt="vinyl jump Animation" style="max-width:200px;">
     </td>
     <td><strong>3d Vinyl</strong></td>
     <td>
       A 3D vinyl stack shuffle animation built using <code>AnimatedBuilder</code> and <code>Transform</code>. Demonstrates how to create complex 3D-looking animations by combining multiple transforms, custom curves, and z-index manipulation to simulate depth and realistic record flipping effects.
+    </td>
+  </tr>
+    <tr>
+    <td align="center">
+      <img src="https://github.com/flutterfx/flutterfx_widgets/blob/main/external_asset/showcase_blurfade.gif" alt="blurfade Animation" style="max-width:200px;">
+    </td>
+    <td><strong>BlurFade</strong></td>
+    <td>
+      A smooth blur and fade animation widget built using <code>AnimationController</code>, <code>CurvedAnimation</code>, and <code>ImageFiltered</code>. 
+      Demonstrates how to create elegant visibility transitions with combined opacity and blur effects, easily applicable to any child widget.
     </td>
   </tr>
   <!-- Add more rows here as we create new fx-widgets -->
