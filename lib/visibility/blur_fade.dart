@@ -13,6 +13,7 @@ class _BlurFadeExampleState extends State<BlurFadeExample> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -20,46 +21,31 @@ class _BlurFadeExampleState extends State<BlurFadeExample> {
           children: [
             BlurFade(
               isVisible: _isVisible,
-              child: const Text(
-                'Hello, World! 👋',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
+              child: titleText('Hello, World! 👋'),
             ),
-            const Padding(padding: EdgeInsets.all(5)),
+            padding(),
             BlurFade(
               delay: const Duration(milliseconds: 100),
               isVisible: _isVisible,
-              child: const Text(
-                'Nice...........',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
+              child: normalText('Nice...........'),
             ),
-            const Padding(padding: EdgeInsets.all(5)),
+            padding(),
             BlurFade(
               delay: const Duration(milliseconds: 200),
               isVisible: _isVisible,
-              child: const Text(
-                'to...........',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
+              child: normalText('to...........'),
             ),
-            const Padding(padding: EdgeInsets.all(5)),
+            padding(),
             BlurFade(
               delay: const Duration(milliseconds: 300),
               isVisible: _isVisible,
-              child: const Text(
-                'meet...........',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
+              child: normalText('meet...........'),
             ),
-            const Padding(padding: EdgeInsets.all(5)),
+            padding(),
             BlurFade(
               delay: const Duration(milliseconds: 400),
               isVisible: _isVisible,
-              child: const Text(
-                'you...........',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
+              child: normalText('you...........'),
             ),
             const SizedBox(height: 60),
             ElevatedButton(
@@ -72,6 +58,22 @@ class _BlurFadeExampleState extends State<BlurFadeExample> {
           ],
         ),
       ),
+    );
+  }
+
+  Padding padding() => const Padding(padding: EdgeInsets.all(5));
+
+  Text normalText(String text) {
+    return Text(
+      text,
+      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+    );
+  }
+
+  Text titleText(String title) {
+    return Text(
+      title,
+      style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
     );
   }
 }
