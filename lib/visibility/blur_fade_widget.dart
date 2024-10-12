@@ -11,7 +11,7 @@ class BlurFade extends StatefulWidget {
     Key? key,
     required this.child,
     this.delay = Duration.zero,
-    this.duration = const Duration(milliseconds: 500),
+    this.duration = const Duration(milliseconds: 200),
     this.isVisible,
   }) : super(key: key);
 
@@ -24,6 +24,8 @@ class _BlurFadeState extends State<BlurFade>
   late AnimationController _controller;
   late Animation<double> _opacityAnimation;
   late Animation<double> _blurAnimation;
+
+  bool _isFirstBuild = true;
 
   @override
   void initState() {
@@ -47,24 +49,30 @@ class _BlurFadeState extends State<BlurFade>
       ),
     );
 
-    if (widget.isVisible == true) {
-      _controller.value = 1.0;
-    } else if (widget.isVisible == null) {
-      Future.delayed(widget.delay, () {
-        if (mounted) _controller.forward();
-      });
-    }
+    _handleVisibilityChange();
+  }
+
+  void _handleVisibilityChange() {
+    Future.delayed(widget.delay, () {
+      if (!mounted) return;
+
+      if (widget.isVisible == true) {
+        _controller.forward();
+      } else if (widget.isVisible == false) {
+        _controller.reverse();
+      } else if (_isFirstBuild) {
+        _controller.forward();
+      }
+
+      _isFirstBuild = false;
+    });
   }
 
   @override
   void didUpdateWidget(BlurFade oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.isVisible != oldWidget.isVisible) {
-      if (widget.isVisible == true) {
-        _controller.forward();
-      } else if (widget.isVisible == false) {
-        _controller.reverse();
-      }
+      _handleVisibilityChange();
     }
   }
 

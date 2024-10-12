@@ -74,12 +74,9 @@ class HomeScreen extends StatelessWidget {
       appBarColor: Colors.black,
     ),
     AnimationExample(
-      title: 'Fade & Blur',
+      title: 'BlurFade',
       builder: (context) => BlurFadeExample(),
-      // appBarColor: Colors.black,
     ),
-
-    //
   ];
 
   HomeScreen({super.key});
