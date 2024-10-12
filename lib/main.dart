@@ -5,6 +5,7 @@ import 'package:fx_2_folder/circles_selector/CirclesHomeWidget.dart';
 import 'package:fx_2_folder/folder_shape/folder_home.dart';
 import 'package:fx_2_folder/smoke/smoke.dart';
 import 'package:fx_2_folder/vinyl/vinyl.dart';
+import 'package:fx_2_folder/visibility/blur_fade.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main() => runApp(const AnimationShowcaseApp());
@@ -72,6 +73,13 @@ class HomeScreen extends StatelessWidget {
       builder: (context) => const VinylHomeWidget(),
       appBarColor: Colors.black,
     ),
+    AnimationExample(
+      title: 'Fade & Blur',
+      builder: (context) => FadeBlurExample(),
+      // appBarColor: Colors.black,
+    ),
+
+    //
   ];
 
   HomeScreen({super.key});
