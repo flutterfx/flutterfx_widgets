@@ -13,7 +13,7 @@ class BorderBeamHomeWidget extends StatelessWidget {
         duration: 5,
         colorFrom: Colors.blue,
         colorTo: Colors.purple,
-        staticBorderColor: Colors.grey,
+        staticBorderColor: const Color.fromARGB(255, 244, 244, 244),
         borderRadius: BorderRadius.circular(20),
         padding: EdgeInsets.all(16),
         child: Container(

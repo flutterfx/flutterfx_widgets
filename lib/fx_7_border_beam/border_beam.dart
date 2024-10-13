@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
+import 'dart:ui' as ui;
 
 class BorderBeam extends StatefulWidget {
   final Widget child;
@@ -103,13 +104,13 @@ class BorderBeamPainter extends CustomPainter {
     canvas.drawRRect(rrect, staticPaint);
 
     // Draw animated beam
-    final paint = Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = borderWidth
-      ..shader = LinearGradient(
-        colors: [colorFrom, colorTo],
-        stops: [0, 1],
-      ).createShader(Rect.fromLTWH(0, 0, size.width, size.height));
+    // final paint = Paint()
+    //   ..style = PaintingStyle.stroke
+    //   ..strokeWidth = borderWidth
+    //   ..shader = LinearGradient(
+    //     colors: [colorFrom, colorTo],
+    //     stops: [0, 1],
+    //   ).createShader(Rect.fromLTWH(0, 0, size.width, size.height));
 
     final path = Path()..addRRect(rrect);
 
@@ -126,6 +127,15 @@ class BorderBeamPainter extends CustomPainter {
       extractPath = pathMetrics.extractPath(start, pathLength);
       extractPath.addPath(pathMetrics.extractPath(0, end), Offset.zero);
     }
+
+    final paint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = borderWidth
+      ..shader = ui.Gradient.linear(
+        extractPath.getBounds().topLeft,
+        extractPath.getBounds().bottomRight,
+        [colorFrom, colorTo],
+      );
 
     canvas.drawPath(extractPath, paint);
   }
