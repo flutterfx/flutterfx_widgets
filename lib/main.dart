@@ -6,6 +6,7 @@ import 'package:fx_2_folder/folder_shape/folder_home.dart';
 import 'package:fx_2_folder/frosty_card/frosty_card.dart';
 import 'package:fx_2_folder/fx_7_border_beam/border_beam.dart';
 import 'package:fx_2_folder/fx_7_border_beam/border_beam_demo.dart';
+import 'package:fx_2_folder/fx_8_shine_border/meteors_demo.dart';
 import 'package:fx_2_folder/smoke/smoke.dart';
 import 'package:fx_2_folder/vinyl/vinyl.dart';
 import 'package:fx_2_folder/visibility/blur_fade.dart';
@@ -89,6 +90,10 @@ class HomeScreen extends StatelessWidget {
     AnimationExample(
       title: 'Border beam',
       builder: (context) => BorderBeamHomeWidget(),
+    ),
+    AnimationExample(
+      title: 'Meteors',
+      builder: (context) => MeteorDemo(),
     ),
   ];
 
