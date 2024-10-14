@@ -33,9 +33,7 @@ class _MeteorShowerState extends State<MeteorShower>
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final RenderBox renderBox = context.findRenderObject() as RenderBox;
-      final size = renderBox.size; // Gets the widget's size
-      final width = size.width; // Extract the width
-
+      final size = renderBox.size;
       _meteors = List.generate(
           widget.numberOfMeteors, (_) => Meteor(meteorAngle, size));
     });
@@ -71,20 +69,10 @@ class _MeteorShowerState extends State<MeteorShower>
                     child: Opacity(
                       opacity: (1 - progress) * 0.8,
                       child: Transform.rotate(
-                        angle: 315 * (pi / 180), //meteorAngle,
-                        child: Container(
-                          width: 2,
-                          height: 20,
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                Colors.white,
-                                Colors.white.withOpacity(0)
-                              ],
-                              begin: Alignment.bottomLeft,
-                              end: Alignment.topLeft,
-                            ),
-                          ),
+                        angle: 315 * (pi / 180),
+                        child: CustomPaint(
+                          size: Size(2, 20),
+                          painter: MeteorPainter(),
                         ),
                       ),
                     ),
@@ -97,6 +85,29 @@ class _MeteorShowerState extends State<MeteorShower>
       },
     );
   }
+}
+
+class MeteorPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final Paint trailPaint = Paint()
+      ..shader = LinearGradient(
+        colors: [Colors.white, Colors.white.withOpacity(0)],
+        end: Alignment.topCenter,
+        begin: Alignment.bottomCenter,
+      ).createShader(Rect.fromLTWH(0, 0, size.width, size.height));
+
+    canvas.drawRect(Rect.fromLTWH(0, 0, size.width, size.height), trailPaint);
+
+    final Paint circlePaint = Paint()
+      ..color = Colors.white
+      ..style = PaintingStyle.fill;
+
+    canvas.drawCircle(Offset(size.width / 2, size.height), 2, circlePaint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
 }
 
 class Meteor {
