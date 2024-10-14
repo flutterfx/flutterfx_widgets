@@ -4,6 +4,7 @@ import 'package:fx_2_folder/books/books.dart';
 import 'package:fx_2_folder/circles_selector/CirclesHomeWidget.dart';
 import 'package:fx_2_folder/folder_shape/folder_home.dart';
 import 'package:fx_2_folder/frosty_card/frosty_card.dart';
+import 'package:fx_2_folder/fx_10_hyper_text/hyper_text_demo.dart';
 import 'package:fx_2_folder/fx_7_border_beam/border_beam.dart';
 import 'package:fx_2_folder/fx_7_border_beam/border_beam_demo.dart';
 import 'package:fx_2_folder/fx_8_shine_border/meteors_demo.dart';
@@ -99,6 +100,10 @@ class HomeScreen extends StatelessWidget {
     AnimationExample(
       title: 'Neon Card',
       builder: (context) => NeonGradientCardDemo(),
+    ),
+    AnimationExample(
+      title: 'Hyper Text',
+      builder: (context) => HyperTextDemo(),
     ),
   ];
 
