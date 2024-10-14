@@ -103,22 +103,15 @@ class BorderBeamPainter extends CustomPainter {
       ..color = staticBorderColor;
     canvas.drawRRect(rrect, staticPaint);
 
-    // Draw animated beam
-    // final paint = Paint()
-    //   ..style = PaintingStyle.stroke
-    //   ..strokeWidth = borderWidth
-    //   ..shader = LinearGradient(
-    //     colors: [colorFrom, colorTo],
-    //     stops: [0, 1],
-    //   ).createShader(Rect.fromLTWH(0, 0, size.width, size.height));
-
     final path = Path()..addRRect(rrect);
 
     final pathMetrics = path.computeMetrics().first;
     final pathLength = pathMetrics.length;
 
-    final start = progress * pathLength;
-    final end = (start + size.width / 2) % pathLength;
+    // Adjust the animation to prevent the jump
+    final animationProgress = progress % 1.0;
+    final start = animationProgress * pathLength;
+    final end = (start + pathLength / 4) % pathLength;
 
     Path extractPath;
     if (end > start) {
@@ -128,14 +121,28 @@ class BorderBeamPainter extends CustomPainter {
       extractPath.addPath(pathMetrics.extractPath(0, end), Offset.zero);
     }
 
+    // Calculate gradient start and end points
+    final gradientStart =
+        pathMetrics.getTangentForOffset(start)?.position ?? Offset.zero;
+    final gradientEnd = pathMetrics
+            .getTangentForOffset((start + pathLength / 8) % pathLength)
+            ?.position ??
+        Offset.zero;
+
     final paint = Paint()
       ..style = PaintingStyle.stroke
-      ..strokeWidth = borderWidth
-      ..shader = ui.Gradient.linear(
-        extractPath.getBounds().topLeft,
-        extractPath.getBounds().bottomRight,
-        [colorFrom, colorTo],
-      );
+      ..strokeWidth = borderWidth;
+
+    paint.shader = ui.Gradient.linear(
+      gradientStart,
+      gradientEnd,
+      [
+        colorTo.withOpacity(0.0), // Transparent color for fading effect
+        colorTo,
+        colorFrom,
+      ],
+      [0.0, 0.3, 1.0],
+    );
 
     canvas.drawPath(extractPath, paint);
   }
