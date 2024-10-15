@@ -59,7 +59,7 @@ Each animation is implemented as a separate widget, making it easy to understand
       A 3D vinyl stack shuffle animation built using <code>AnimatedBuilder</code> and <code>Transform</code>. Demonstrates how to create complex 3D-looking animations by combining multiple transforms, custom curves, and z-index manipulation to simulate depth and realistic record flipping effects.
     </td>
   </tr>
-    <tr>
+  <tr>
     <td align="center">
       <img src="https://github.com/flutterfx/flutterfx_widgets/blob/main/external_asset/showcase_blurfade.gif" alt="blurfade Animation" style="max-width:200px;">
     </td>
@@ -67,6 +67,56 @@ Each animation is implemented as a separate widget, making it easy to understand
     <td>
       A smooth blur and fade animation widget built using <code>AnimationController</code>, <code>CurvedAnimation</code>, and <code>ImageFiltered</code>. 
       Demonstrates how to create elegant visibility transitions with combined opacity and blur effects, easily applicable to any child widget.
+    </td>
+  </tr>
+
+
+  
+
+  <tr>
+    <td align="center">
+      <img src="https://github.com/flutterfx/flutterfx_widgets/blob/main/external_asset/showcase_7.gif" alt="Border Beam" style="max-width:200px;">
+    </td>
+    <td><strong>Border Beam</strong></td>
+    <td>
+      [wip]
+    </td>
+  </tr>
+
+  <tr>
+    <td align="center">
+      <img src="https://github.com/flutterfx/flutterfx_widgets/blob/main/external_asset/showcase_8.gif" alt="Meteors" style="max-width:200px;">
+    </td>
+    <td><strong>Meteors</strong></td>
+    <td>
+     [wip]
+    </td>
+  </tr>
+    <tr>
+    <td align="center">
+      <img src="https://github.com/flutterfx/flutterfx_widgets/blob/main/external_asset/showcase_9.gif" alt="Neon Card" style="max-width:200px;">
+    </td>
+    <td><strong>Neon Card</strong></td>
+    <td>
+      [wip]
+    </td>
+  </tr>
+    <tr>
+    <td align="center">
+      <img src="https://github.com/flutterfx/flutterfx_widgets/blob/main/external_asset/showcase_10.gif" alt="Hyper text" style="max-width:200px;">
+    </td>
+    <td><strong>Hyper text</strong></td>
+    <td>
+     [wip]
+    </td>
+  </tr>
+    <tr>
+    <td align="center">
+      <img src="https://github.com/flutterfx/flutterfx_widgets/blob/main/external_asset/showcase_11.gif" alt="Typing Animation" style="max-width:200px;">
+    </td>
+    <td><strong>Typing Animation</strong></td>
+    <td>
+      [wip]
     </td>
   </tr>
   <!-- Add more rows here as we create new fx-widgets -->
