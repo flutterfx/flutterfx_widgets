@@ -11,7 +11,7 @@ class NeonGradientCardDemo extends StatelessWidget {
         height: 200,
         child: Center(
           child: Container(
-            child: const AnimatedGlowRectangle(
+            child: const NeonCard(
               intensity: 0.5,
               glowSpread: .8,
               child: SizedBox(

@@ -20,7 +20,7 @@ class MeteorShower extends StatefulWidget {
 class _MeteorShowerState extends State<MeteorShower>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
-  late List<Meteor> _meteors;
+  List<Meteor> _meteors = [];
   final double meteorAngle = pi / 4;
 
   @override
@@ -30,13 +30,6 @@ class _MeteorShowerState extends State<MeteorShower>
       vsync: this,
       duration: widget.duration,
     )..repeat();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final RenderBox renderBox = context.findRenderObject() as RenderBox;
-      final size = renderBox.size;
-      _meteors = List.generate(
-          widget.numberOfMeteors, (_) => Meteor(meteorAngle, size));
-    });
   }
 
   @override
@@ -45,10 +38,20 @@ class _MeteorShowerState extends State<MeteorShower>
     super.dispose();
   }
 
+  void _initializeMeteors(Size size) {
+    if (_meteors.isEmpty) {
+      _meteors = List.generate(
+          widget.numberOfMeteors, (_) => Meteor(meteorAngle, size));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
+        final size = Size(constraints.maxWidth, constraints.maxHeight);
+        _initializeMeteors(size);
+
         return Stack(
           children: [
             widget.child,

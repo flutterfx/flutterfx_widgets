@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
 
-class AnimatedGlowRectangle extends StatefulWidget {
+class NeonCard extends StatefulWidget {
   final Widget child;
   final double intensity;
   final double glowSpread;
 
-  const AnimatedGlowRectangle({
-    Key? key,
+  const NeonCard({
+    super.key,
     required this.child,
     this.intensity = 0.3,
     this.glowSpread = 2.0,
-  }) : super(key: key);
+  });
 
   @override
-  _AnimatedGlowRectangleState createState() => _AnimatedGlowRectangleState();
+  _NeonCardState createState() => _NeonCardState();
 }
 
-class _AnimatedGlowRectangleState extends State<AnimatedGlowRectangle>
+class _NeonCardState extends State<NeonCard>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 

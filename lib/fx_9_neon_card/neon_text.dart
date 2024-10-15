@@ -19,7 +19,7 @@ class GradientText extends StatelessWidget {
       shaderCallback: (Rect bounds) {
         return LinearGradient(
           colors: gradientColors,
-          stops: [0.0, 0.3, 1.0],
+          stops: const [0.0, 0.3, 1.0],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ).createShader(bounds);
@@ -28,10 +28,9 @@ class GradientText extends StatelessWidget {
         text,
         style: TextStyle(
           fontSize: fontSize,
-          // height: fontSize * 1.2,
           fontWeight: FontWeight.bold,
-          height: 1, // Equivalent to leading-none
-          letterSpacing: -1.5, // App
+          height: 1,
+          letterSpacing: -1.5,
         ),
         textAlign: TextAlign.center,
       ),

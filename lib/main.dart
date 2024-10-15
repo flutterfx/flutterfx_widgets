@@ -8,7 +8,7 @@ import 'package:fx_2_folder/fx_10_hyper_text/hyper_text_demo.dart';
 import 'package:fx_2_folder/fx_11_typing_animation/typing_anim_demo.dart';
 import 'package:fx_2_folder/fx_7_border_beam/border_beam.dart';
 import 'package:fx_2_folder/fx_7_border_beam/border_beam_demo.dart';
-import 'package:fx_2_folder/fx_8_shine_border/meteors_demo.dart';
+import 'package:fx_2_folder/fx_8_meteor_border/meteors_demo.dart';
 import 'package:fx_2_folder/fx_9_neon_card/neon_card_demo.dart';
 import 'package:fx_2_folder/smoke/smoke.dart';
 import 'package:fx_2_folder/vinyl/vinyl.dart';
@@ -138,48 +138,57 @@ class HomeScreen extends StatelessWidget {
           crossAxisSpacing: 16,
           mainAxisSpacing: 16,
         ),
-        itemCount: examples.length,
+        itemCount: examples.length + 3,
         itemBuilder: (context, index) {
-          return Hero(
-            tag: 'example_${examples[index].title}',
-            child: Card(
-              elevation: 4,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                        if (examples[index].isFullScreen) {
-                          return FullScreen(
-                              key: UniqueKey(), example: examples[index]);
-                        } else {
-                          return DetailScreen(
-                              key: UniqueKey(), example: examples[index]);
-                        }
-                      },
-                    ),
-                  );
-                },
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(Icons.animation,
-                        size: 48, color: Colors.white70),
-                    const SizedBox(height: 8),
-                    Text(
-                      examples[index].title,
-                      style: Theme.of(context).textTheme.titleMedium,
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
+          if (index < examples.length) {
+            return Hero(
+              tag: 'example_${examples[index].title}',
+              child: Card(
+                elevation: 4,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          if (examples[index].isFullScreen) {
+                            return FullScreen(
+                                key: UniqueKey(), example: examples[index]);
+                          } else {
+                            return DetailScreen(
+                                key: UniqueKey(), example: examples[index]);
+                          }
+                        },
+                      ),
+                    );
+                  },
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.animation,
+                          size: 48, color: Colors.white70),
+                      const SizedBox(height: 8),
+                      Text(
+                        examples[index].title,
+                        style: Theme.of(context).textTheme.titleMedium,
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          );
+            );
+          } else {
+            return SizedBox(
+              height: MediaQuery.of(context)
+                  .size
+                  .height, // Adjust this value as needed
+              child: Container(), // Empty container for spacing
+            );
+          }
         },
       ),
     );
