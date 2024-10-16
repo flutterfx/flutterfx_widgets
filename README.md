@@ -1,4 +1,4 @@
-# Flutterfx Widget Showcase [WIP]
+# Flutterfx Widget - Animated flutter widgets [WIP]
 
 A collection of animated flutter widgets. New animated widgets will be added weekly. Targetting 100 animated widgets by the end of this year. 
 
