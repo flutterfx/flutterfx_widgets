@@ -1,7 +1,6 @@
 # Flutterfx Widget Showcase [WIP]
 
-
-We're on a mission here. The flutterfx project is all about showing how easy it is to create stunning visuals in Flutter. Let's flood the app stores with gorgeous, eye-catching designs!
+A collection of animated flutter widgets. New animated widgets will be added weekly. Targetting 100 animated widgets by the end of this year. 
 
 Each animation is implemented as a separate widget, making it easy to understand and integrate into your own projects.
 
