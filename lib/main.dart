@@ -6,6 +6,7 @@ import 'package:fx_2_folder/folder_shape/folder_home.dart';
 import 'package:fx_2_folder/frosty_card/frosty_card.dart';
 import 'package:fx_2_folder/fx_10_hyper_text/hyper_text_demo.dart';
 import 'package:fx_2_folder/fx_11_typing_animation/typing_anim_demo.dart';
+import 'package:fx_2_folder/fx_12/text_rotate_demo.dart';
 import 'package:fx_2_folder/fx_7_border_beam/border_beam.dart';
 import 'package:fx_2_folder/fx_7_border_beam/border_beam_demo.dart';
 import 'package:fx_2_folder/fx_8_meteor_border/meteors_demo.dart';
@@ -93,22 +94,32 @@ class HomeScreen extends StatelessWidget {
     AnimationExample(
       title: 'Border beam',
       builder: (context) => BorderBeamHomeWidget(),
+      appBarColor: Colors.black,
     ),
     AnimationExample(
       title: 'Meteors',
       builder: (context) => MeteorDemo(),
+      appBarColor: Colors.black,
     ),
     AnimationExample(
       title: 'Neon Card',
       builder: (context) => NeonGradientCardDemo(),
+      appBarColor: Colors.black,
     ),
     AnimationExample(
       title: 'Hyper Text',
       builder: (context) => HyperTextDemo(),
+      appBarColor: Colors.black,
     ),
     AnimationExample(
       title: 'Typing animation',
       builder: (context) => TypingAnimationDemo(),
+      appBarColor: Colors.black,
+    ),
+    AnimationExample(
+      title: 'RotatingText',
+      builder: (context) => TextRotateDemo(),
+      appBarColor: Colors.black,
     ),
   ];
 
