@@ -6,7 +6,9 @@ import 'package:fx_2_folder/folder_shape/folder_home.dart';
 import 'package:fx_2_folder/frosty_card/frosty_card.dart';
 import 'package:fx_2_folder/fx_10_hyper_text/hyper_text_demo.dart';
 import 'package:fx_2_folder/fx_11_typing_animation/typing_anim_demo.dart';
-import 'package:fx_2_folder/fx_12/text_rotate_demo.dart';
+import 'package:fx_2_folder/fx_12_rotating_text/text_rotate_demo.dart';
+import 'package:fx_2_folder/fx_13_rotating_text_with_blur/text_rotate_blur_demo.dart';
+import 'package:fx_2_folder/fx_14_text_reveal/text_reveal_demo.dart';
 import 'package:fx_2_folder/fx_7_border_beam/border_beam.dart';
 import 'package:fx_2_folder/fx_7_border_beam/border_beam_demo.dart';
 import 'package:fx_2_folder/fx_8_meteor_border/meteors_demo.dart';
@@ -28,7 +30,7 @@ class AnimationShowcaseApp extends StatelessWidget {
       title: 'fx-widget Showcase',
       theme: ThemeData.dark().copyWith(
         primaryColor: const Color(0xFF1E1E1E),
-        scaffoldBackgroundColor: const Color(0xFF121212),
+        scaffoldBackgroundColor: Color.fromARGB(255, 0, 0, 0),
         cardColor: const Color(0xFF2C2C2C),
         textTheme: GoogleFonts.robotoMonoTextTheme(
           Theme.of(context).textTheme,
@@ -87,7 +89,7 @@ class HomeScreen extends StatelessWidget {
       appBarColor: Colors.black,
     ),
     AnimationExample(
-      title: 'FrostyCard',
+      title: 'FrostyCard[WIP]',
       builder: (context) => FrostyCardDemo(),
       appBarColor: Colors.black,
     ),
@@ -121,6 +123,16 @@ class HomeScreen extends StatelessWidget {
       builder: (context) => TextRotateDemo(),
       appBarColor: Colors.black,
     ),
+    AnimationExample(
+      title: 'RotatingBlurText [WIP]',
+      builder: (context) => TextRotateBlurDemo(),
+      appBarColor: Colors.black,
+    ),
+    AnimationExample(
+      title: 'TextReveal',
+      builder: (context) => TextRevealDemo(),
+      appBarColor: Colors.black,
+    ),
   ];
 
   HomeScreen({super.key});
@@ -136,6 +148,21 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Automatically navigate to the first example on launch (e.g., "Folder").
+    // Future.microtask(() {
+    //   if (examples.isNotEmpty) {
+    //     Navigator.push(
+    //       context,
+    //       MaterialPageRoute(
+    //         builder: (context) {
+    //           return DetailScreen(
+    //               example: examples[examples.length -
+    //                   1]); // Automatically selecting the first example
+    //         },
+    //       ),
+    //     );
+    //   }
+    // });
     return Scaffold(
       appBar: AppBar(
         title: Text('Animation Showcase'),

@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:fx_2_folder/fx_10_hyper_text/hyper_text.dart';
-import 'package:fx_2_folder/fx_12/text_rotate.dart';
+import 'package:fx_2_folder/fx_12_rotating_text/text_rotate.dart';
 
 class TextRotateDemo extends StatefulWidget {
   @override
@@ -25,7 +24,7 @@ class _TextRotateDemoState extends State<TextRotateDemo> {
                   children: [
                     Expanded(
                       child: Center(
-                        child: CircularCharacterRotatingText(
+                        child: RotatingTextWidget(
                           text: 'Your rotating text here',
                           radius: 100.0,
                           textStyle:

@@ -1,13 +1,13 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
-class CircularCharacterRotatingText extends StatefulWidget {
+class RotatingTextWidget extends StatefulWidget {
   final String text;
   final double radius;
   final TextStyle textStyle;
   final Duration rotationDuration;
 
-  const CircularCharacterRotatingText({
+  const RotatingTextWidget({
     Key? key,
     required this.text,
     required this.radius,
@@ -16,12 +16,10 @@ class CircularCharacterRotatingText extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _CircularCharacterRotatingTextState createState() =>
-      _CircularCharacterRotatingTextState();
+  _RotatingTextWidgetState createState() => _RotatingTextWidgetState();
 }
 
-class _CircularCharacterRotatingTextState
-    extends State<CircularCharacterRotatingText>
+class _RotatingTextWidgetState extends State<RotatingTextWidget>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 
