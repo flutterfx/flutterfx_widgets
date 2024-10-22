@@ -13,7 +13,7 @@ class TextRevealEffect extends StatefulWidget {
     Key? key,
     required this.text,
     this.style,
-    this.duration = const Duration(milliseconds: 2500),
+    this.duration = const Duration(milliseconds: 1000),
     this.curve = Curves.easeOutCubic,
     required this.trigger,
   }) : super(key: key);
@@ -44,8 +44,8 @@ class _TextRevealEffectState extends State<TextRevealEffect>
 
   void _setupAnimations() {
     final int charCount = widget.text.length;
-    final double animationDuration = 0.3;
-    final double totalAnimationTime = 1.0 + animationDuration;
+    const double animationDuration = 1.0;
+    const double totalAnimationTime = 1.0 + animationDuration;
     final double staggerOffset =
         (totalAnimationTime - animationDuration) / (charCount - 1);
 

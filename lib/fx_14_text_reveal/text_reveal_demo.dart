@@ -29,7 +29,7 @@ class _TextRevealDemoState extends State<TextRevealDemo> {
               text:
                   "A flutter widget that animatestext reveal", //TODO bug fix: dont split words in the middle!
               style: TextStyle(fontSize: 20),
-              duration: Duration(milliseconds: 2500),
+              duration: Duration(milliseconds: 1500),
               trigger: _triggerAnimation,
             ),
           ),
