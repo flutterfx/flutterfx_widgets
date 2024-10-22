@@ -84,8 +84,8 @@ class _AnimationDemoScreenState extends State<AnimationDemoScreen> {
         maxXDeviation: 60.0,
         maxBlur: 10.0,
         enableBlur: false,
-        curveIntensity: 0.7,
-        synchronizeAnimation: true, // More pronounced S-curve
+        curveIntensity: 0.7, // More pronounced S-curve
+        synchronizeAnimation: true,
       ),
       description: "Characters float in a swirl",
     ),
