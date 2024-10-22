@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fx_2_folder/fx_14_text_reveal/strategies/FadeBlurStrategy.dart';
+import 'package:fx_2_folder/fx_14_text_reveal/strategies/FlipUpStragegy.dart';
 import 'package:fx_2_folder/fx_14_text_reveal/strategies/FlyingCharactersStrategy.dart';
 import 'package:fx_2_folder/fx_14_text_reveal/strategies/SwirlFloatStrategy.dart';
 import 'package:fx_2_folder/fx_14_text_reveal/text_reveal_widget.dart';
@@ -100,6 +101,13 @@ class _AnimationDemoScreenState extends State<AnimationDemoScreen> {
       ),
       description: "Characters float in a swirl",
     ),
+    AnimationPreset(
+      name: 'Flip up',
+      strategy: FlipUpStrategy(
+        perspectiveValue: 0.02, // Adjust for more/less dramatic perspective
+      ),
+      description: "Characters flip up using 3d transform",
+    )
   ];
 
   @override

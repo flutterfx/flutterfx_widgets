@@ -1,15 +1,12 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'dart:math' as math;
 
 import 'package:fx_2_folder/fx_14_text_reveal/strategies/FadeBlurStrategy.dart';
 
-// Animation Strategy Interface
 abstract class TextAnimationStrategy {
   final bool synchronizeAnimation;
   const TextAnimationStrategy({
-    this.synchronizeAnimation = false, // Default to staggered
-  }); // Add const constructor
+    this.synchronizeAnimation = false,
+  });
 
   Widget buildAnimatedCharacter({
     required String character,
