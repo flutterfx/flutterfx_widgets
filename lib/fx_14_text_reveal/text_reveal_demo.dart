@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:fx_2_folder/fx_14_text_reveal/strategies/FadeBlurStrategy.dart';
+import 'package:fx_2_folder/fx_14_text_reveal/strategies/FlyingCharactersStrategy.dart';
+import 'package:fx_2_folder/fx_14_text_reveal/strategies/SwirlFloatStrategy.dart';
 import 'package:fx_2_folder/fx_14_text_reveal/text_reveal_widget.dart';
 import 'dart:math' as math;
 
@@ -72,6 +75,30 @@ class _AnimationDemoScreenState extends State<AnimationDemoScreen> {
         enableBlur: true,
       ),
       description: "Characters scatter in random directions",
+    ),
+    AnimationPreset(
+      name: "Swirl Float",
+      strategy: SwirlFloatStrategy(
+        yOffset: -200.0,
+        maxXDeviation: 60.0,
+        maxBlur: 10.0,
+        enableBlur: false,
+        curveIntensity: 0.7,
+        synchronizeAnimation: true, // More pronounced S-curve
+      ),
+      description: "Characters float in a swirl",
+    ),
+    AnimationPreset(
+      name: "Swirl Float with Blur",
+      strategy: SwirlFloatStrategy(
+        yOffset: -200.0,
+        maxXDeviation: 60.0,
+        maxBlur: 10.0,
+        enableBlur: true,
+        curveIntensity: 0.7,
+        synchronizeAnimation: true, // More pronounced S-curve
+      ),
+      description: "Characters float in a swirl",
     ),
   ];
 

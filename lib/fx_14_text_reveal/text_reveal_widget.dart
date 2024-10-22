@@ -2,9 +2,14 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
+import 'package:fx_2_folder/fx_14_text_reveal/strategies/FadeBlurStrategy.dart';
+
 // Animation Strategy Interface
 abstract class TextAnimationStrategy {
-  const TextAnimationStrategy(); // Add const constructor
+  final bool synchronizeAnimation;
+  const TextAnimationStrategy({
+    this.synchronizeAnimation = false, // Default to staggered
+  }); // Add const constructor
 
   Widget buildAnimatedCharacter({
     required String character,
@@ -22,7 +27,9 @@ abstract class TextAnimationStrategy {
 
 // Base Animation Strategy
 class BaseAnimationStrategy extends TextAnimationStrategy {
-  const BaseAnimationStrategy() : super(); // Make constructor const
+  const BaseAnimationStrategy({
+    super.synchronizeAnimation,
+  });
 
   @override
   Widget buildAnimatedCharacter({
@@ -48,94 +55,6 @@ class BaseAnimationStrategy extends TextAnimationStrategy {
         parent: controller,
         curve: Interval(startTime, endTime, curve: curve),
       ),
-    );
-  }
-}
-
-// Fade Blur Strategy
-class FadeBlurStrategy extends BaseAnimationStrategy {
-  final double maxBlur;
-
-  const FadeBlurStrategy({this.maxBlur = 8.0})
-      : super(); // Make constructor const
-
-  @override
-  Widget buildAnimatedCharacter({
-    required String character,
-    required Animation<double> animation,
-    TextStyle? style,
-  }) {
-    return ValueListenableBuilder<double>(
-      valueListenable: animation,
-      builder: (context, value, _) => Opacity(
-        opacity: value,
-        child: ImageFiltered(
-          imageFilter: ImageFilter.blur(
-            sigmaX: (1 - value) * maxBlur,
-            sigmaY: (1 - value) * maxBlur,
-          ),
-          child: Text(character, style: style),
-        ),
-      ),
-    );
-  }
-}
-
-// Flying Characters Strategy
-class FlyingCharactersStrategy extends BaseAnimationStrategy {
-  final double maxOffset;
-  final bool randomDirection;
-  final double angle;
-  final bool enableBlur; // New property for blur effect
-  final double maxBlur; // Maximum blur amount
-
-  const FlyingCharactersStrategy({
-    this.maxOffset = 100.0,
-    this.randomDirection = true,
-    this.angle = math.pi / 2,
-    this.enableBlur = false, // Disabled by default
-    this.maxBlur = 8.0, // Default blur amount
-  }) : super();
-
-  @override
-  Widget buildAnimatedCharacter({
-    required String character,
-    required Animation<double> animation,
-    TextStyle? style,
-  }) {
-    return ValueListenableBuilder<double>(
-      valueListenable: animation,
-      builder: (context, value, _) {
-        final actualAngle = randomDirection
-            ? (math.Random().nextDouble() * 2 * math.pi)
-            : angle;
-        final offset = maxOffset * (1 - value);
-
-        Widget child = Text(character, style: style);
-
-        // Apply blur if enabled
-        if (enableBlur) {
-          child = ImageFiltered(
-            imageFilter: ImageFilter.blur(
-              sigmaX: (1 - value) * maxBlur,
-              sigmaY: (1 - value) * maxBlur,
-            ),
-            child: child,
-          );
-        }
-
-        // Apply translation and opacity
-        return Transform.translate(
-          offset: Offset(
-            math.cos(actualAngle) * offset,
-            math.sin(actualAngle) * offset,
-          ),
-          child: Opacity(
-            opacity: value,
-            child: child,
-          ),
-        );
-      },
     );
   }
 }
@@ -202,24 +121,37 @@ class EnhancedTextAnimationManager {
 
     const double animationDuration = 0.8;
     const double totalAnimationTime = 1.0 + animationDuration;
-    final double staggerOffset = _units.length > 1
-        ? (totalAnimationTime - animationDuration) / (_units.length - 1)
-        : 0.0;
 
-    _animations = List.generate(_units.length, (index) {
-      final double start =
-          (index * staggerOffset / totalAnimationTime).clamp(0.0, 1.0);
-      final double end =
-          ((index * staggerOffset + animationDuration) / totalAnimationTime)
-              .clamp(0.0, 1.0);
+    if (strategy.synchronizeAnimation) {
+      // When synchronized, all characters use the same timing
+      _animations = List.generate(_units.length, (index) {
+        return strategy.createAnimation(
+          controller: controller,
+          startTime: 0.0, // All start together
+          endTime: animationDuration, // All end together
+          curve: curve,
+        );
+      });
+    } else {
+      final double staggerOffset = _units.length > 1
+          ? (totalAnimationTime - animationDuration) / (_units.length - 1)
+          : 0.0;
 
-      return strategy.createAnimation(
-        controller: controller,
-        startTime: start,
-        endTime: end,
-        curve: curve,
-      );
-    });
+      _animations = List.generate(_units.length, (index) {
+        final double start =
+            (index * staggerOffset / totalAnimationTime).clamp(0.0, 1.0);
+        final double end =
+            ((index * staggerOffset + animationDuration) / totalAnimationTime)
+                .clamp(0.0, 1.0);
+
+        return strategy.createAnimation(
+          controller: controller,
+          startTime: start,
+          endTime: end,
+          curve: curve,
+        );
+      });
+    }
   }
 
   Animation<double> getAnimationForIndex(int index) => _animations[index];
