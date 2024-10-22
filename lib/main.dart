@@ -130,7 +130,7 @@ class HomeScreen extends StatelessWidget {
     ),
     AnimationExample(
       title: 'TextReveal',
-      builder: (context) => TextRevealDemo(),
+      builder: (context) => AnimationDemoScreen(),
       appBarColor: Colors.black,
     ),
   ];
