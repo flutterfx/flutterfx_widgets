@@ -68,10 +68,6 @@ Each animation is implemented as a separate widget, making it easy to understand
       Demonstrates how to create elegant visibility transitions with combined opacity and blur effects, easily applicable to any child widget.
     </td>
   </tr>
-
-
-  
-
   <tr>
     <td align="center">
       <img src="https://github.com/flutterfx/flutterfx_widgets/blob/main/external_asset/showcase_7.gif" alt="Border Beam" style="max-width:200px;">
@@ -114,6 +110,70 @@ Each animation is implemented as a separate widget, making it easy to understand
       <img src="https://github.com/flutterfx/flutterfx_widgets/blob/main/external_asset/showcase_11.gif" alt="Typing Animation" style="max-width:200px;">
     </td>
     <td><strong>Typing Animation</strong></td>
+    <td>
+      [wip]
+    </td>
+  </tr>
+  
+
+
+
+
+  <tr>
+    <td align="center">
+      <img src="https://github.com/flutterfx/flutterfx_widgets/blob/main/external_asset/showcase_rotating_text.gif" alt="Rotating text" style="max-width:200px;">
+    </td>
+    <td><strong>Rotating text</strong></td>
+    <td>
+      [wip]
+    </td>
+  </tr>
+
+  <tr>
+    <td align="center">
+      <img src="https://github.com/flutterfx/flutterfx_widgets/blob/main/external_asset/showcase_text_blur.gif" alt="Text blur animation" style="max-width:200px;">
+    </td>
+    <td><strong>Text blur animation</strong></td>
+    <td>
+      [wip]
+    </td>
+  </tr>
+
+  <tr>
+    <td align="center">
+      <img src="https://github.com/flutterfx/flutterfx_widgets/blob/main/external_asset/showcase_text_float_blur.gif" alt="Text blur floating animation" style="max-width:200px;">
+    </td>
+    <td><strong>Text blur floating animation</strong></td>
+    <td>
+      [wip]
+    </td>
+  </tr>
+
+  <tr>
+    <td align="center">
+      <img src="https://github.com/flutterfx/flutterfx_widgets/blob/main/external_asset/showcase_text_chaos_blur.gif" alt="Text chaos blur animation" style="max-width:200px;">
+    </td>
+    <td><strong>Text chaos blur animation</strong></td>
+    <td>
+      [wip]
+    </td>
+  </tr>
+
+  <tr>
+    <td align="center">
+      <img src="https://github.com/flutterfx/flutterfx_widgets/blob/main/external_asset/showcase_text_baloon_blur.gif" alt="Text baloon fizzle" style="max-width:200px;">
+    </td>
+    <td><strong>Text baloon fizzle</strong></td>
+    <td>
+      [wip]
+    </td>
+  </tr>
+
+  <tr>
+    <td align="center">
+      <img src="https://github.com/flutterfx/flutterfx_widgets/blob/main/external_asset/showcase_text_flip_up.gif" alt="Text flip animation" style="max-width:200px;">
+    </td>
+    <td><strong>Text flip animation</strong></td>
     <td>
       [wip]
     </td>
