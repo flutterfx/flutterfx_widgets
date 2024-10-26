@@ -13,6 +13,7 @@ import 'package:fx_2_folder/fx_7_border_beam/border_beam.dart';
 import 'package:fx_2_folder/fx_7_border_beam/border_beam_demo.dart';
 import 'package:fx_2_folder/fx_8_meteor_border/meteors_demo.dart';
 import 'package:fx_2_folder/fx_9_neon_card/neon_card_demo.dart';
+import 'package:fx_2_folder/globe/3d_cloude_demo.dart';
 import 'package:fx_2_folder/smoke/smoke.dart';
 import 'package:fx_2_folder/vinyl/vinyl.dart';
 import 'package:fx_2_folder/visibility/blur_fade.dart';
@@ -133,6 +134,11 @@ class HomeScreen extends StatelessWidget {
       builder: (context) => AnimationDemoScreen(),
       appBarColor: Colors.black,
     ),
+    AnimationExample(
+      title: 'Globe of Logos',
+      builder: (context) => TechStackDemo(),
+      appBarColor: Colors.black,
+    ),
   ];
 
   HomeScreen({super.key});
@@ -149,20 +155,20 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Automatically navigate to the first example on launch (e.g., "Folder").
-    // Future.microtask(() {
-    //   if (examples.isNotEmpty) {
-    //     Navigator.push(
-    //       context,
-    //       MaterialPageRoute(
-    //         builder: (context) {
-    //           return DetailScreen(
-    //               example: examples[examples.length -
-    //                   1]); // Automatically selecting the first example
-    //         },
-    //       ),
-    //     );
-    //   }
-    // });
+    Future.microtask(() {
+      if (examples.isNotEmpty) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return DetailScreen(
+                  example: examples[examples.length -
+                      1]); // Automatically selecting the first example
+            },
+          ),
+        );
+      }
+    });
     return Scaffold(
       appBar: AppBar(
         title: Text('Animation Showcase'),
