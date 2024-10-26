@@ -178,6 +178,26 @@ Each animation is implemented as a separate widget, making it easy to understand
       [wip]
     </td>
   </tr>
+
+    <tr>
+    <td align="center">
+      <img src="https://github.com/flutterfx/flutterfx_widgets/blob/main/external_asset/showcase_logo_globe.gif" alt="Text flip animation" style="max-width:200px;">
+    </td>
+    <td><strong>An interactive globe</strong></td>
+    <td>
+      An interactive globe made of logos.
+    </td>
+  </tr>
+
+    <tr>
+    <td align="center">
+      <img src="https://github.com/flutterfx/flutterfx_widgets/blob/main/external_asset/showcase_celebrate.gif" alt="Text flip animation" style="max-width:200px;">
+    </td>
+    <td><strong>Celebrate Fun</strong></td>
+    <td>
+      A fun animation on user interaction!
+    </td>
+  </tr>
   <!-- Add more rows here as we create new fx-widgets -->
 </table>
 
