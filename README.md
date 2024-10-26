@@ -179,7 +179,7 @@ Each animation is implemented as a separate widget, making it easy to understand
     </td>
   </tr>
 
-    <tr>
+  <tr>
     <td align="center">
       <img src="https://github.com/flutterfx/flutterfx_widgets/blob/main/external_asset/showcase_logo_globe.gif" alt="Text flip animation" style="max-width:200px;">
     </td>
@@ -189,7 +189,7 @@ Each animation is implemented as a separate widget, making it easy to understand
     </td>
   </tr>
 
-    <tr>
+  <tr>
     <td align="center">
       <img src="https://github.com/flutterfx/flutterfx_widgets/blob/main/external_asset/showcase_celebrate.gif" alt="Text flip animation" style="max-width:200px;">
     </td>
