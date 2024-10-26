@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fx_2_folder/books/books.dart';
+import 'package:fx_2_folder/celebrate/celebrate_demo.dart';
 import 'package:fx_2_folder/circles_selector/CirclesHomeWidget.dart';
 import 'package:fx_2_folder/folder_shape/folder_home.dart';
 import 'package:fx_2_folder/frosty_card/frosty_card.dart';
@@ -137,6 +138,11 @@ class HomeScreen extends StatelessWidget {
     AnimationExample(
       title: 'Globe of Logos',
       builder: (context) => TechStackDemo(),
+      appBarColor: Colors.black,
+    ),
+    AnimationExample(
+      title: 'Celebrate',
+      builder: (context) => CelebrateHomeWidget(),
       appBarColor: Colors.black,
     ),
   ];
