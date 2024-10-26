@@ -1,50 +1,56 @@
 import 'dart:async';
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 
 class HyperText extends StatefulWidget {
-  final String text;
-  final Duration duration;
-  final TextStyle? textStyle;
-  final bool animationTrigger;
-  final bool animateOnLoad;
-
   const HyperText({
-    Key? key,
+    super.key,
     required this.text,
     this.duration = const Duration(milliseconds: 800),
-    this.textStyle,
+    this.style,
     this.animationTrigger = false,
     this.animateOnLoad = true,
-  }) : super(key: key);
+  });
+
+  final bool animateOnLoad;
+  final bool animationTrigger;
+  final Duration duration;
+  final TextStyle? style;
+  final String text;
 
   @override
   _HyperTextState createState() => _HyperTextState();
 }
 
 class _HyperTextState extends State<HyperText> {
-  late List<String> displayText;
-  Timer? _timer;
-  double iterations = 0;
-  bool isFirstRender = true;
-  final Random _random = Random();
   int animationCount = 0;
+  late List<String> displayText;
+  bool isFirstRender = true;
+  double iterations = 0;
 
-  @override
-  void initState() {
-    super.initState();
-    displayText = widget.text.split('');
-    if (widget.animateOnLoad) {
-      _startAnimation();
-    }
-  }
+  final Random _random = Random();
+  Timer? _timer;
 
   @override
   void didUpdateWidget(HyperText oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.animationTrigger != oldWidget.animationTrigger &&
         widget.animationTrigger) {
+      _startAnimation();
+    }
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    displayText = widget.text.split('');
+    if (widget.animateOnLoad) {
       _startAnimation();
     }
   }
@@ -56,7 +62,8 @@ class _HyperTextState extends State<HyperText> {
     final currentAnimationCount = animationCount;
 
     _timer = Timer.periodic(
-      widget.duration ~/ (widget.text.length * 10),
+      widget.duration ~/
+          (widget.text.isNotEmpty ? widget.text.length * 10 : 10),
       (timer) {
         if (!widget.animateOnLoad && isFirstRender) {
           timer.cancel();
@@ -89,12 +96,6 @@ class _HyperTextState extends State<HyperText> {
   }
 
   @override
-  void dispose() {
-    _timer?.cancel();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
@@ -104,9 +105,9 @@ class _HyperTextState extends State<HyperText> {
           return AnimatedSwitcher(
             duration: const Duration(milliseconds: 50),
             child: Text(
-              displayText[index].toUpperCase(),
+              displayText[index],
               key: ValueKey<String>('$animationCount-$index'),
-              style: widget.textStyle ?? Theme.of(context).textTheme.titleLarge,
+              style: widget.style ?? Theme.of(context).textTheme.titleLarge,
             ),
           );
         }),
