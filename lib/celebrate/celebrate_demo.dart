@@ -13,7 +13,7 @@ class CelebrateHomeWidget extends StatelessWidget {
         particleImage: "your_image_url",
         child: ElevatedButton(
           onPressed: () {},
-          child: Text('Click Me!'),
+          child: Text('LONG PRESS!'),
         ),
       ),
     ));

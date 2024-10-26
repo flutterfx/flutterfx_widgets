@@ -90,7 +90,7 @@ class _CoolModeState extends State<CoolMode> with TickerProviderStateMixin {
 
     return Offset(
       localPosition.dx + size.width / 2,
-      localPosition.dy + size.width / 2, // Start from top of the button
+      localPosition.dy + size.width / 4, // Start from top of the button
     );
   }
 
@@ -161,16 +161,27 @@ class _CoolModeState extends State<CoolMode> with TickerProviderStateMixin {
         children: [
           // First layer: The button
           Center(
-            child: GestureDetector(
-              onTapDown: (_) => _isPointerDown = true,
-              onTapUp: (_) => _isPointerDown = false,
-              onTapCancel: () => _isPointerDown = false,
-              child: KeyedSubtree(
-                key: _childKey,
-                child: widget.child,
-              ),
+              child: GestureDetector(
+            onTapDown: (_) {
+              setState(() {
+                _isPointerDown = true;
+              });
+            },
+            onTapUp: (_) {
+              setState(() {
+                _isPointerDown = false;
+              });
+            },
+            onTapCancel: () {
+              setState(() {
+                _isPointerDown = false;
+              });
+            },
+            child: KeyedSubtree(
+              key: _childKey,
+              child: widget.child,
             ),
-          ),
+          )),
           // Second layer: The particles (now on top)
           if (_particles.isNotEmpty)
             Positioned.fill(
