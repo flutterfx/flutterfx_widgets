@@ -1,15 +1,23 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:fx_2_folder/fx_10_hyper_text/hyper_text.dart';
+import 'hyper_text.dart';
 
 class HyperTextDemo extends StatefulWidget {
+  const HyperTextDemo({super.key});
+
   @override
   _HyperTextDemoState createState() => _HyperTextDemoState();
 }
 
 class _HyperTextDemoState extends State<HyperTextDemo> {
-  bool _triggerAnimation = false;
   Timer? _resetTimer;
+  bool _triggerAnimation = false;
+
+  @override
+  void dispose() {
+    _resetTimer?.cancel();
+    super.dispose();
+  }
 
   void _handleAnimationTrigger() {
     setState(() {
@@ -25,12 +33,6 @@ class _HyperTextDemoState extends State<HyperTextDemo> {
         _triggerAnimation = false;
       });
     });
-  }
-
-  @override
-  void dispose() {
-    _resetTimer?.cancel();
-    super.dispose();
   }
 
   @override
@@ -51,7 +53,7 @@ class _HyperTextDemoState extends State<HyperTextDemo> {
                       child: Center(
                         child: HyperText(
                           text: "Hyper Text",
-                          textStyle: TextStyle(
+                          style: TextStyle(
                             fontSize: 32,
                             fontWeight: FontWeight.bold,
                             color: Colors.white70,
