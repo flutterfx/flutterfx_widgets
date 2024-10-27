@@ -116,7 +116,7 @@ class _CoolModeState extends State<CoolMode> with TickerProviderStateMixin {
   }
 
   void _addParticle() {
-    final List<double> sizes = [15, 20, 25, 35, 45];
+    final List<double> sizes = [15, 18, 21, 23, 26];
     final size = sizes[_random.nextInt(sizes.length)].toDouble();
     final speedHorz = widget.speedHorz ?? _random.nextDouble() * 10;
     final speedUp = widget.speedUp ?? _random.nextDouble() * 25;
