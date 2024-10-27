@@ -20,12 +20,12 @@ class IconItem {
   });
 }
 
-class IconCloud extends StatefulWidget {
+class GlobeOfLogos extends StatefulWidget {
   final List<IconData> icons;
   final double radius;
   final Color defaultIconColor;
 
-  const IconCloud({
+  const GlobeOfLogos({
     Key? key,
     required this.icons,
     this.radius = 150.0,
@@ -33,10 +33,10 @@ class IconCloud extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<IconCloud> createState() => _IconCloudState();
+  State<GlobeOfLogos> createState() => _GlobeOfLogosState();
 }
 
-class _IconCloudState extends State<IconCloud>
+class _GlobeOfLogosState extends State<GlobeOfLogos>
     with SingleTickerProviderStateMixin {
   List<IconItem> iconItems = [];
   late AnimationController _controller;

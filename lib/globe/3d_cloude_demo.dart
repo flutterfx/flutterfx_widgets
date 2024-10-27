@@ -52,7 +52,7 @@ class TechStackCloud extends StatelessWidget {
           color: Colors.black87,
           borderRadius: BorderRadius.circular(16),
         ),
-        child: IconCloud(
+        child: GlobeOfLogos(
           icons: icons,
           radius: 120,
           defaultIconColor: Colors.white70,
