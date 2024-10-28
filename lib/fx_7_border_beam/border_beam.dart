@@ -1,19 +1,9 @@
 import 'package:flutter/material.dart';
-import 'dart:math' as math;
 import 'dart:ui' as ui;
 
 class BorderBeam extends StatefulWidget {
-  final Widget child;
-  final double duration;
-  final double borderWidth;
-  final Color colorFrom;
-  final Color colorTo;
-  final Color staticBorderColor;
-  final BorderRadius borderRadius;
-  final EdgeInsetsGeometry padding;
-
   const BorderBeam({
-    Key? key,
+    super.key,
     required this.child,
     this.duration = 15,
     this.borderWidth = 1.5,
@@ -22,7 +12,16 @@ class BorderBeam extends StatefulWidget {
     this.staticBorderColor = const Color(0xFFCCCCCC),
     this.borderRadius = const BorderRadius.all(Radius.circular(12)),
     this.padding = EdgeInsets.zero,
-  }) : super(key: key);
+  });
+
+  final BorderRadius borderRadius;
+  final double borderWidth;
+  final Widget child;
+  final Color colorFrom;
+  final Color colorTo;
+  final double duration;
+  final EdgeInsetsGeometry padding;
+  final Color staticBorderColor;
 
   @override
   _BorderBeamState createState() => _BorderBeamState();
@@ -30,8 +29,14 @@ class BorderBeam extends StatefulWidget {
 
 class _BorderBeamState extends State<BorderBeam>
     with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
   late Animation<double> _animation;
+  late AnimationController _controller;
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -42,12 +47,6 @@ class _BorderBeamState extends State<BorderBeam>
     );
     _animation = Tween<double>(begin: 0, end: 1).animate(_controller);
     _controller.repeat();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
   }
 
   @override
@@ -75,13 +74,6 @@ class _BorderBeamState extends State<BorderBeam>
 }
 
 class BorderBeamPainter extends CustomPainter {
-  final double progress;
-  final double borderWidth;
-  final Color colorFrom;
-  final Color colorTo;
-  final Color staticBorderColor;
-  final BorderRadius borderRadius;
-
   BorderBeamPainter({
     required this.progress,
     required this.borderWidth,
@@ -90,6 +82,13 @@ class BorderBeamPainter extends CustomPainter {
     required this.staticBorderColor,
     required this.borderRadius,
   });
+
+  final BorderRadius borderRadius;
+  final double borderWidth;
+  final Color colorFrom;
+  final Color colorTo;
+  final double progress;
+  final Color staticBorderColor;
 
   @override
   void paint(Canvas canvas, Size size) {
