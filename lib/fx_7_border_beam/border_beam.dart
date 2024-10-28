@@ -51,24 +51,27 @@ class _BorderBeamState extends State<BorderBeam>
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _animation,
-      builder: (context, child) {
-        return CustomPaint(
-          painter: BorderBeamPainter(
-            progress: _animation.value,
-            borderWidth: widget.borderWidth,
-            colorFrom: widget.colorFrom,
-            colorTo: widget.colorTo,
-            staticBorderColor: widget.staticBorderColor,
-            borderRadius: widget.borderRadius,
-          ),
-          child: Padding(
-            padding: widget.padding,
-            child: widget.child,
-          ),
-        );
-      },
+    return Padding(
+      padding: EdgeInsets.all(widget.borderWidth / 2),
+      child: AnimatedBuilder(
+        animation: _animation,
+        builder: (context, child) {
+          return CustomPaint(
+            painter: BorderBeamPainter(
+              progress: _animation.value,
+              borderWidth: widget.borderWidth,
+              colorFrom: widget.colorFrom,
+              colorTo: widget.colorTo,
+              staticBorderColor: widget.staticBorderColor,
+              borderRadius: widget.borderRadius,
+            ),
+            child: Padding(
+              padding: widget.padding,
+              child: widget.child,
+            ),
+          );
+        },
+      ),
     );
   }
 }
