@@ -46,8 +46,8 @@ class TechStackCloud extends StatelessWidget {
 
     return Center(
       child: Container(
-        width: 300,
-        height: 300,
+        width: double.infinity,
+        height: double.infinity,
         decoration: BoxDecoration(
           color: Colors.black87,
           borderRadius: BorderRadius.circular(16),

@@ -7,15 +7,16 @@ class CelebrateHomeWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Center(
-      // Or any other positioning widget
-      child: CoolMode(
-        particleImage: "your_image_url",
-        child: ElevatedButton(
-          onPressed: () {},
-          child: Text('LONG PRESS!'),
+      body: Center(
+        // Or any other positioning widget
+        child: CoolMode(
+          particleImage: "your_image_url",
+          child: ElevatedButton(
+            onPressed: () {},
+            child: Text('LONG PRESS!'),
+          ),
         ),
       ),
-    ));
+    );
   }
 }
