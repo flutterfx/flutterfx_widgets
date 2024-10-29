@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:fx_2_folder/fx_12_rotating_text/text_rotate.dart';
-import 'package:fx_2_folder/fx_13_rotating_text_with_blur/sweeping_reveal.dart';
+import 'package:fx_2_folder/fx_13_rotating_text_with_blur/strategies/all_strategies.dart';
+import 'package:fx_2_folder/fx_13_rotating_text_with_blur/text_rotate_blur.dart';
+import 'package:fx_2_folder/fx_14_text_reveal/strategies/FadeBlurStrategy.dart';
+
+import '../fx_14_text_reveal/text_reveal_widget.dart';
 
 class TextRotateBlurDemo extends StatefulWidget {
   const TextRotateBlurDemo({super.key});
@@ -10,45 +13,128 @@ class TextRotateBlurDemo extends StatefulWidget {
 }
 
 class _TextRotateBlurDemoState extends State<TextRotateBlurDemo> {
-  bool _isRevealed = false;
+  // Idealy have a intro anim, exit anim and a rotate anim!
+  // eg. intro strategy choice, exit strategy choice, rotate strategy choice
+  // like the reveal text strategies.
 
+  bool _isAnimating = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Sweeping Reveal Demo'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SweepingReveal(
-              child: RotatingTextWidget(
-                text: 'Your rotating text here',
-                radius: 100.0,
-                textStyle: TextStyle(fontSize: 18, color: Colors.blue),
-                rotationDuration: Duration(seconds: 20000),
-              ),
-              duration: Duration(seconds: 2),
-              reveal: true,
-              blurSigma: 80.0,
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () => {
-                setState(() {
-                  _isRevealed = !_isRevealed;
-                })
-              },
-              child: Text('Reveal'),
-            ),
-            // ElevatedButton(
-            //   onPressed: () => _revealKey.currentState?.hide(),
-            //   child: Text('Hide'),
-            // ),
-          ],
-        ),
+      backgroundColor: Colors.white,
+      body: Column(
+        children: [
+          // Example 1: Fade in, Wave rotation, Fade out
+          EnhancedRotatingText(
+            text: 'Rotating text',
+            radius: 100,
+            textStyle: TextStyle(fontSize: 24, color: Colors.blue),
+            trigger: _isAnimating,
+            entryStrategy: FadeBlurStrategy(maxBlur: 10),
+            rotationStrategy: DefaultRotationStrategy(),
+            exitStrategy: FadeBlurStrategy(maxBlur: 10),
+          ),
+
+          // SizedBox(height: 20),
+
+          // // Example 2: Flying characters entry, Bounce rotation, Spiral exit
+          // EnhancedRotatingText(
+          //   text: 'BOUNCE & SPIRAL',
+          //   radius: 100,
+          //   textStyle: TextStyle(fontSize: 24, color: Colors.purple),
+          //   trigger: _isAnimating,
+          //   entryStrategy: FlyingCharactersStrategy(),
+          //   rotationStrategy: BounceRotationStrategy(
+          //     bounceHeight: 25,
+          //     bounceFrequency: 2,
+          //   ),
+          //   exitStrategy: SwirlFloatStrategy(),
+          // ),
+
+          // SizedBox(height: 20),
+
+          // // Example 3: Swirl entry, Elastic rotation, Flip exit
+          // EnhancedRotatingText(
+          //   text: 'ELASTIC MOTION',
+          //   radius: 100,
+          //   textStyle: TextStyle(fontSize: 24, color: Colors.green),
+          //   trigger: _isAnimating,
+          //   entryStrategy: SwirlFloatStrategy(),
+          //   rotationStrategy: ElasticRotationStrategy(
+          //     elasticity: 0.4,
+          //     frequency: 3,
+          //   ),
+          //   exitStrategy: FlipUpStrategy(),
+          // ),
+
+          // SizedBox(height: 20),
+
+          // Example 4: Blur entry, Vibration rotation, Float exit
+          // EnhancedRotatingText(
+          //   text: 'VIBRATING TEXT',
+          //   radius: 100,
+          //   textStyle: TextStyle(fontSize: 24, color: Colors.orange),
+          //   trigger: _isAnimating,
+          //   entryStrategy: FadeBlurStrategy(),
+          //   rotationStrategy: VibrationRotationStrategy(
+          //     vibrationIntensity: 4,
+          //     vibrationSpeed: 20,
+          //   ),
+          //   exitStrategy: SwirlFloatStrategy(),
+          // ),
+
+          // SizedBox(height: 20),
+
+          // Control button
+          ElevatedButton(
+            onPressed: () {
+              setState(() {
+                _isAnimating = !_isAnimating;
+              });
+            },
+            child: Text(_isAnimating ? 'Stop Animation' : 'Start Animation'),
+          ),
+        ],
       ),
     );
+    // return const Scaffold(
+    //   body: Center(child: Text('Rotating text with blur')),
+    // );
+  }
+}
+
+// Let's also create a simpler FadeBlurStrategy for testing
+class FadeBlurStrategy extends TextAnimationStrategy {
+  final double maxBlur;
+
+  const FadeBlurStrategy({this.maxBlur = 8.0}) : super();
+
+  @override
+  Widget buildAnimatedCharacter({
+    required String character,
+    required Animation<double> animation,
+    TextStyle? style,
+  }) {
+    return ValueListenableBuilder<double>(
+      valueListenable: animation,
+      builder: (context, value, _) {
+        return Text(
+          character,
+          style: style?.copyWith(
+            color: style.color?.withOpacity(value),
+          ),
+        );
+      },
+    );
+  }
+
+  @override
+  Animation<double> createAnimation(
+      {required AnimationController controller,
+      required double startTime,
+      required double endTime,
+      required Curve curve}) {
+    // TODO: implement createAnimation
+    throw UnimplementedError();
   }
 }
