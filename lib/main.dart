@@ -16,7 +16,9 @@ import 'package:fx_2_folder/fx_8_meteor_border/meteors_demo.dart';
 import 'package:fx_2_folder/fx_9_neon_card/neon_card_demo.dart';
 import 'package:fx_2_folder/globe/3d_cloude_demo.dart';
 import 'package:fx_2_folder/light_effect/light_effect_demo.dart';
+import 'package:fx_2_folder/orbit/orbit_demo.dart';
 import 'package:fx_2_folder/smoke/smoke.dart';
+import 'package:fx_2_folder/toast/toast_demo.dart';
 import 'package:fx_2_folder/vinyl/vinyl.dart';
 import 'package:fx_2_folder/visibility/blur_fade.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -149,6 +151,16 @@ class HomeScreen extends StatelessWidget {
     AnimationExample(
       title: 'LightEffect',
       builder: (context) => LightEffectWidgetDemo(),
+      appBarColor: Colors.black,
+    ),
+    AnimationExample(
+      title: 'Toast[wip]',
+      builder: (context) => ToastDemo(),
+      appBarColor: Colors.black,
+    ),
+    AnimationExample(
+      title: 'Orbit',
+      builder: (context) => OrbitDemo(),
       appBarColor: Colors.black,
     ),
   ];
