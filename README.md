@@ -1,8 +1,10 @@
-# Flutterfx Widget - Animated flutter widgets [WIP]
+# Flutterfx Widget - Animated flutter widgets
 
 A collection of animated flutter widgets. New animated widgets will be added weekly. Targetting 50 animated widgets by the end of this year. 
 
 Each animation is implemented as a separate widget, making it easy to understand and integrate into your own projects.
+
+[Docs are here](https://www.flutterfx.com/docs)
 
 <table>
   <tr>
