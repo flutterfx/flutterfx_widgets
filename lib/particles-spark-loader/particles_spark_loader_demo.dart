@@ -27,8 +27,8 @@ class _ParticlesDemoState extends State<ParticlesSparkLoaderDemo> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(
-                  width: 25,
-                  height: 25,
+                  width: 40,
+                  height: 40,
                   child: StepRotatingShape(
                     size: 25,
                     rotationDuration: const Duration(
