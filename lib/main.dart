@@ -17,6 +17,7 @@ import 'package:fx_2_folder/fx_9_neon_card/neon_card_demo.dart';
 import 'package:fx_2_folder/globe/3d_cloude_demo.dart';
 import 'package:fx_2_folder/light_effect/light_effect_demo.dart';
 import 'package:fx_2_folder/orbit/orbit_demo.dart';
+import 'package:fx_2_folder/particles-github-spark/particles_github_spark_demo.dart';
 import 'package:fx_2_folder/particles/particles_demo.dart';
 import 'package:fx_2_folder/smoke/smoke.dart';
 import 'package:fx_2_folder/toast/toast_demo.dart';
@@ -169,6 +170,16 @@ class HomeScreen extends StatelessWidget {
       builder: (context) => ParticlesDemo(),
       appBarColor: Colors.black,
     ),
+    AnimationExample(
+      title: 'Particles like GithubSpark',
+      builder: (context) => const ParticlesGithubSparkDemo(),
+      appBarColor: Colors.black,
+    ),
+    // AnimationExample(
+    //   title: 'GithubSpark Loader',
+    //   builder: (context) => ParticlesDemo(),
+    //   appBarColor: Colors.black,
+    // ),
   ];
 
   HomeScreen({super.key});
@@ -185,20 +196,20 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Automatically navigate to the first example on launch (e.g., "Folder").
-    // Future.microtask(() {
-    //   if (examples.isNotEmpty) {
-    //     Navigator.push(
-    //       context,
-    //       MaterialPageRoute(
-    //         builder: (context) {
-    //           return DetailScreen(
-    //               example: examples[examples.length -
-    //                   1]); // Automatically selecting the first example
-    //         },
-    //       ),
-    //     );
-    //   }
-    // });
+    Future.microtask(() {
+      if (examples.isNotEmpty) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return DetailScreen(
+                  example: examples[examples.length -
+                      1]); // Automatically selecting the first example
+            },
+          ),
+        );
+      }
+    });
     return Scaffold(
       appBar: AppBar(
         title: const Text('Animation Showcase'),
