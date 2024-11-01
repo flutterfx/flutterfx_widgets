@@ -22,12 +22,12 @@ class _ParticlesDemoState extends State<ParticlesGithubSparkDemo> {
         child: const Stack(
           children: [
             Positioned.fill(
-                child: RisingParticles(
-              quantity: 20,
-              colors: [Colors.blue, Colors.purple, Colors.pink],
-              maxSize: 8,
-              minSize: 5,
-            )),
+              child: RisingParticles(
+                quantity: 20,
+                maxSize: 8,
+                minSize: 5,
+              ),
+            ),
           ],
         ),
       ),

@@ -18,6 +18,7 @@ import 'package:fx_2_folder/globe/3d_cloude_demo.dart';
 import 'package:fx_2_folder/light_effect/light_effect_demo.dart';
 import 'package:fx_2_folder/orbit/orbit_demo.dart';
 import 'package:fx_2_folder/particles-github-spark/particles_github_spark_demo.dart';
+import 'package:fx_2_folder/particles-spark-loader/particles_spark_loader_demo.dart';
 import 'package:fx_2_folder/particles/particles_demo.dart';
 import 'package:fx_2_folder/smoke/smoke.dart';
 import 'package:fx_2_folder/toast/toast_demo.dart';
@@ -175,11 +176,11 @@ class HomeScreen extends StatelessWidget {
       builder: (context) => const ParticlesGithubSparkDemo(),
       appBarColor: Colors.black,
     ),
-    // AnimationExample(
-    //   title: 'GithubSpark Loader',
-    //   builder: (context) => ParticlesDemo(),
-    //   appBarColor: Colors.black,
-    // ),
+    AnimationExample(
+      title: 'GithubSpark Loader',
+      builder: (context) => ParticlesSparkLoaderDemo(),
+      appBarColor: Colors.black,
+    ),
   ];
 
   HomeScreen({super.key});
