@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:fx_2_folder/books/books.dart';
 import 'package:fx_2_folder/celebrate/celebrate_demo.dart';
 import 'package:fx_2_folder/circles_selector/CirclesHomeWidget.dart';
+import 'package:fx_2_folder/dots/dots_demo.dart';
 import 'package:fx_2_folder/folder_shape/folder_home.dart';
 import 'package:fx_2_folder/frosty_card/frosty_card.dart';
 import 'package:fx_2_folder/fx_10_hyper_text/hyper_text_demo.dart';
@@ -179,6 +180,11 @@ class HomeScreen extends StatelessWidget {
     AnimationExample(
       title: 'GithubSpark Loader',
       builder: (context) => ParticlesSparkLoaderDemo(),
+      appBarColor: Colors.black,
+    ),
+    AnimationExample(
+      title: 'DotPattern',
+      builder: (context) => DotPatternWidget(),
       appBarColor: Colors.black,
     ),
   ];
