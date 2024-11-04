@@ -22,6 +22,7 @@ import 'package:fx_2_folder/particles-github-spark/particles_github_spark_demo.d
 import 'package:fx_2_folder/particles-spark-loader/particles_spark_loader_demo.dart';
 import 'package:fx_2_folder/particles/particles_demo.dart';
 import 'package:fx_2_folder/smoke/smoke.dart';
+import 'package:fx_2_folder/text-on-path/text_on_path_demo.dart';
 import 'package:fx_2_folder/toast/toast_demo.dart';
 import 'package:fx_2_folder/vinyl/vinyl.dart';
 import 'package:fx_2_folder/visibility/blur_fade.dart';
@@ -187,6 +188,11 @@ class HomeScreen extends StatelessWidget {
       builder: (context) => DotPatternWidget(),
       appBarColor: Colors.black,
     ),
+    AnimationExample(
+      title: 'Text On Path',
+      builder: (context) => TextOnPathDemo(),
+      appBarColor: Colors.black,
+    ),
   ];
 
   HomeScreen({super.key});
@@ -203,20 +209,20 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Automatically navigate to the first example on launch (e.g., "Folder").
-    Future.microtask(() {
-      if (examples.isNotEmpty) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) {
-              return DetailScreen(
-                  example: examples[examples.length -
-                      1]); // Automatically selecting the first example
-            },
-          ),
-        );
-      }
-    });
+    // Future.microtask(() {
+    //   if (examples.isNotEmpty) {
+    //     Navigator.push(
+    //       context,
+    //       MaterialPageRoute(
+    //         builder: (context) {
+    //           return DetailScreen(
+    //               example: examples[examples.length -
+    //                   1]); // Automatically selecting the first example
+    //         },
+    //       ),
+    //     );
+    //   }
+    // });
     return Scaffold(
       appBar: AppBar(
         title: const Text('Animation Showcase'),
