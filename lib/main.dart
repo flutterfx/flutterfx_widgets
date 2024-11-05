@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fx_2_folder/background-beam/background_beam_demo.dart';
+import 'package:fx_2_folder/background-exploding-beam/background_beam_explosion_demo.dart';
 import 'package:fx_2_folder/books/books.dart';
 import 'package:fx_2_folder/celebrate/celebrate_demo.dart';
 import 'package:fx_2_folder/circles_selector/CirclesHomeWidget.dart';
@@ -197,6 +198,11 @@ class HomeScreen extends StatelessWidget {
     AnimationExample(
       title: 'Background Beams',
       builder: (context) => BackgroundBeamDemo(),
+      appBarColor: Colors.black,
+    ),
+    AnimationExample(
+      title: 'Exploding Beams',
+      builder: (context) => ExplodingBeamDemo(),
       appBarColor: Colors.black,
     ),
   ];
