@@ -9,7 +9,7 @@ class BorderBeamsBackground extends StatelessWidget {
   final int numberOfSimultaneousBeams;
   const BorderBeamsBackground({
     super.key,
-    this.numberOfSimultaneousBeams = 5,
+    this.numberOfSimultaneousBeams = 10,
   });
 
   @override
@@ -98,7 +98,7 @@ class _BackgroundBeamsState extends State<BackgroundBeams>
 
     final controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 2000),
+      duration: const Duration(milliseconds: 4000),
     );
 
     final beamIndex = random.nextInt(25); // Total number of beam paths
@@ -253,8 +253,8 @@ class BeamsPainter extends CustomPainter {
             gradientEnd,
             [
               const Color(0xFFAE48FF).withOpacity(0.0),
-              const Color(0xFF6344F5),
-              const Color(0xFF18CCFC),
+              const Color.fromARGB(255, 30, 8, 126),
+              const Color.fromARGB(255, 31, 17, 95),
               const Color(0xFF18CCFC),
             ],
             [0.0, 0.2, 0.6, 1.0],
