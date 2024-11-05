@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fx_2_folder/background-beam/background_beam_demo.dart';
 import 'package:fx_2_folder/books/books.dart';
 import 'package:fx_2_folder/celebrate/celebrate_demo.dart';
 import 'package:fx_2_folder/circles_selector/CirclesHomeWidget.dart';
@@ -193,6 +194,11 @@ class HomeScreen extends StatelessWidget {
       builder: (context) => TextOnPathDemo(),
       appBarColor: Colors.black,
     ),
+    AnimationExample(
+      title: 'Background Beams',
+      builder: (context) => BackgroundBeamDemo(),
+      appBarColor: Colors.black,
+    ),
   ];
 
   HomeScreen({super.key});
@@ -209,20 +215,20 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Automatically navigate to the first example on launch (e.g., "Folder").
-    // Future.microtask(() {
-    //   if (examples.isNotEmpty) {
-    //     Navigator.push(
-    //       context,
-    //       MaterialPageRoute(
-    //         builder: (context) {
-    //           return DetailScreen(
-    //               example: examples[examples.length -
-    //                   1]); // Automatically selecting the first example
-    //         },
-    //       ),
-    //     );
-    //   }
-    // });
+    Future.microtask(() {
+      if (examples.isNotEmpty) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return DetailScreen(
+                  example: examples[examples.length -
+                      1]); // Automatically selecting the first example
+            },
+          ),
+        );
+      }
+    });
     return Scaffold(
       appBar: AppBar(
         title: const Text('Animation Showcase'),
