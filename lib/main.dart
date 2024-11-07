@@ -24,6 +24,8 @@ import 'package:fx_2_folder/particles-github-spark/particles_github_spark_demo.d
 import 'package:fx_2_folder/particles-spark-loader/particles_spark_loader_demo.dart';
 import 'package:fx_2_folder/particles/particles_demo.dart';
 import 'package:fx_2_folder/primitives/primitives_demo.dart';
+import 'package:fx_2_folder/slider/slider.dart';
+import 'package:fx_2_folder/slider/slider_demo.dart';
 import 'package:fx_2_folder/smoke/smoke.dart';
 import 'package:fx_2_folder/text-on-path/text_on_path_demo.dart';
 import 'package:fx_2_folder/toast/toast_demo.dart';
@@ -211,6 +213,11 @@ class HomeScreen extends StatelessWidget {
       builder: (context) => MotionPrimitiveDemo(),
       appBarColor: Colors.black,
     ),
+    AnimationExample(
+      title: 'Work Life Slider',
+      builder: (context) => SliderDemo(),
+      appBarColor: Colors.black,
+    ),
   ];
 
   HomeScreen({super.key});
@@ -234,7 +241,7 @@ class HomeScreen extends StatelessWidget {
           MaterialPageRoute(
             builder: (context) {
               return DetailScreen(
-                example: examples[examples.length - 3],
+                example: examples[examples.length - 1],
               ); // Automatically selecting the first example
             },
           ),
