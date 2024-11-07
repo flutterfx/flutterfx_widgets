@@ -22,7 +22,7 @@ class BorderBeamsBackground extends StatelessWidget {
           const SafeArea(
             child: Center(
               child: Text(
-                'Hey!',
+                'Background Beams!',
                 style: TextStyle(color: Colors.white, fontSize: 34),
               ),
             ),
@@ -166,7 +166,7 @@ class BeamsPainter extends CustomPainter {
   });
 
   List<Path> getBeamPaths(Size size) {
-    const numberOfBeams = 35;
+    const numberOfBeams = 25;
     const beamPadding = 50.0;
 
     // Add extra width padding to ensure coverage on edges
@@ -236,7 +236,9 @@ class BeamsPainter extends CustomPainter {
         shootingStarPath.addPath(pathMetrics.extractPath(0, end), Offset.zero);
       }
 
-      final pathSegmentLength = pathLength / 10; // Add this line
+      //random number between 12 and 18
+      final pathSegmentLength =
+          pathLength / (12 + Random().nextInt(6)); // Add this line
       final gradientPosition = pathMetrics.getTangentForOffset(start);
       if (gradientPosition != null) {
         final gradientStart = gradientPosition.position;
@@ -247,30 +249,34 @@ class BeamsPainter extends CustomPainter {
 
         final shootingStarPaint = Paint()
           ..style = PaintingStyle.stroke
-          ..strokeWidth = 0.5
+          ..strokeWidth = 1
+          ..isAntiAlias = true
+          ..strokeCap = StrokeCap.round
+          ..strokeJoin = StrokeJoin.round
+          ..filterQuality = FilterQuality.high
           ..shader = ui.Gradient.linear(
             gradientStart,
             gradientEnd,
             [
-              const Color(0xFFAE48FF).withOpacity(0.0),
-              const Color.fromARGB(255, 30, 8, 126),
-              const Color.fromARGB(255, 31, 17, 95),
-              const Color(0xFF18CCFC),
+              const Color(0xFFAE48FF).withOpacity(0.0), // Transparent start
+              // const Color.fromARGB(255, 79, 41, 250), // Deep blue
+              // const Color.fromARGB(255, 107, 75, 253), // Medium blue
+              // const Color.fromARGB(255, 107, 75, 253), // Cyan
+              const Color.fromARGB(255, 0, 200, 255),
             ],
-            [0.0, 0.2, 0.6, 1.0],
+            [0.0, 1.0],
           );
 
         canvas.drawPath(shootingStarPath, shootingStarPaint);
       }
     }
+
+    canvas.restore();
   }
 
   @override
   bool shouldRepaint(covariant BeamsPainter oldDelegate) {
     return true;
-
-    // oldDelegate.progress != progress ||
-    //     oldDelegate.currentBeamIndex != currentBeamIndex;
   }
 }
 

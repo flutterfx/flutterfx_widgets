@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 
-// Your existing BackgroundBeamsWithCollision class remains the same
 class BackgroundBeamsWithCollision extends StatefulWidget {
   final Widget? child;
 
@@ -82,7 +81,6 @@ class _BackgroundBeamsWithCollisionState
   }
 }
 
-// Your existing BeamConfig class remains the same
 class BeamConfig {
   final double initialX;
   final double duration;
@@ -99,7 +97,6 @@ class BeamConfig {
   });
 }
 
-// New SimpleExplosion class
 class SimpleExplosion extends StatefulWidget {
   final Offset position;
 

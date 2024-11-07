@@ -20,12 +20,13 @@ class _DemoState extends State<ExplodingBeamDemo> {
         child: const Stack(
           children: [
             Positioned.fill(
-                child: BackgroundBeamsWithCollision(
-              child: Text("Hey!",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 34)), // Optional child widget
-            )),
+              child: BackgroundBeamsWithCollision(
+                child: Text("Exploding Beam!",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 34)), // Optional child widget
+              ),
+            ),
           ],
         ),
       ),
