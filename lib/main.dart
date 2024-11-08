@@ -27,6 +27,8 @@ import 'package:fx_2_folder/primitives/primitives_demo.dart';
 import 'package:fx_2_folder/slider/slider.dart';
 import 'package:fx_2_folder/slider/slider_demo.dart';
 import 'package:fx_2_folder/smoke/smoke.dart';
+import 'package:fx_2_folder/stacked-scroll/stacked_scroll_demo.dart';
+import 'package:fx_2_folder/test-1/light_bulb_demo.dart';
 import 'package:fx_2_folder/text-on-path/text_on_path_demo.dart';
 import 'package:fx_2_folder/toast/toast_demo.dart';
 import 'package:fx_2_folder/vinyl/vinyl.dart';
@@ -217,6 +219,17 @@ class HomeScreen extends StatelessWidget {
       title: 'Work Life Slider',
       builder: (context) => SliderDemo(),
       appBarColor: Colors.black,
+    ),
+    AnimationExample(
+      title: 'Stacked Scroll [WIP]',
+      builder: (context) => StackedScrollDemo(),
+      appBarColor: Colors.black,
+    ),
+    AnimationExample(
+      title: 'Night Mode Bulb',
+      builder: (context) => NightModeDemo(),
+      appBarColor: Colors.black,
+      isFullScreen: true,
     ),
   ];
 
