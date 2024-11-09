@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-import './widget_theme.dart';
+import 'widget_theme.dart';
 
-class ToastDemo extends StatefulWidget {
-  const ToastDemo({super.key});
+class StackedCardDemo extends StatefulWidget {
+  const StackedCardDemo({super.key});
 
   @override
-  State<ToastDemo> createState() => _ToastDemoState();
+  State<StackedCardDemo> createState() => _StackedCardDemoState();
 }
 
-class _ToastDemoState extends State<ToastDemo> {
+class _StackedCardDemoState extends State<StackedCardDemo> {
   final List<CardModel> cards = [];
   int nextCardNumber = 1;
   bool isDarkMode = false;
@@ -150,7 +150,7 @@ class _ToastDemoState extends State<ToastDemo> {
                       ),
                       child: Icon(
                         isDarkMode ? Icons.light_mode : Icons.dark_mode,
-                        color: Colors.white,
+                        color: isDarkMode ? Colors.black : Colors.white,
                         size: 24,
                       ),
                     ),
@@ -177,9 +177,9 @@ class _ToastDemoState extends State<ToastDemo> {
                         borderRadius: BorderRadius.circular(28),
                         boxShadow: AppTheme.cardShadows,
                       ),
-                      child: const Icon(
+                      child: Icon(
                         Icons.add,
-                        color: Colors.white,
+                        color: isDarkMode ? Colors.black : Colors.white,
                         size: 24,
                       ),
                     ),

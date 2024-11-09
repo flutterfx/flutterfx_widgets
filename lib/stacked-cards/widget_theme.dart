@@ -17,7 +17,10 @@ class AppTheme {
   static final Map<String, List<Color>> lightGradients = {
     'backgroundGradient': const [Color(0xFFF8F8F8), Color(0xFFFFFFFF)],
     'cardGradient': const [Color(0xFFFFFFFF), Color(0xFFF8F8F8)],
-    'accentGradient': const [Color(0xFF6B64F3), Color(0xFF4237F1)],
+    'accentGradient': const [
+      Color.fromARGB(255, 41, 41, 41),
+      Color.fromARGB(255, 0, 0, 0)
+    ],
   };
 
   static final Map<String, List<Color>> darkGradients = {
@@ -26,7 +29,10 @@ class AppTheme {
       Color.fromARGB(255, 0, 0, 0)
     ],
     'cardGradient': const [Color(0xFF2C2C2C), Color(0xFF242424)],
-    'accentGradient': const [Color(0xFF8C86F5), Color(0xFF6B64F3)],
+    'accentGradient': const [
+      Color.fromARGB(255, 222, 222, 223),
+      Color.fromARGB(255, 255, 255, 255)
+    ],
   };
 
   // Update the getter methods to use the correct types

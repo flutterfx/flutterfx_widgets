@@ -30,7 +30,7 @@ import 'package:fx_2_folder/smoke/smoke.dart';
 import 'package:fx_2_folder/stacked-scroll/stacked_scroll_demo.dart';
 import 'package:fx_2_folder/light-bulb-night-mode/light_bulb_demo.dart';
 import 'package:fx_2_folder/text-on-path/text_on_path_demo.dart';
-import 'package:fx_2_folder/toast/toast_demo.dart';
+import 'package:fx_2_folder/stacked-cards/stacked_card.dart';
 import 'package:fx_2_folder/vinyl/vinyl.dart';
 import 'package:fx_2_folder/visibility/blur_fade.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -166,8 +166,8 @@ class HomeScreen extends StatelessWidget {
       appBarColor: Colors.black,
     ),
     AnimationExample(
-      title: 'Toast',
-      builder: (context) => ToastDemo(),
+      title: 'Stacked Cards',
+      builder: (context) => StackedCardDemo(),
       appBarColor: Colors.black,
     ),
     AnimationExample(
