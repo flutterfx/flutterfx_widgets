@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import './widget_theme.dart';
 
 class ToastDemo extends StatefulWidget {
@@ -11,6 +12,7 @@ class ToastDemo extends StatefulWidget {
 class _ToastDemoState extends State<ToastDemo> {
   final List<CardModel> cards = [];
   int nextCardNumber = 1;
+  bool isDarkMode = false;
 
   // Enhanced position configurations
   static const entryPosition = CardPosition(x: 0, y: 70, z: -75);
@@ -22,6 +24,12 @@ class _ToastDemoState extends State<ToastDemo> {
     const CardPosition(x: 0.0, y: -20.0, z: 90.0),
     const CardPosition(x: 0.0, y: -40.0, z: 180.0),
   ];
+
+  void toggleTheme() {
+    setState(() {
+      isDarkMode = !isDarkMode;
+    });
+  }
 
   void addNewCard() {
     setState(() {
@@ -47,19 +55,16 @@ class _ToastDemoState extends State<ToastDemo> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.transparent,
       ),
       home: Container(
-        decoration: const BoxDecoration(
-          color: AppTheme.backgroundStartColor,
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [
-              Color(0xFFF8F8F8),
-              Color(0xFFFFFFFF),
-            ],
+            colors: AppTheme.getBackgroundGradient(isDarkMode),
           ),
         ),
         child: Scaffold(
@@ -69,7 +74,7 @@ class _ToastDemoState extends State<ToastDemo> {
               // Background Pattern
               Positioned.fill(
                 child: CustomPaint(
-                  painter: GridPatternPainter(),
+                  painter: GridPatternPainter(isDarkMode: isDarkMode),
                 ),
               ),
               // Main content with cards
@@ -114,6 +119,7 @@ class _ToastDemoState extends State<ToastDemo> {
                                     });
                                   }
                                 : null,
+                            isDarkMode: isDarkMode,
                           );
                         })
                         .toList()
@@ -124,6 +130,35 @@ class _ToastDemoState extends State<ToastDemo> {
               ),
 
               // Add button
+              Positioned(
+                left: 16,
+                bottom: 16,
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: toggleTheme,
+                    borderRadius: BorderRadius.circular(28),
+                    child: Container(
+                      width: 56,
+                      height: 56,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: AppTheme.getAccentGradient(isDarkMode),
+                        ),
+                        borderRadius: BorderRadius.circular(28),
+                        boxShadow: AppTheme.cardShadows,
+                      ),
+                      child: Icon(
+                        isDarkMode ? Icons.light_mode : Icons.dark_mode,
+                        color: Colors.white,
+                        size: 24,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+
+              //Add button
               Positioned(
                 right: 16,
                 bottom: 16,
@@ -136,7 +171,9 @@ class _ToastDemoState extends State<ToastDemo> {
                       width: 56,
                       height: 56,
                       decoration: BoxDecoration(
-                        gradient: AppTheme.accentGradient,
+                        gradient: LinearGradient(
+                          colors: AppTheme.getAccentGradient(isDarkMode),
+                        ),
                         borderRadius: BorderRadius.circular(28),
                         boxShadow: AppTheme.cardShadows,
                       ),
@@ -159,10 +196,13 @@ class _ToastDemoState extends State<ToastDemo> {
 
 // Custom painter for the background grid pattern
 class GridPatternPainter extends CustomPainter {
+  final bool isDarkMode;
+
+  GridPatternPainter({required this.isDarkMode});
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = AppTheme.patternColor
+      ..color = AppTheme.getPatternColor(isDarkMode)
       ..strokeWidth = 1;
 
     const spacing = 20.0;
@@ -190,10 +230,12 @@ class GridPatternPainter extends CustomPainter {
 
 class SimpleCard extends StatelessWidget {
   final String title;
+  final bool isDarkMode;
 
   const SimpleCard({
     Key? key,
     this.title = 'Simple Card Title',
+    required this.isDarkMode,
   }) : super(key: key);
 
   @override
@@ -202,7 +244,11 @@ class SimpleCard extends StatelessWidget {
       margin: const EdgeInsets.all(AppTheme.cardMargin),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppTheme.cardBorderRadius),
-        gradient: AppTheme.cardGradient,
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: AppTheme.getCardGradient(isDarkMode),
+        ),
         boxShadow: AppTheme.cardShadows,
       ),
       child: ClipRRect(
@@ -215,19 +261,23 @@ class SimpleCard extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: AppTheme.titleStyle,
+                style: AppTheme.getTitleStyle(isDarkMode),
               ),
               const SizedBox(height: 8),
               Text(
                 'This is a card with equal shadows on all sides.',
-                style: AppTheme.descriptionStyle,
+                style: AppTheme.getDescriptionStyle(isDarkMode),
               ),
               Container(
                 margin: const EdgeInsets.only(top: 16),
                 height: AppTheme.accentBarHeight,
                 width: AppTheme.accentBarWidth,
                 decoration: BoxDecoration(
-                  gradient: AppTheme.accentGradient,
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: AppTheme.getAccentGradient(isDarkMode),
+                  ),
                   borderRadius: BorderRadius.circular(AppTheme.accentBarRadius),
                 ),
               ),
@@ -284,6 +334,7 @@ class AnimatedCardWidget extends StatefulWidget {
   final VoidCallback? onAnimationComplete;
   final bool exitAnimation;
   final bool isEntering;
+  final bool isDarkMode;
 
   const AnimatedCardWidget({
     required this.card,
@@ -293,6 +344,7 @@ class AnimatedCardWidget extends StatefulWidget {
     this.onAnimationComplete,
     this.exitAnimation = false,
     this.isEntering = false,
+    required this.isDarkMode,
     Key? key,
   }) : super(key: key);
 
@@ -416,7 +468,10 @@ class _AnimatedCardWidgetState extends State<AnimatedCardWidget>
           ),
         );
       },
-      child: SimpleCard(title: widget.card.content),
+      child: SimpleCard(
+        title: widget.card.content,
+        isDarkMode: widget.isDarkMode,
+      ),
     );
   }
 }

@@ -1,99 +1,83 @@
-// lib/theme/app_theme.dart
-
 import 'package:flutter/material.dart';
 
 class AppTheme {
-  // Private constructor to prevent instantiation
-  AppTheme._();
+  // Light theme
+  static final Map<String, Color> lightTheme = {
+    'titleColor': const Color(0xFF2C2C2C),
+    'descriptionColor': const Color(0xFF757575),
+  };
 
-  // Colors - Monochromatic scheme
-  static const Color primaryColor = Color(0xFF000000);
-  static const Color secondaryColor = Color(0xFF333333);
-  static const Color accentColor = Color(0xFF666666);
-  static const Color textPrimaryColor = Color(0xFF1A1A1A);
-  static const Color backgroundStartColor = Color(0xFFF8F8F8);
-  static const Color backgroundEndColor = Color(0xFFFFFFFF);
-  static const Color cardStartColor = Color(0xFFFFFFFF);
-  static const Color cardEndColor = Color(0xFFF5F5F5);
+  // Dark theme
+  static final Map<String, Color> darkTheme = {
+    'titleColor': const Color(0xFFFFFFFF),
+    'descriptionColor': const Color(0xFFB0B0B0),
+  };
 
-  // Background Pattern Colors
-  static const Color patternColor = Color(0xFFF0F0F0);
-  static const Color patternHighlightColor = Color(0xFFFFFFFF);
+  // Update the gradient maps to use List<Color>
+  static final Map<String, List<Color>> lightGradients = {
+    'backgroundGradient': const [Color(0xFFF8F8F8), Color(0xFFFFFFFF)],
+    'cardGradient': const [Color(0xFFFFFFFF), Color(0xFFF8F8F8)],
+    'accentGradient': const [Color(0xFF6B64F3), Color(0xFF4237F1)],
+  };
 
-  // Gradients
-  static const LinearGradient cardGradient = LinearGradient(
-    begin: Alignment.topLeft,
-    end: Alignment.bottomRight,
-    colors: [
-      cardStartColor,
-      cardEndColor,
+  static final Map<String, List<Color>> darkGradients = {
+    'backgroundGradient': const [
+      Color.fromARGB(255, 0, 0, 0),
+      Color.fromARGB(255, 0, 0, 0)
     ],
-  );
+    'cardGradient': const [Color(0xFF2C2C2C), Color(0xFF242424)],
+    'accentGradient': const [Color(0xFF8C86F5), Color(0xFF6B64F3)],
+  };
 
-  static const LinearGradient accentGradient = LinearGradient(
-    colors: [
-      primaryColor,
-      secondaryColor,
-    ],
-  );
-
-  // Background Pattern
-  static BoxDecoration get pageBackground => BoxDecoration(
-        color: backgroundStartColor,
-        image: DecorationImage(
-          image: NetworkImage(
-              'data:image/svg+xml;base64,...'), // Will be replaced with pattern
-          repeat: ImageRepeat.repeat,
-        ),
+  // Update the getter methods to use the correct types
+  static TextStyle getTitleStyle(bool isDarkMode) => TextStyle(
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
+        color:
+            isDarkMode ? darkTheme['titleColor']! : lightTheme['titleColor']!,
       );
 
-  // Shadows
-  static List<BoxShadow> get cardShadows => [
-        // Soft ambient shadow
-        BoxShadow(
-          color: primaryColor.withOpacity(0.04),
-          spreadRadius: 0,
-          blurRadius: 20,
-          offset: const Offset(0, 0),
-        ),
-        // Sharp highlight
-        BoxShadow(
-          color: Colors.white.withOpacity(0.9),
-          spreadRadius: 0,
-          blurRadius: 8,
-          offset: const Offset(-2, -2),
-        ),
-        // Main shadow
-        BoxShadow(
-          color: primaryColor.withOpacity(0.12),
-          spreadRadius: 0,
-          blurRadius: 12,
-          offset: const Offset(4, 4),
-        ),
-      ];
+  static TextStyle getDescriptionStyle(bool isDarkMode) => TextStyle(
+        fontSize: 14,
+        color: isDarkMode
+            ? darkTheme['descriptionColor']!
+            : lightTheme['descriptionColor']!,
+      );
 
-  // Text Styles
-  static const TextStyle titleStyle = TextStyle(
-    fontSize: 18.0,
-    fontWeight: FontWeight.w600,
-    color: textPrimaryColor,
-    letterSpacing: 0.4,
-  );
+  static List<Color> getBackgroundGradient(bool isDarkMode) => isDarkMode
+      ? darkGradients['backgroundGradient']!
+      : lightGradients['backgroundGradient']!;
 
-  static TextStyle descriptionStyle = TextStyle(
-    fontSize: 14.0,
-    color: textPrimaryColor.withOpacity(0.75),
-    letterSpacing: 0.2,
-    height: 1.4,
-  );
+  static List<Color> getAccentGradient(bool isDarkMode) => isDarkMode
+      ? darkGradients['accentGradient']!
+      : lightGradients['accentGradient']!;
 
-  // Spacing
-  static const double cardPadding = 24.0;
+  static List<Color> getCardGradient(bool isDarkMode) => isDarkMode
+      ? darkGradients['cardGradient']!
+      : lightGradients['cardGradient']!;
+
+  static Color getPatternColor(bool isDarkMode) =>
+      isDarkMode ? const Color(0xFF3A3A3A) : const Color(0xFFE0E0E0);
+
+  static final List<BoxShadow> cardShadows = [
+    const BoxShadow(
+      color: Color(0x2A000000), // Increased opacity from 0x1A to 0x2A
+      offset: Offset(0, 0), // Centered offset
+      blurRadius: 6, // Slightly increased blur
+      spreadRadius: 0, // Added some spread
+    ),
+    const BoxShadow(
+      color: Color(0x1A000000), // Increased opacity from 0x0D to 0x1A
+      offset: Offset(0, 1), // Slight downward offset for depth
+      blurRadius: 12, // Increased blur for softer shadow
+      spreadRadius: 0, // Added spread for better visibility
+    ),
+  ];
+  // Layout constants
   static const double cardMargin = 16.0;
   static const double cardBorderRadius = 16.0;
-
-  // Decorative Elements
-  static const double accentBarHeight = 3.0;
-  static const double accentBarWidth = 60.0;
-  static const double accentBarRadius = 1.5;
+  static const double cardPadding = 24.0;
+  static const double accentBarHeight = 4.0;
+  static const double accentBarWidth = 48.0;
+  static const double accentBarRadius = 2.0;
 }
