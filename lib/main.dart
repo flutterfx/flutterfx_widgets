@@ -28,7 +28,7 @@ import 'package:fx_2_folder/slider/slider.dart';
 import 'package:fx_2_folder/slider/slider_demo.dart';
 import 'package:fx_2_folder/smoke/smoke.dart';
 import 'package:fx_2_folder/stacked-scroll/stacked_scroll_demo.dart';
-import 'package:fx_2_folder/test-1/light_bulb_demo.dart';
+import 'package:fx_2_folder/light-bulb-night-mode/light_bulb_demo.dart';
 import 'package:fx_2_folder/text-on-path/text_on_path_demo.dart';
 import 'package:fx_2_folder/toast/toast_demo.dart';
 import 'package:fx_2_folder/vinyl/vinyl.dart';
@@ -166,7 +166,7 @@ class HomeScreen extends StatelessWidget {
       appBarColor: Colors.black,
     ),
     AnimationExample(
-      title: 'Toast[wip]',
+      title: 'Toast',
       builder: (context) => ToastDemo(),
       appBarColor: Colors.black,
     ),
@@ -211,7 +211,7 @@ class HomeScreen extends StatelessWidget {
       appBarColor: Colors.black,
     ),
     AnimationExample(
-      title: 'Motion Primitives [WIP]',
+      title: 'Motion Primitives[wip]',
       builder: (context) => MotionPrimitiveDemo(),
       appBarColor: Colors.black,
     ),
@@ -254,7 +254,7 @@ class HomeScreen extends StatelessWidget {
           MaterialPageRoute(
             builder: (context) {
               return DetailScreen(
-                example: examples[examples.length - 1],
+                example: examples[examples.length - 13],
               ); // Automatically selecting the first example
             },
           ),

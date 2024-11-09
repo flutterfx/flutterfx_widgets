@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
-import 'package:fx_2_folder/test-1/vintage_lightbulb.dart';
+import 'package:fx_2_folder/light-bulb-night-mode/vintage_lightbulb.dart';
 
 class ThemeProvider extends ChangeNotifier {
   bool isDarkMode = true;
