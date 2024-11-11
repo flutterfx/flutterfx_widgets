@@ -3,8 +3,10 @@ import 'package:flutter/services.dart';
 import 'package:fx_2_folder/background-beam/background_beam_demo.dart';
 import 'package:fx_2_folder/background-exploding-beam/background_beam_explosion_demo.dart';
 import 'package:fx_2_folder/books/books.dart';
+import 'package:fx_2_folder/button-shimmer/button_shimmer_demo.dart';
 import 'package:fx_2_folder/celebrate/celebrate_demo.dart';
 import 'package:fx_2_folder/circles_selector/CirclesHomeWidget.dart';
+import 'package:fx_2_folder/confetti/confetti_demo.dart';
 import 'package:fx_2_folder/dots/dots_demo.dart';
 import 'package:fx_2_folder/folder_shape/folder_home.dart';
 import 'package:fx_2_folder/frosty_card/frosty_card.dart';
@@ -236,7 +238,16 @@ class HomeScreen extends StatelessWidget {
       title: 'Stacked Expand Cards',
       builder: (context) => StackedExpandedCardDemo(),
       appBarColor: Colors.black,
-      isFullScreen: true,
+    ),
+    AnimationExample(
+      title: 'Confetti [WIP]',
+      builder: (context) => ConfettiDemo(),
+      appBarColor: Colors.black,
+    ),
+    AnimationExample(
+      title: 'Shimmer Button',
+      builder: (context) => ButtonShimmerDemo(),
+      appBarColor: Colors.black,
     ),
   ];
 
