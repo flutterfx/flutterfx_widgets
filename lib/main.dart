@@ -264,7 +264,7 @@ class HomeScreen extends StatelessWidget {
       isFullScreen: true,
     ),
     AnimationExample(
-      title: 'ButterFly [WIP]',
+      title: 'ButterFly',
       builder: (context) => ButterflyDemo(),
       appBarColor: Colors.black,
       isFullScreen: true,
