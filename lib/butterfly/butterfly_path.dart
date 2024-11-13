@@ -6,12 +6,16 @@ class MovingButterfly extends StatefulWidget {
   final double screenHeight;
   final double screenWidth;
   final Duration duration;
+  final double startXPercent;
+  final double scale;
 
   const MovingButterfly({
     Key? key,
     required this.screenHeight,
     required this.screenWidth,
     this.duration = const Duration(seconds: 6),
+    this.startXPercent = 0.5,
+    this.scale = 1.0,
   }) : super(key: key);
 
   @override
@@ -22,8 +26,6 @@ class _MovingButterflyState extends State<MovingButterfly>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
-
-  // Path points for the Bézier curve
   late Offset _start;
   late Offset _end;
   late Offset _control1;
@@ -33,20 +35,28 @@ class _MovingButterflyState extends State<MovingButterfly>
   void initState() {
     super.initState();
 
-    // Initialize start and end points
-    _start = Offset(widget.screenWidth * 0.5, widget.screenHeight - 100);
-    _end = Offset(widget.screenWidth * 0.5, 100);
-
-    // Create control points for the curve
-    // Adding randomness to make it more natural
     final random = Random();
+
+    // Initialize start point with random X position
+    _start = Offset(
+      widget.screenWidth * widget.startXPercent,
+      widget.screenHeight - 100,
+    );
+
+    // Random end point at top of screen
+    _end = Offset(
+      widget.screenWidth * (0.2 + random.nextDouble() * 0.6),
+      100,
+    );
+
+    // Create more random control points for varied paths
     _control1 = Offset(
-      widget.screenWidth * (0.2 + random.nextDouble() * 0.3),
-      widget.screenHeight * 0.6,
+      widget.screenWidth * (0.1 + random.nextDouble() * 0.8),
+      widget.screenHeight * (0.5 + random.nextDouble() * 0.3),
     );
     _control2 = Offset(
-      widget.screenWidth * (0.5 + random.nextDouble() * 0.3),
-      widget.screenHeight * 0.3,
+      widget.screenWidth * (0.1 + random.nextDouble() * 0.8),
+      widget.screenHeight * (0.2 + random.nextDouble() * 0.3),
     );
 
     _controller = AnimationController(
@@ -62,32 +72,36 @@ class _MovingButterflyState extends State<MovingButterfly>
     // Start the animation
     _controller.forward();
 
-    // Optional: Loop the animation
+    // Loop the animation with new random paths
     _controller.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        // Reset control points for variation in the return journey
-        _control1 = Offset(
-          widget.screenWidth * (0.2 + random.nextDouble() * 0.3),
-          widget.screenHeight * 0.6,
-        );
-        _control2 = Offset(
-          widget.screenWidth * (0.5 + random.nextDouble() * 0.3),
-          widget.screenHeight * 0.3,
-        );
+        _regenerateControlPoints();
         _controller.reverse();
       } else if (status == AnimationStatus.dismissed) {
-        // Reset control points for variation in the next journey
-        _control1 = Offset(
-          widget.screenWidth * (0.2 + random.nextDouble() * 0.3),
-          widget.screenHeight * 0.6,
-        );
-        _control2 = Offset(
-          widget.screenWidth * (0.5 + random.nextDouble() * 0.3),
-          widget.screenHeight * 0.3,
-        );
+        _regenerateControlPoints();
         _controller.forward();
       }
     });
+  }
+
+  void _regenerateControlPoints() {
+    final random = Random();
+
+    // Generate new end point
+    _end = Offset(
+      widget.screenWidth * (0.2 + random.nextDouble() * 0.6),
+      100,
+    );
+
+    // Generate new control points
+    _control1 = Offset(
+      widget.screenWidth * (0.1 + random.nextDouble() * 0.8),
+      widget.screenHeight * (0.5 + random.nextDouble() * 0.3),
+    );
+    _control2 = Offset(
+      widget.screenWidth * (0.1 + random.nextDouble() * 0.8),
+      widget.screenHeight * (0.2 + random.nextDouble() * 0.3),
+    );
   }
 
   @override
@@ -136,19 +150,24 @@ class _MovingButterflyState extends State<MovingButterfly>
         final position = _calculatePosition(_animation.value);
         final rotation = _calculateRotation(_animation.value);
 
-        // Check if we're going up or down and adjust rotation accordingly
         final bool isGoingUp =
             !_controller.status.toString().contains("reverse");
         final adjustedRotation =
             isGoingUp ? rotation + pi / 2 : rotation - pi / 2;
 
+        // Scale the butterfly size
+        final scaledWidth = 50 * widget.scale;
+        final scaledHeight = 35 * widget.scale;
+
         return Positioned(
-          left: position.dx - 25,
-          top: position.dy - 17.5,
+          left: position.dx - (scaledWidth / 2),
+          top: position.dy - (scaledHeight / 2),
           child: Transform.rotate(
-            angle:
-                adjustedRotation, // Use adjustedRotation instead of rotation - pi/2
-            child: const FlutterButterfly(width: 50, height: 35),
+            angle: adjustedRotation,
+            child: FlutterButterfly(
+              width: scaledWidth,
+              height: scaledHeight,
+            ),
           ),
         );
       },
