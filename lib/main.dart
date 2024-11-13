@@ -170,11 +170,6 @@ class HomeScreen extends StatelessWidget {
       appBarColor: Colors.black,
     ),
     AnimationExample(
-      title: 'Stacked Cards',
-      builder: (context) => StackedCardDemo(),
-      appBarColor: Colors.black,
-    ),
-    AnimationExample(
       title: 'Orbit',
       builder: (context) => OrbitDemo(),
       appBarColor: Colors.black,
@@ -234,6 +229,11 @@ class HomeScreen extends StatelessWidget {
       builder: (context) => NightModeDemo(),
       appBarColor: Colors.black,
       isFullScreen: true,
+    ),
+    AnimationExample(
+      title: 'Stacked Cards',
+      builder: (context) => StackedCardDemo(),
+      appBarColor: Colors.black,
     ),
     AnimationExample(
       title: 'Stacked Expand Cards',
