@@ -4,6 +4,7 @@ import 'package:fx_2_folder/background-beam/background_beam_demo.dart';
 import 'package:fx_2_folder/background-exploding-beam/background_beam_explosion_demo.dart';
 import 'package:fx_2_folder/books/books.dart';
 import 'package:fx_2_folder/bottom-sheet/bottom_sheet_demo.dart';
+import 'package:fx_2_folder/butterfly/butterfly_demo.dart';
 import 'package:fx_2_folder/button-shimmer/button_shimmer_demo.dart';
 import 'package:fx_2_folder/celebrate/celebrate_demo.dart';
 import 'package:fx_2_folder/circles_selector/CirclesHomeWidget.dart';
@@ -253,6 +254,18 @@ class HomeScreen extends StatelessWidget {
     AnimationExample(
       title: 'BottomSheet',
       builder: (context) => BottomSheetDemo(),
+      appBarColor: Colors.black,
+      isFullScreen: true,
+    ),
+    AnimationExample(
+      title: 'BookOpen [WIP]',
+      builder: (context) => ButterflyDemo(),
+      appBarColor: Colors.black,
+      isFullScreen: true,
+    ),
+    AnimationExample(
+      title: 'ButterFly [WIP]',
+      builder: (context) => ButterflyDemo(),
       appBarColor: Colors.black,
       isFullScreen: true,
     ),
