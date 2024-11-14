@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fx_2_folder/background-beam/background_beam_demo.dart';
 import 'package:fx_2_folder/background-exploding-beam/background_beam_explosion_demo.dart';
+import 'package:fx_2_folder/book-open/book_open_demo.dart';
 import 'package:fx_2_folder/books/books.dart';
 import 'package:fx_2_folder/bottom-sheet/bottom_sheet_demo.dart';
 import 'package:fx_2_folder/butterfly/butterfly_demo.dart';
@@ -258,14 +259,14 @@ class HomeScreen extends StatelessWidget {
       isFullScreen: true,
     ),
     AnimationExample(
-      title: 'BookOpen [WIP]',
+      title: 'ButterFly',
       builder: (context) => ButterflyDemo(),
       appBarColor: Colors.black,
       isFullScreen: true,
     ),
     AnimationExample(
-      title: 'ButterFly',
-      builder: (context) => ButterflyDemo(),
+      title: 'BookOpen [WIP]',
+      builder: (context) => BookOpenDemo(),
       appBarColor: Colors.black,
       isFullScreen: true,
     ),

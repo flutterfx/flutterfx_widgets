@@ -1,266 +1,247 @@
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
-class CustomDrawerController {
-  AnimationController? _animationController;
-  bool _isInitialized = false;
+import 'dart:math' as math;
+import 'package:flutter/material.dart';
 
-  void attach(AnimationController controller) {
-    _animationController = controller;
-    _isInitialized = true;
-  }
+import 'dart:math' as math;
+import 'package:flutter/material.dart';
 
-  bool get isOpen => _animationController?.value == 1.0;
-
-  void open() {
-    if (_isInitialized) {
-      _animationController?.forward();
-    }
-  }
-
-  void close() {
-    if (_isInitialized) {
-      _animationController?.reverse();
-    }
-  }
-
-  void toggle() {
-    if (_isInitialized) {
-      if (isOpen) {
-        close();
-      } else {
-        open();
-      }
-    }
-  }
-
-  void dispose() {
-    _animationController = null;
-    _isInitialized = false;
-  }
-}
-
-class CustomDrawer extends StatefulWidget {
-  final Widget mainContent;
-  final Widget drawerContent;
-  final double minHeight;
-  final double maxHeight;
+class AnimatedBook extends StatefulWidget {
+  final Widget coverChild;
+  final Widget pageChild;
+  final double? width;
+  final double? height;
   final Duration animationDuration;
-  final Color backgroundColor;
-  final Color barrierColor;
-  final CustomDrawerController? controller;
+  final double maxOpenAngle;
+  final double aspectRatio;
+  final int numberOfPages;
 
-  const CustomDrawer({
-    super.key,
-    required this.mainContent,
-    required this.drawerContent,
-    this.controller,
-    this.minHeight = 0.0,
-    this.maxHeight = 0.90,
-    this.animationDuration =
-        const Duration(milliseconds: 300), // Faster animation
-    this.backgroundColor = Colors.white,
-    this.barrierColor = Colors.black54,
-  });
+  const AnimatedBook({
+    Key? key,
+    required this.coverChild,
+    required this.pageChild,
+    this.width,
+    this.height,
+    this.animationDuration = const Duration(milliseconds: 400),
+    this.maxOpenAngle = 180,
+    this.aspectRatio = 0.7,
+    this.numberOfPages = 25,
+  }) : super(key: key);
 
   @override
-  State<CustomDrawer> createState() => _CustomDrawerState();
+  State<AnimatedBook> createState() => _AnimatedBookState();
 }
 
-class _CustomDrawerState extends State<CustomDrawer>
+class _AnimatedBookState extends State<AnimatedBook>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
-  late Animation<double> _drawerAnimation;
-  late Animation<double> _scaleAnimation;
-  late Animation<double> _slideAnimation;
+  late Animation<double> _animation;
+  bool _isOpen = false;
+  late List<Color> _colorList;
 
-  bool _isDragging = false;
-  double _dragStartPoint = 0.0;
-  double _dragStartValue = 0.0;
+  Size _getBookDimensions(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+    final padding = MediaQuery.of(context).padding;
+    final safeWidth = screenSize.width - padding.left - padding.right;
+    final safeHeight = screenSize.height - padding.top - padding.bottom;
+
+    final maxAllowedWidth = safeWidth / 1.6;
+    final maxAllowedHeight = safeHeight * 0.8;
+
+    if (widget.width != null && widget.height != null) {
+      if (widget.width! <= maxAllowedWidth &&
+          widget.height! <= maxAllowedHeight) {
+        return Size(widget.width!, widget.height!);
+      }
+    }
+
+    double width = maxAllowedWidth;
+    double height = width / widget.aspectRatio;
+
+    if (height > maxAllowedHeight) {
+      height = maxAllowedHeight;
+      width = height * widget.aspectRatio;
+    }
+
+    return Size(width, height);
+  }
 
   @override
   void initState() {
     super.initState();
+
     _controller = AnimationController(
-      vsync: this,
       duration: widget.animationDuration,
+      vsync: this,
     );
 
-    widget.controller?.attach(_controller);
+    _animation = CurvedAnimation(
+      parent: _controller,
+      curve: Curves.linear,
+    );
 
-    // Enhanced easing curve for smoother animation
-    const Curve curve = Curves.easeInOutCubic;
-
-    _drawerAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(CurvedAnimation(parent: _controller, curve: curve));
-
-    // Increased scale effect for better depth perception
-    _scaleAnimation = Tween<double>(
-      begin: 1.0,
-      end: 0.85, // More pronounced scale effect
-    ).animate(CurvedAnimation(parent: _controller, curve: curve));
-
-    // Enhanced slide effect
-    _slideAnimation = Tween<double>(
-      begin: 0.0,
-      end: 24.0, // More pronounced slide
-    ).animate(CurvedAnimation(parent: _controller, curve: curve));
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (context, constraints) {
-      // Calculate maxDrawerHeight based on parent width
-      final maxDrawerHeight = constraints.maxHeight * widget.maxHeight;
-
-      return Stack(
-        children: [
-          // Main content with enhanced scale, slide and border radius animations
-          AnimatedBuilder(
-            animation: _controller,
-            builder: (context, child) {
-              return Transform.scale(
-                scale: _scaleAnimation.value,
-                child: Transform.translate(
-                  offset: Offset(0, -_slideAnimation.value),
-                  child: ClipRRect(
-                    // Animate border radius based on drawer animation
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(_drawerAnimation.value * 16.0),
-                    ),
-                    child: widget.mainContent,
-                  ),
-                ),
-              );
-            },
-          ),
-
-          // Enhanced barrier with fade animation
-          AnimatedBuilder(
-            animation: _controller,
-            builder: (context, child) {
-              return Visibility(
-                visible: _controller.value > 0,
-                child: GestureDetector(
-                  onTap: () => _controller.reverse(),
-                  child: Container(
-                    color: widget.barrierColor
-                        .withOpacity(_controller.value * 0.7),
-                  ),
-                ),
-              );
-            },
-          ),
-
-          // Enhanced drawer with improved handle and shadow
-          AnimatedBuilder(
-            animation: _controller,
-            builder: (context, child) {
-              return Positioned(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                height: maxDrawerHeight,
-                child: Transform.translate(
-                  offset: Offset(
-                      0.0, maxDrawerHeight * (1 - _drawerAnimation.value)),
-                  child: GestureDetector(
-                    onVerticalDragStart: _handleDragStart,
-                    onVerticalDragUpdate: (details) =>
-                        _handleDragUpdate(details, maxDrawerHeight),
-                    onVerticalDragEnd: _handleDragEnd,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: widget.backgroundColor,
-                        borderRadius: const BorderRadius.vertical(
-                          top: Radius.circular(16), // Increased radius
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
-                            blurRadius: 10,
-                            spreadRadius: 0,
-                            offset: const Offset(0, -2),
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        children: [
-                          // Enhanced drag handle
-                          Container(
-                            height: 24, // Reduced height
-                            margin: const EdgeInsets.symmetric(vertical: 8),
-                            alignment: Alignment.center,
-                            child: Container(
-                              width: 40,
-                              height: 4,
-                              decoration: BoxDecoration(
-                                color: Colors.grey.shade300,
-                                borderRadius: BorderRadius.circular(4),
-                              ),
-                            ),
-                          ),
-                          // Drawer content
-                          Expanded(
-                            child: widget.drawerContent,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              );
-            },
-          ),
-        ],
-      );
-    });
-  }
-
-  // Drag handlers remain the same as in your original code
-  void _handleDragStart(DragStartDetails details) {
-    _isDragging = true;
-    _dragStartPoint = details.globalPosition.dy;
-    _dragStartValue = _controller.value;
-  }
-
-  void _handleDragUpdate(DragUpdateDetails details, double maxDrawerHeight) {
-    if (!_isDragging) return;
-
-    final dragDistance = _dragStartPoint - details.globalPosition.dy;
-    // Use maxDrawerHeight instead of screen height for calculations
-    final newValue =
-        (_dragStartValue + dragDistance / maxDrawerHeight).clamp(0.0, 1.0);
-    _controller.value = newValue;
-  }
-
-  void _handleDragEnd(DragEndDetails details) {
-    if (!_isDragging) return;
-
-    _isDragging = false;
-    final velocity = details.primaryVelocity ?? 0;
-
-    if (velocity > 0) {
-      // Dragging down
-      _controller.reverse();
-    } else if (velocity < 0) {
-      // Dragging up
-      _controller.forward();
-    } else {
-      // No velocity - snap to nearest end
-      if (_controller.value > 0.5) {
-        _controller.forward();
-      } else {
-        _controller.reverse();
-      }
-    }
+    _colorList = initColors(widget.numberOfPages);
   }
 
   @override
   void dispose() {
-    widget.controller?.dispose();
     _controller.dispose();
     super.dispose();
+  }
+
+  void _toggleBook() {
+    setState(() {
+      _isOpen = !_isOpen;
+      if (_isOpen) {
+        _controller.forward();
+      } else {
+        _controller.reverse();
+      }
+    });
+  }
+
+  double _getPageAngle(int index, double animationValue) {
+    final pageSpacing = widget.maxOpenAngle / widget.numberOfPages;
+    final targetAngle = widget.maxOpenAngle - (pageSpacing * index);
+    return targetAngle * animationValue;
+  }
+
+  // Helper method to ensure opacity is within valid range
+  double _clampOpacity(double value) {
+    return value.clamp(0.0, 1.0);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final bookDimensions = _getBookDimensions(context);
+
+    return Center(
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          return Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: bookDimensions.width * 0.3,
+              vertical: 20,
+            ),
+            child: GestureDetector(
+              onTap: _toggleBook,
+              child: SizedBox(
+                width: bookDimensions.width,
+                height: bookDimensions.height,
+                child: AnimatedBuilder(
+                  animation: _animation,
+                  builder: (context, child) {
+                    return Stack(
+                      children: [
+                        // Base page
+                        Positioned.fill(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(8),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black
+                                      .withOpacity(_clampOpacity(0.2)),
+                                  spreadRadius: 1,
+                                  blurRadius: 8,
+                                  offset: Offset(0, 2),
+                                ),
+                              ],
+                            ),
+                            child: widget.pageChild,
+                          ),
+                        ),
+
+                        // Pages
+                        ...List.generate(widget.numberOfPages, (index) {
+                          final pageAngle =
+                              _getPageAngle(index, _animation.value);
+                          final normalizedIndex = index / widget.numberOfPages;
+
+                          return Transform(
+                            alignment: Alignment.centerLeft,
+                            transform: Matrix4.identity()
+                              ..setEntry(3, 2, 0.001)
+                              ..rotateY(pageAngle * math.pi / 180),
+                            child: Container(
+                              width: bookDimensions.width,
+                              height: bookDimensions.height,
+                              decoration: BoxDecoration(
+                                color: _colorList[index],
+                                borderRadius: BorderRadius.circular(8),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(
+                                        _clampOpacity(
+                                            0.1 * (1 - normalizedIndex))),
+                                    spreadRadius: 1,
+                                    blurRadius: 5,
+                                    offset: Offset(1, 1),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        }).reversed.toList(),
+
+                        // Front cover
+                        Transform(
+                          alignment: Alignment.centerLeft,
+                          transform: Matrix4.identity()
+                            ..setEntry(3, 2, 0.001)
+                            ..rotateY(_getPageAngle(0, _animation.value) *
+                                math.pi /
+                                180),
+                          child: Container(
+                            width: bookDimensions.width,
+                            height: bookDimensions.height,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(_clampOpacity(
+                                      0.3 * (1 - _animation.value))),
+                                  spreadRadius: 2,
+                                  blurRadius: 10,
+                                  offset: Offset(2 * (1 - _animation.value), 2),
+                                ),
+                              ],
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: widget.coverChild,
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  List<Color> initColors(int n) {
+    List<Color> colors = [];
+    for (int i = 0; i < n; i++) {
+      colors.add(getRandomColor());
+    }
+    return colors;
+  }
+
+  Color getRandomColor() {
+    math.Random random = math.Random();
+    return Color.fromRGBO(
+      random.nextInt(256), // Red
+      random.nextInt(256), // Green
+      random.nextInt(256), // Blue
+      1.0, // Opacity (1.0 is fully opaque)
+    );
   }
 }
