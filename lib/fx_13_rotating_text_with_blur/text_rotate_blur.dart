@@ -1,322 +1,335 @@
-import 'dart:math';
-
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
-import 'package:fx_2_folder/fx_13_rotating_text_with_blur/strategies/all_strategies.dart';
-import 'package:fx_2_folder/fx_14_text_reveal/strategies/FadeBlurStrategy.dart';
-import 'package:fx_2_folder/fx_14_text_reveal/text_reveal_widget.dart';
 
-enum RotatingTextState {
-  hidden,
-  entering,
-  rotating,
-  exiting,
-}
-
-class EnhancedRotatingText extends StatefulWidget {
+/// A widget that displays text rotating in a circular pattern.
+///
+/// ASCII Visualization of how it works:
+/// ```
+///      Top (-π/2)
+///         |
+///    \    |    /
+///     \   |   /
+///      \  |  /
+///       \ | /
+/// Left ---+--- Right (0)
+///       / | \
+///      /  |  \
+///     /   |   \
+///    /    |    \
+///         |
+///      Bottom (π/2)
+/// ```
+class RotatingTextWidget extends StatefulWidget {
   final String text;
   final double radius;
   final TextStyle textStyle;
-  final Duration entryDuration;
   final Duration rotationDuration;
-  final Duration exitDuration;
-  final bool trigger;
-  final TextAnimationStrategy entryStrategy;
-  final RotationAnimationStrategy rotationStrategy;
-  final TextAnimationStrategy exitStrategy;
 
-  const EnhancedRotatingText({
+  const RotatingTextWidget({
     Key? key,
     required this.text,
     required this.radius,
     required this.textStyle,
-    this.entryDuration = const Duration(milliseconds: 800),
-    this.rotationDuration = const Duration(seconds: 15),
-    this.exitDuration = const Duration(milliseconds: 800),
-    required this.trigger,
-    this.entryStrategy = const FadeBlurStrategy(),
-    this.rotationStrategy = const DefaultRotationStrategy(),
-    this.exitStrategy = const FadeBlurStrategy(),
+    required this.rotationDuration,
   }) : super(key: key);
 
   @override
-  EnhancedRotatingTextState createState() => EnhancedRotatingTextState();
+  _RotatingTextWidgetState createState() => _RotatingTextWidgetState();
 }
 
-class EnhancedRotatingTextState extends State<EnhancedRotatingText>
-    with TickerProviderStateMixin {
-  late AnimationController _rotationController;
-  late AnimationController _entryExitController;
-  late Animation<double> _entryAnimation;
-  late Animation<double> _exitAnimation;
-  RotatingTextState _state = RotatingTextState.hidden;
+class _RotatingTextWidgetState extends State<RotatingTextWidget>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
 
   @override
   void initState() {
     super.initState();
-    _initializeControllers();
-
-    if (widget.trigger) {
-      _startAnimation();
-    }
-  }
-
-  void _initializeControllers() {
-    _rotationController = AnimationController(
+    _controller = AnimationController(
       vsync: this,
       duration: widget.rotationDuration,
-    );
-
-    _entryExitController = AnimationController(
-      vsync: this,
-      duration: widget.entryDuration,
-    );
-
-    _entryAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(
-        parent: _entryExitController,
-        curve: Curves.easeInOut,
-      ),
-    );
-
-    _exitAnimation = Tween<double>(begin: 1.0, end: 0.0).animate(
-      CurvedAnimation(
-        parent: _entryExitController,
-        curve: Curves.easeInOut,
-      ),
-    );
-
-    _entryExitController.addStatusListener(_handleEntryExitStatus);
-  }
-
-  void _handleEntryExitStatus(AnimationStatus status) {
-    if (status == AnimationStatus.completed) {
-      if (_state == RotatingTextState.entering) {
-        setState(() {
-          _state = RotatingTextState.rotating;
-          _rotationController.repeat();
-        });
-      } else if (_state == RotatingTextState.exiting) {
-        setState(() {
-          _state = RotatingTextState.hidden;
-        });
-      }
-    }
-  }
-
-  void _startAnimation() {
-    setState(() {
-      _state = RotatingTextState.entering;
-    });
-    _rotationController.stop();
-    _entryExitController.duration = widget.entryDuration;
-    _entryExitController.forward(from: 0.0);
-  }
-
-  void _stopAnimation() {
-    setState(() {
-      _state = RotatingTextState.exiting;
-    });
-    _rotationController.stop();
-    _entryExitController.duration = widget.exitDuration;
-    _entryExitController.forward(from: 0.0);
+    )..repeat();
   }
 
   @override
-  void didUpdateWidget(EnhancedRotatingText oldWidget) {
-    super.didUpdateWidget(oldWidget);
-
-    if (widget.trigger != oldWidget.trigger) {
-      if (widget.trigger) {
-        _startAnimation();
-      } else {
-        _stopAnimation();
-      }
-    }
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-      animation: Listenable.merge([_rotationController, _entryExitController]),
+      animation: _controller,
       builder: (context, child) {
         return CustomPaint(
           size: Size(widget.radius * 2, widget.radius * 2),
-          painter: _EnhancedCircularTextPainter(
+          painter: _CircularTextPainter(
             text: widget.text,
             radius: widget.radius,
             textStyle: widget.textStyle,
-            rotationProgress: _rotationController.value,
-            animationProgress: _state == RotatingTextState.entering
-                ? _entryAnimation.value
-                : _state == RotatingTextState.exiting
-                    ? _exitAnimation.value
-                    : 1.0,
-            state: _state,
-            entryStrategy: widget.entryStrategy,
-            rotationStrategy: widget.rotationStrategy,
-            exitStrategy: widget.exitStrategy,
+            progress: _controller.value,
           ),
         );
       },
     );
   }
-
-  @override
-  void dispose() {
-    _rotationController.dispose();
-    _entryExitController.dispose();
-    super.dispose();
-  }
 }
 
-class _EnhancedCircularTextPainter extends CustomPainter {
+/// Handles the actual drawing of text in a circular pattern
+class _CircularTextPainter extends CustomPainter {
   final String text;
   final double radius;
   final TextStyle textStyle;
-  final double rotationProgress;
-  final double animationProgress;
-  final RotatingTextState state;
-  final TextAnimationStrategy entryStrategy;
-  final RotationAnimationStrategy rotationStrategy;
-  final TextAnimationStrategy exitStrategy;
+  final double progress;
 
-  _EnhancedCircularTextPainter({
+  // Cached center coordinates
+  late final double _centerX;
+  late final double _centerY;
+
+  _CircularTextPainter({
     required this.text,
     required this.radius,
     required this.textStyle,
-    required this.rotationProgress,
-    required this.animationProgress,
-    required this.state,
-    required this.entryStrategy,
-    required this.rotationStrategy,
-    required this.exitStrategy,
+    required this.progress,
   });
 
   @override
   void paint(Canvas canvas, Size size) {
-    if (state == RotatingTextState.hidden || animationProgress == 0) return;
+    _centerX = size.width / 2;
+    _centerY = size.height / 2;
 
-    final double centerX = size.width / 2;
-    final double centerY = size.height / 2;
-    final double totalAngle = 2 * pi;
-    final double startAngle = -pi / 2 + (rotationProgress * totalAngle);
+    final RotationCalculator calculator = RotationCalculator(
+      text: text,
+      radius: radius,
+      textStyle: textStyle,
+      progress: progress,
+    );
 
-    // Pre-calculate text measurements
+    // Get all the measurements we need
+    final SegmentMeasurements measurements =
+        calculator.calculateSegmentMeasurements();
+
+    // Draw the text segments around the circle
+    _drawRepeatingSegments(canvas, measurements);
+  }
+
+  /// Draws all segments of text around the circle
+  void _drawRepeatingSegments(Canvas canvas, SegmentMeasurements measurements) {
+    double startAngle = measurements.initialStartAngle;
+
+    for (int rep = 0; rep < measurements.repetitions; rep++) {
+      // 1. Draw the dot
+      _drawDot(canvas, startAngle);
+
+      // 2. Draw the text segment
+      _drawTextSegment(
+        canvas,
+        startAngle + measurements.dotAngle / 2,
+        measurements.textAngle,
+        measurements.segmentAngle,
+      );
+
+      // 3. Move to next segment
+      startAngle += measurements.segmentAngle;
+    }
+  }
+
+  /// Draws a single segment of text along the circle
+  void _drawTextSegment(
+    Canvas canvas,
+    double startAngle,
+    double textAngle,
+    double segmentAngle,
+  ) {
+    // 1. Calculate character widths
+    final CharacterMeasurements charMeasurements = _measureCharacters();
+
+    // 2. Draw each character
+    double currentAngle = startAngle;
+    for (int i = 0; i < text.length; i++) {
+      _drawCharacter(
+        canvas,
+        text[i],
+        currentAngle,
+        textAngle,
+        charMeasurements.charWidths[i],
+        charMeasurements.totalWidth,
+      );
+
+      // Move angle for next character
+      double charProportion =
+          charMeasurements.charWidths[i] / charMeasurements.totalWidth;
+      currentAngle += textAngle * charProportion;
+    }
+  }
+
+  /// Draws a single character at the specified angle
+  void _drawCharacter(
+    Canvas canvas,
+    String char,
+    double currentAngle,
+    double textAngle,
+    double charWidth,
+    double totalCharWidth,
+  ) {
+    final textPainter = _createTextPainter(char);
+
+    // Calculate character's angle and position
+    double charProportion = charWidth / totalCharWidth;
+    double charAngle = textAngle * charProportion;
+    double charCenterAngle = currentAngle + (charAngle / 2);
+
+    // Calculate position on circle
+    final position = _calculatePositionOnCircle(charCenterAngle);
+
+    // Draw the character
+    _paintRotatedCharacter(
+        canvas, textPainter, position, charCenterAngle, charWidth);
+  }
+
+  /// Creates a TextPainter for a single character
+  TextPainter _createTextPainter(String char) {
+    final textSpan = TextSpan(text: char, style: textStyle);
+    final textPainter = TextPainter(
+      text: textSpan,
+      textDirection: TextDirection.ltr,
+    );
+    textPainter.layout();
+    return textPainter;
+  }
+
+  /// Calculates position on the circle for given angle
+  Offset _calculatePositionOnCircle(double angle) {
+    final x = _centerX + radius * math.cos(angle);
+    final y = _centerY + radius * math.sin(angle);
+    return Offset(x, y);
+  }
+
+  /// Paints a rotated character at the specified position
+  void _paintRotatedCharacter(
+    Canvas canvas,
+    TextPainter painter,
+    Offset position,
+    double angle,
+    double charWidth,
+  ) {
+    canvas.save();
+    canvas.translate(position.dx, position.dy);
+    canvas.rotate(angle + math.pi / 2);
+    painter.paint(canvas, Offset(-charWidth / 2, -painter.height / 2));
+    canvas.restore();
+  }
+
+  /// Draws a dot at the specified angle
+  void _drawDot(Canvas canvas, double angle) {
+    final dotRadius = textStyle.fontSize! / 4;
+    final dotPaint = Paint()
+      ..color = textStyle.color!
+      ..style = PaintingStyle.fill;
+
+    final dotPosition = _calculatePositionOnCircle(angle);
+    canvas.drawCircle(dotPosition, dotRadius, dotPaint);
+  }
+
+  /// Measures all characters in the text
+  CharacterMeasurements _measureCharacters() {
+    List<double> charWidths = [];
+    double totalWidth = 0;
+
+    for (int i = 0; i < text.length; i++) {
+      final painter = _createTextPainter(text[i]);
+      charWidths.add(painter.width);
+      totalWidth += painter.width;
+    }
+
+    return CharacterMeasurements(
+      charWidths: charWidths,
+      totalWidth: totalWidth,
+    );
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
+}
+
+/// Handles calculations for text rotation and spacing
+class RotationCalculator {
+  final String text;
+  final double radius;
+  final TextStyle textStyle;
+  final double progress;
+
+  RotationCalculator({
+    required this.text,
+    required this.radius,
+    required this.textStyle,
+    required this.progress,
+  });
+
+  /// Calculates all measurements needed for text segments
+  SegmentMeasurements calculateSegmentMeasurements() {
+    final double totalAngle = 2 * math.pi;
+    final double startAngle = -math.pi / 2 + (progress * totalAngle);
+
+    // Calculate text and dot sizes
+    double textWidth = _calculateTextWidth();
+    double dotWidth = textStyle.fontSize!;
+    double totalWidth = textWidth + dotWidth;
+
+    // Calculate repetitions
+    int repetitions = (totalAngle * radius / totalWidth).floor();
+    repetitions = math.max(1, repetitions);
+
+    // Calculate angles
+    double segmentAngle = totalAngle / repetitions;
+    double textAngle = (textWidth / totalWidth) * segmentAngle;
+    double dotAngle = segmentAngle - textAngle;
+
+    return SegmentMeasurements(
+      initialStartAngle: startAngle,
+      repetitions: repetitions,
+      segmentAngle: segmentAngle,
+      textAngle: textAngle,
+      dotAngle: dotAngle,
+    );
+  }
+
+  /// Calculates total width of text
+  double _calculateTextWidth() {
     final textSpan = TextSpan(text: text, style: textStyle);
     final textPainter = TextPainter(
       text: textSpan,
       textDirection: TextDirection.ltr,
     );
     textPainter.layout();
-
-    double totalTextWidth = textPainter.width;
-    double dotWidth = textStyle.fontSize! / 2;
-    double totalSegmentWidth = totalTextWidth + dotWidth;
-
-    // Calculate how many times the text can fit
-    int repetitions = (totalAngle * radius / totalSegmentWidth).floor();
-    repetitions = max(1, repetitions);
-
-    double segmentAngle = totalAngle / repetitions;
-    double textAngle = (textSpan.text!.length > 0)
-        ? segmentAngle * (totalTextWidth / (totalTextWidth + dotWidth))
-        : 0;
-
-    for (int rep = 0; rep < repetitions; rep++) {
-      double currentStartAngle = startAngle + (segmentAngle * rep);
-
-      // Draw dot
-      if (animationProgress > 0) {
-        _drawDot(canvas, centerX, centerY, currentStartAngle);
-      }
-
-      // Draw text
-      _drawTextSegment(
-        canvas,
-        centerX,
-        centerY,
-        currentStartAngle + dotWidth / radius,
-        textAngle,
-      );
-    }
-  }
-
-  void _drawTextSegment(
-    Canvas canvas,
-    double centerX,
-    double centerY,
-    double startAngle,
-    double totalAngle,
-  ) {
-    final double anglePerChar = totalAngle / text.length;
-
-    for (int i = 0; i < text.length; i++) {
-      final char = text[i];
-      final double charAngle = startAngle + (anglePerChar * (i + 0.5));
-
-      // Calculate character position
-      final double x = centerX + radius * cos(charAngle);
-      final double y = centerY + radius * sin(charAngle);
-
-      // Create character painter
-      final charSpan = TextSpan(
-        text: char,
-        style: textStyle.copyWith(
-          color: textStyle.color!.withOpacity(animationProgress),
-        ),
-      );
-      final charPainter = TextPainter(
-        text: charSpan,
-        textDirection: TextDirection.ltr,
-      );
-      charPainter.layout();
-
-      // Draw character
-      canvas.save();
-      canvas.translate(x, y);
-      canvas.rotate(charAngle + pi / 2);
-      charPainter.paint(
-        canvas,
-        Offset(-charPainter.width / 2, -charPainter.height / 2),
-      );
-      canvas.restore();
-    }
-  }
-
-  void _drawDot(Canvas canvas, double centerX, double centerY, double angle) {
-    final dotPaint = Paint()
-      ..color = textStyle.color!.withOpacity(animationProgress)
-      ..style = PaintingStyle.fill;
-
-    final dotRadius = textStyle.fontSize! / 4;
-    final dotX = centerX + radius * cos(angle);
-    final dotY = centerY + radius * sin(angle);
-
-    canvas.drawCircle(Offset(dotX, dotY), dotRadius, dotPaint);
-  }
-
-  @override
-  bool shouldRepaint(covariant _EnhancedCircularTextPainter oldDelegate) {
-    return oldDelegate.rotationProgress != rotationProgress ||
-        oldDelegate.animationProgress != animationProgress ||
-        oldDelegate.state != state ||
-        oldDelegate.text != text ||
-        oldDelegate.radius != radius ||
-        oldDelegate.textStyle != textStyle;
+    return textPainter.width;
   }
 }
 
-// Helper classes
-class _CharacterMetrics {
-  final double width;
-  final double height;
+/// Stores measurements for text characters
+class CharacterMeasurements {
+  final List<double> charWidths;
+  final double totalWidth;
 
-  _CharacterMetrics({required this.width, required this.height});
+  CharacterMeasurements({
+    required this.charWidths,
+    required this.totalWidth,
+  });
 }
 
-class _CharacterTransform {
-  final double radius;
-  final double angle;
+/// Stores measurements for text segments
+class SegmentMeasurements {
+  final double initialStartAngle;
+  final int repetitions;
+  final double segmentAngle;
+  final double textAngle;
+  final double dotAngle;
 
-  _CharacterTransform({required this.radius, required this.angle});
+  SegmentMeasurements({
+    required this.initialStartAngle,
+    required this.repetitions,
+    required this.segmentAngle,
+    required this.textAngle,
+    required this.dotAngle,
+  });
 }
