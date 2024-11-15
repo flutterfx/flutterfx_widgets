@@ -24,6 +24,7 @@ import 'package:fx_2_folder/fx_8_meteor_border/meteors_demo.dart';
 import 'package:fx_2_folder/fx_9_neon_card/neon_card_demo.dart';
 import 'package:fx_2_folder/globe/3d_cloude_demo.dart';
 import 'package:fx_2_folder/light_effect/light_effect_demo.dart';
+import 'package:fx_2_folder/loader-sphere/loader_sphere_demo.dart';
 import 'package:fx_2_folder/orbit/orbit_demo.dart';
 import 'package:fx_2_folder/particles-github-spark/particles_github_spark_demo.dart';
 import 'package:fx_2_folder/particles-spark-loader/particles_spark_loader_demo.dart';
@@ -274,6 +275,11 @@ class HomeScreen extends StatelessWidget {
     AnimationExample(
       title: 'Scroll Progress',
       builder: (context) => ScrollProgressDemo(),
+      appBarColor: Colors.black,
+    ),
+    AnimationExample(
+      title: 'Sphere Loader',
+      builder: (context) => LoaderSphereDemo(),
       appBarColor: Colors.black,
     ),
   ];
