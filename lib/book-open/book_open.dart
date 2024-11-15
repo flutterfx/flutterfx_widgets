@@ -1,12 +1,6 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
-import 'dart:math' as math;
-import 'package:flutter/material.dart';
-
-import 'dart:math' as math;
-import 'package:flutter/material.dart';
-
 class AnimatedBook extends StatefulWidget {
   final Widget coverChild;
   final Widget pageChild;
@@ -78,7 +72,7 @@ class _AnimatedBookState extends State<AnimatedBook>
 
     _animation = CurvedAnimation(
       parent: _controller,
-      curve: Curves.linear,
+      curve: Curves.linearToEaseOut,
     );
 
     _colorList = initColors(widget.numberOfPages);
@@ -169,13 +163,13 @@ class _AnimatedBookState extends State<AnimatedBook>
                               width: bookDimensions.width,
                               height: bookDimensions.height,
                               decoration: BoxDecoration(
-                                color: _colorList[index],
+                                color: Colors.white, //_colorList[index],
                                 borderRadius: BorderRadius.circular(8),
                                 boxShadow: [
                                   BoxShadow(
                                     color: Colors.black.withOpacity(
                                         _clampOpacity(
-                                            0.1 * (1 - normalizedIndex))),
+                                            0.8 * (1 - normalizedIndex))),
                                     spreadRadius: 1,
                                     blurRadius: 5,
                                     offset: Offset(1, 1),

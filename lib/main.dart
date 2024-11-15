@@ -147,11 +147,6 @@ class HomeScreen extends StatelessWidget {
       appBarColor: Colors.black,
     ),
     AnimationExample(
-      title: 'RotatingBlurText [WIP]',
-      builder: (context) => TextRotateBlurDemo(),
-      appBarColor: Colors.black,
-    ),
-    AnimationExample(
       title: 'TextReveal',
       builder: (context) => AnimationDemoScreen(),
       appBarColor: Colors.black,
@@ -265,10 +260,15 @@ class HomeScreen extends StatelessWidget {
       isFullScreen: true,
     ),
     AnimationExample(
-      title: 'BookOpen [WIP]',
+      title: 'BookOpen',
       builder: (context) => BookOpenDemo(),
       appBarColor: Colors.black,
       isFullScreen: true,
+    ),
+    AnimationExample(
+      title: 'RotatingBlurText [WIP]',
+      builder: (context) => TextRotateBlurDemo(),
+      appBarColor: Colors.black,
     ),
   ];
 
@@ -286,20 +286,20 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Automatically navigate to the first example on launch (e.g., "Folder").
-    Future.microtask(() {
-      if (examples.isNotEmpty) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) {
-              return DetailScreen(
-                example: examples[examples.length - 1],
-              ); // Automatically selecting the first example
-            },
-          ),
-        );
-      }
-    });
+    // Future.microtask(() {
+    //   if (examples.isNotEmpty) {
+    //     Navigator.push(
+    //       context,
+    //       MaterialPageRoute(
+    //         builder: (context) {
+    //           return DetailScreen(
+    //             example: examples[examples.length - 1],
+    //           ); // Automatically selecting the first example
+    //         },
+    //       ),
+    //     );
+    //   }
+    // });
     return Scaffold(
       appBar: AppBar(
         title: const Text('Animation Showcase'),
