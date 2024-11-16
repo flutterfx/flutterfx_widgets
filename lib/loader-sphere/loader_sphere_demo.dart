@@ -76,7 +76,7 @@ class RippleDemo extends StatelessWidget {
         child: AnimatedWaveRipple(
           size: 120,
           duration: Duration(seconds: 2),
-          opacity: 0.9,
+          opacity: 0.6,
         ),
       ),
     );
