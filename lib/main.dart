@@ -37,6 +37,7 @@ import 'package:fx_2_folder/smoke/smoke.dart';
 import 'package:fx_2_folder/stacked-expand-cards/stacked_expand_card.dart';
 import 'package:fx_2_folder/stacked-scroll/stacked_scroll_demo.dart';
 import 'package:fx_2_folder/light-bulb-night-mode/light_bulb_demo.dart';
+import 'package:fx_2_folder/text-3d-pop/text_3d_pop_demo.dart';
 import 'package:fx_2_folder/text-on-path/text_on_path_demo.dart';
 import 'package:fx_2_folder/stacked-cards/stacked_card.dart';
 import 'package:fx_2_folder/vinyl/vinyl.dart';
@@ -280,6 +281,11 @@ class HomeScreen extends StatelessWidget {
     AnimationExample(
       title: 'Sphere Loader',
       builder: (context) => LoaderSphereDemo(),
+      appBarColor: Colors.black,
+    ),
+    AnimationExample(
+      title: 'Text 3D Pop',
+      builder: (context) => Text3dPopDemo(),
       appBarColor: Colors.black,
     ),
   ];
