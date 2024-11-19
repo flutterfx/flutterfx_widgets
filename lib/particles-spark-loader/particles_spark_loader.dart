@@ -1,6 +1,5 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
-import 'package:fx_2_folder/tools/curves.dart';
 
 class StepRotatingShape extends StatefulWidget {
   final double size;

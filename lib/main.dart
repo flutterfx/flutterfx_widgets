@@ -4,6 +4,8 @@ import 'package:fx_2_folder/background-aurora/aurora_widget.dart';
 import 'package:fx_2_folder/background-aurora/aurora_widget_demo.dart';
 import 'package:fx_2_folder/background-beam/background_beam_demo.dart';
 import 'package:fx_2_folder/background-exploding-beam/background_beam_explosion_demo.dart';
+import 'package:fx_2_folder/gemini-splash/gemini_splash_demo.dart';
+import 'package:fx_2_folder/motion-blur/motion_blur_demo.dart';
 import 'package:fx_2_folder/orbit-blur/orbit_blur.dart';
 import 'package:fx_2_folder/orbit-blur/orbit_blur_demo.dart';
 import 'package:fx_2_folder/book-open/book_open_demo.dart';
@@ -297,11 +299,21 @@ class HomeScreen extends StatelessWidget {
       builder: (context) => AuroraDemo(),
       appBarColor: Colors.black,
     ),
-        AnimationExample(
+    AnimationExample(
       title: 'Orbit with Blur',
       builder: (context) => OrbitExtendedDemo(),
       appBarColor: Colors.black,
     ),
+    AnimationExample(
+      title: 'Gemini Splash',
+      builder: (context) => SparkleDemo(),
+      appBarColor: Colors.black,
+    ),
+    // AnimationExample(
+    //   title: 'Motion blur',
+    //   builder: (context) => MotionStreakingDemo(),
+    //   appBarColor: Colors.black,
+    // ),
   ];
 
   HomeScreen({super.key});
