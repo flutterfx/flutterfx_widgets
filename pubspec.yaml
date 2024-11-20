@@ -33,6 +33,9 @@ dependencies:
   #text-3d-pop
   sensors: ^2.0.3 
 
+  #shaders
+  flutter_shaders: ^0.1.3
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -61,3 +64,8 @@ flutter:
     - assets/images/vinyl/vinyl.png
     - assets/images/smoke/bottom_logo.png
     - assets/images/smoke/main_logo.png
+    - shaders/motion_blur.frag
+
+
+  shaders:
+    - shaders/motion_blur.frag
