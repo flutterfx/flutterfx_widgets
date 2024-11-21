@@ -4,6 +4,7 @@ import 'package:fx_2_folder/background-aurora/aurora_widget.dart';
 import 'package:fx_2_folder/background-aurora/aurora_widget_demo.dart';
 import 'package:fx_2_folder/background-beam/background_beam_demo.dart';
 import 'package:fx_2_folder/background-exploding-beam/background_beam_explosion_demo.dart';
+import 'package:fx_2_folder/butterfly-interactive/butterfly_interactive_demo.dart';
 import 'package:fx_2_folder/fx_14_text_chaotic_spring/demo.dart';
 import 'package:fx_2_folder/gemini-splash/gemini_splash_demo.dart';
 import 'package:fx_2_folder/motion-blur/motion_blur_demo.dart';
@@ -37,6 +38,7 @@ import 'package:fx_2_folder/particles-github-spark/particles_github_spark_demo.d
 import 'package:fx_2_folder/particles-spark-loader/particles_spark_loader_demo.dart';
 import 'package:fx_2_folder/particles/particles_demo.dart';
 import 'package:fx_2_folder/primitives/primitives_demo.dart';
+import 'package:fx_2_folder/progress-bar/progress_bar_demo.dart';
 import 'package:fx_2_folder/scroll-progress/scroll_progress_demo.dart';
 import 'package:fx_2_folder/slider/slider.dart';
 import 'package:fx_2_folder/slider/slider_demo.dart';
@@ -318,6 +320,16 @@ class HomeScreen extends StatelessWidget {
     AnimationExample(
       title: "Text Chaotic Spring",
       builder: (context) => TextChaoticSpringDemo(),
+      appBarColor: Colors.black,
+    ),
+    AnimationExample(
+      title: "Interactive Butterfly",
+      builder: (context) => ButterflyInteractiveDemo(),
+      appBarColor: Colors.black,
+    ),
+    AnimationExample(
+      title: "ProgressBar",
+      builder: (context) => ProgressBarDemo(),
       appBarColor: Colors.black,
     )
   ];
