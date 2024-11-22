@@ -56,7 +56,6 @@ class _ProgressBarDemo2State extends State<ProgressBarDemo2> {
                     primaryColor: Colors.black87,
                     backgroundColor: Colors.grey[200]!,
                     borderRadius: BorderRadius.circular(8),
-                    // Animation duration controls typing speed too
                     animationDuration: Duration(milliseconds: 1000),
                   ),
                 ),
@@ -64,13 +63,13 @@ class _ProgressBarDemo2State extends State<ProgressBarDemo2> {
                 const SizedBox(height: 48),
 
                 ProgressLoader(
-                  progress: _progress, // This will fill 1/4 of the circle
+                  progress: _progress,
                   strategy: PizzaProgressStrategy(),
-                  style: ProgressStyle(
+                  style: const ProgressStyle(
                     width: 100,
                     height: 100,
-                    primaryColor: Colors.white, // Fill color
-                    backgroundColor: Colors.transparent, // Background color
+                    primaryColor: Colors.white,
+                    backgroundColor: Colors.transparent,
                   ),
                 ),
 
@@ -78,7 +77,7 @@ class _ProgressBarDemo2State extends State<ProgressBarDemo2> {
 
                 ProgressLoader(
                   progress: _progress,
-                  strategy: SnowProgressStrategy(
+                  strategy: const SnowProgressStrategy(
                     snowflakeCount: 30,
                     maxSnowflakeSize: 3,
                     snowColor: Colors.white,
