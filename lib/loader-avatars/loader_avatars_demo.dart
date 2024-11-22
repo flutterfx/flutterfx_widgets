@@ -35,7 +35,7 @@ class LoaderAvatarsDemo extends StatelessWidget {
                         waveWidth: 0.1,
                         phaseShiftFactor: 0.6,
                       ),
-                      avatarSize: 42,
+                      avatarSize: 32,
                       overlapFactor: 0.4,
                     ),
                   ),

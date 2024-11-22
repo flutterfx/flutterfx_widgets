@@ -8,6 +8,7 @@ import 'package:fx_2_folder/butterfly-interactive/butterfly_interactive_demo.dar
 import 'package:fx_2_folder/fx_14_text_chaotic_spring/demo.dart';
 import 'package:fx_2_folder/gemini-splash/gemini_splash_demo.dart';
 import 'package:fx_2_folder/loader-avatars/loader_avatars_demo.dart';
+import 'package:fx_2_folder/loader-avatars/loader_avatars_demo_2.dart';
 import 'package:fx_2_folder/motion-blur/motion_blur_demo.dart';
 import 'package:fx_2_folder/orbit-blur/orbit_blur.dart';
 import 'package:fx_2_folder/orbit-blur/orbit_blur_demo.dart';
@@ -342,6 +343,11 @@ class HomeScreen extends StatelessWidget {
     AnimationExample(
       title: "ProgressBar - 2",
       builder: (context) => ProgressBarDemo2(),
+      appBarColor: Colors.black,
+    ),
+    AnimationExample(
+      title: "Avatar Loader - 2",
+      builder: (context) => LoaderAvatarsDemo2(),
       appBarColor: Colors.black,
     ),
   ];
