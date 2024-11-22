@@ -10,6 +10,8 @@ import 'package:fx_2_folder/gemini-splash/gemini_splash_demo.dart';
 import 'package:fx_2_folder/loader-avatars/loader_avatars_demo.dart';
 import 'package:fx_2_folder/loader-avatars/loader_avatars_demo_2.dart';
 import 'package:fx_2_folder/motion-blur/motion_blur_demo.dart';
+import 'package:fx_2_folder/noise/noise.dart';
+import 'package:fx_2_folder/noise/noise_demo.dart';
 import 'package:fx_2_folder/orbit-blur/orbit_blur.dart';
 import 'package:fx_2_folder/orbit-blur/orbit_blur_demo.dart';
 import 'package:fx_2_folder/book-open/book_open_demo.dart';
@@ -46,12 +48,15 @@ import 'package:fx_2_folder/scroll-progress/scroll_progress_demo.dart';
 import 'package:fx_2_folder/slider/slider.dart';
 import 'package:fx_2_folder/slider/slider_demo.dart';
 import 'package:fx_2_folder/smoke/smoke.dart';
+import 'package:fx_2_folder/splash-reveal/sample_home_screen.dart';
+import 'package:fx_2_folder/splash-reveal/splash_demo.dart';
 import 'package:fx_2_folder/stacked-expand-cards/stacked_expand_card.dart';
 import 'package:fx_2_folder/stacked-scroll/stacked_scroll_demo.dart';
 import 'package:fx_2_folder/light-bulb-night-mode/light_bulb_demo.dart';
 import 'package:fx_2_folder/text-3d-pop/text_3d_pop_demo.dart';
 import 'package:fx_2_folder/text-on-path/text_on_path_demo.dart';
 import 'package:fx_2_folder/stacked-cards/stacked_card.dart';
+import 'package:fx_2_folder/thanos-snap/thanos_snap_demo.dart';
 import 'package:fx_2_folder/vinyl/vinyl.dart';
 import 'package:fx_2_folder/visibility/blur_fade.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -349,6 +354,17 @@ class HomeScreen extends StatelessWidget {
       title: "Avatar Loader - 2",
       builder: (context) => LoaderAvatarsDemo2(),
       appBarColor: Colors.black,
+    ),
+    AnimationExample(
+      title: "Noise [WIP]",
+      builder: (context) => PracticalNoiseShowcase(),
+      appBarColor: Colors.black,
+    ),
+    AnimationExample(
+      title: "Splash Circular Reveal",
+      builder: (context) => LoadingApp1(),
+      appBarColor: Colors.black,
+      isFullScreen: true,
     ),
   ];
 
