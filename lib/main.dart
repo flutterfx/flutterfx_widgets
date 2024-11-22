@@ -40,6 +40,7 @@ import 'package:fx_2_folder/particles-spark-loader/particles_spark_loader_demo.d
 import 'package:fx_2_folder/particles/particles_demo.dart';
 import 'package:fx_2_folder/primitives/primitives_demo.dart';
 import 'package:fx_2_folder/progress-bar/progress_bar_demo.dart';
+import 'package:fx_2_folder/progress-bar/progress_bar_demo_2.dart';
 import 'package:fx_2_folder/scroll-progress/scroll_progress_demo.dart';
 import 'package:fx_2_folder/slider/slider.dart';
 import 'package:fx_2_folder/slider/slider_demo.dart';
@@ -337,7 +338,12 @@ class HomeScreen extends StatelessWidget {
       title: "Avatar Loader",
       builder: (context) => LoaderAvatarsDemo(),
       appBarColor: Colors.black,
-    )
+    ),
+    AnimationExample(
+      title: "ProgressBar - 2",
+      builder: (context) => ProgressBarDemo2(),
+      appBarColor: Colors.black,
+    ),
   ];
 
   HomeScreen({super.key});

@@ -2,17 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:fx_2_folder/progress-bar/design/grid.dart';
 import 'package:fx_2_folder/progress-bar/progress_bar.dart';
 import 'package:fx_2_folder/progress-bar/strategies/circlula_progress_strategy.dart';
-import 'package:fx_2_folder/progress-bar/strategies/linear_progress_strategy.dart';
+import 'package:fx_2_folder/progress-bar/strategies/clock_progress_strategy.dart';
+import 'package:fx_2_folder/progress-bar/strategies/snow_progres_strategy.dart';
+import 'package:fx_2_folder/progress-bar/strategies/typing_progress_strategy.dart';
 import 'package:fx_2_folder/progress-bar/strategies/wave_progress_strategy.dart';
 
-class ProgressBarDemo extends StatefulWidget {
-  const ProgressBarDemo({Key? key}) : super(key: key);
+class ProgressBarDemo2 extends StatefulWidget {
+  const ProgressBarDemo2({Key? key}) : super(key: key);
 
   @override
-  State<ProgressBarDemo> createState() => _ProgressBarDemoState();
+  State<ProgressBarDemo2> createState() => _ProgressBarDemo2State();
 }
 
-class _ProgressBarDemoState extends State<ProgressBarDemo> {
+class _ProgressBarDemo2State extends State<ProgressBarDemo2> {
   // Current progress value
   double _progress = 0.7;
 
@@ -43,64 +45,49 @@ class _ProgressBarDemoState extends State<ProgressBarDemo> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // Progress info text with enhanced typography
-                Text(
-                  '${(_progress * 100).toStringAsFixed(1)}%',
-                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                        color: _primaryWhite,
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: 0.5,
-                      ),
-                ),
                 const SizedBox(height: 40),
 
-                // Linear progress bar with subtle gradient
                 ProgressLoader(
                   progress: _progress,
-                  strategy: LinearProgressStrategy(),
-                  style: const ProgressStyle(
-                    gradientColors: [
-                      _softWhite,
-                      _primaryWhite,
-                    ],
-                    height: 8, // Slightly thinner for elegance
-                    borderRadius: BorderRadius.all(Radius.circular(4)),
-                    backgroundColor: _mediumGray,
+                  strategy: TypingProgressStrategy(),
+                  style: ProgressStyle(
+                    width: 200,
+                    height: 48,
+                    primaryColor: Colors.black87,
+                    backgroundColor: Colors.grey[200]!,
+                    borderRadius: BorderRadius.circular(8),
+                    // Animation duration controls typing speed too
+                    animationDuration: Duration(milliseconds: 1000),
                   ),
                 ),
+
                 const SizedBox(height: 48),
 
-                // Wave progress bar with refined animation
+                ProgressLoader(
+                  progress: _progress, // This will fill 1/4 of the circle
+                  strategy: PizzaProgressStrategy(),
+                  style: ProgressStyle(
+                    width: 100,
+                    height: 100,
+                    primaryColor: Colors.white, // Fill color
+                    backgroundColor: Colors.transparent, // Background color
+                  ),
+                ),
+
+                const SizedBox(height: 48),
+
                 ProgressLoader(
                   progress: _progress,
-                  strategy: const DynamicWaveProgressStrategy(
-                    waveDuration: Duration(milliseconds: 2500),
-                    autoAnimate: true,
-                    waveCurve: Curves.linear,
+                  strategy: SnowProgressStrategy(
+                    snowflakeCount: 30,
+                    maxSnowflakeSize: 3,
+                    snowColor: Colors.white,
                   ),
                   style: ProgressStyle(
-                    height: 130,
-                    width: 130,
-                    borderRadius: BorderRadius.circular(12),
-                    primaryColor: _primaryWhite.withOpacity(0.85),
-                    backgroundColor: _mediumGray,
-                  ),
-                ),
-                const SizedBox(height: 48),
-
-                // Circular progress bar with sophisticated look
-                ProgressLoader(
-                  progress: _progress,
-                  strategy: CircularProgressStrategy(
-                    strokeWidth: 10,
-                  ),
-                  style: const ProgressStyle(
-                    width: 130,
-                    gradientColors: [
-                      _primaryWhite,
-                      _primaryWhite,
-                    ],
-                    backgroundColor: _darkGray,
+                    width: 200,
+                    height: 150,
+                    primaryColor: Colors.white,
+                    backgroundColor: Colors.blue.shade900,
                   ),
                 ),
 
