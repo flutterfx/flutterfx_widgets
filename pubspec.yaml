@@ -69,4 +69,3 @@ flutter:
 
   shaders:
     - shaders/motion_blur.frag
-    - shaders/thanos.frag

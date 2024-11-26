@@ -4,6 +4,7 @@ import 'package:fx_2_folder/background-aurora/aurora_widget.dart';
 import 'package:fx_2_folder/background-aurora/aurora_widget_demo.dart';
 import 'package:fx_2_folder/background-beam/background_beam_demo.dart';
 import 'package:fx_2_folder/background-exploding-beam/background_beam_explosion_demo.dart';
+import 'package:fx_2_folder/background-orbiral-star/background_orbital_star.dart';
 import 'package:fx_2_folder/butterfly-interactive/butterfly_interactive_demo.dart';
 import 'package:fx_2_folder/fx_14_text_chaotic_spring/demo.dart';
 import 'package:fx_2_folder/gemini-splash/gemini_splash_demo.dart';
@@ -363,6 +364,12 @@ class HomeScreen extends StatelessWidget {
     AnimationExample(
       title: "Splash Circular Reveal",
       builder: (context) => LoadingApp1(),
+      appBarColor: Colors.black,
+      isFullScreen: true,
+    ),
+    AnimationExample(
+      title: "Oribtal Star",
+      builder: (context) => BgOrbittalStarDemo(),
       appBarColor: Colors.black,
       isFullScreen: true,
     ),
