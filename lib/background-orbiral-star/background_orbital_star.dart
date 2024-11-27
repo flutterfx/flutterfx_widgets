@@ -7,16 +7,12 @@ class CosmicBackground extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        // Layer 1: Gradient Background
         BackgroundGradient(),
 
-        // Layer 2: Particle Effect
         ParticleEffect(),
 
-        // Layer 3: Orbital Paths
         OrbitalPaths(),
 
-        // Layer 4: Moving Star
         MovingStars(),
       ],
     );
