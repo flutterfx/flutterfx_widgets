@@ -6,6 +6,7 @@ import 'package:fx_2_folder/background-beam/background_beam_demo.dart';
 import 'package:fx_2_folder/background-exploding-beam/background_beam_explosion_demo.dart';
 import 'package:fx_2_folder/background-orbiral-star/background_orbital_star.dart';
 import 'package:fx_2_folder/butterfly-interactive/butterfly_interactive_demo.dart';
+import 'package:fx_2_folder/decoration-bulbs/decoration_bulbs_demo.dart';
 import 'package:fx_2_folder/fx_14_text_chaotic_spring/demo.dart';
 import 'package:fx_2_folder/gemini-splash/gemini_splash_demo.dart';
 import 'package:fx_2_folder/loader-avatars/loader_avatars_demo.dart';
@@ -379,6 +380,11 @@ class HomeScreen extends StatelessWidget {
       builder: (context) => LoaderSquareDemo(),
       appBarColor: Colors.black,
       isFullScreen: true,
+    ),
+    AnimationExample(
+      title: "DecorationBulbsDemo",
+      builder: (context) => DecorationBulbsDemo(),
+      appBarColor: Colors.black,
     ),
   ];
 
