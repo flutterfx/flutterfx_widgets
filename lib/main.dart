@@ -11,6 +11,7 @@ import 'package:fx_2_folder/decoration-thread/decoration_thread.dart';
 import 'package:fx_2_folder/decoration-thread/decoration_thread_demo_1.dart';
 import 'package:fx_2_folder/fx_14_text_chaotic_spring/demo.dart';
 import 'package:fx_2_folder/gemini-splash/gemini_splash_demo.dart';
+import 'package:fx_2_folder/grid-animated/grid_animated.dart';
 import 'package:fx_2_folder/loader-avatars/loader_avatars_demo.dart';
 import 'package:fx_2_folder/loader-avatars/loader_avatars_demo_2.dart';
 import 'package:fx_2_folder/loader-square/loader_square_demo.dart';
@@ -391,6 +392,11 @@ class HomeScreen extends StatelessWidget {
     AnimationExample(
       title: "DecorationThreadDemo",
       builder: (context) => GlowingThreadDemo(),
+      appBarColor: Colors.black,
+    ),
+    AnimationExample(
+      title: "Grid Animation",
+      builder: (context) => GridAnimatedDemo(),
       appBarColor: Colors.black,
     ),
   ];
