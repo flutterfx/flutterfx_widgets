@@ -63,7 +63,7 @@ class _HyperTextState extends State<HyperText> {
 
     _timer = Timer.periodic(
       widget.duration ~/
-          (widget.text.isNotEmpty ? widget.text.length * 10 : 10),
+          (widget.text.length * 10),
       (timer) {
         if (!widget.animateOnLoad && isFirstRender) {
           timer.cancel();
