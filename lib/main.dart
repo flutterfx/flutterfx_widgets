@@ -4,6 +4,7 @@ import 'package:fx_2_folder/background-aurora/aurora_widget.dart';
 import 'package:fx_2_folder/background-aurora/aurora_widget_demo.dart';
 import 'package:fx_2_folder/background-beam/background_beam_demo.dart';
 import 'package:fx_2_folder/background-exploding-beam/background_beam_explosion_demo.dart';
+import 'package:fx_2_folder/background-grid-motion/background_grid_motion.dart';
 import 'package:fx_2_folder/background-orbiral-star/background_orbital_star.dart';
 import 'package:fx_2_folder/butterfly-interactive/butterfly_interactive_demo.dart';
 import 'package:fx_2_folder/decoration-bulbs/decoration_bulbs_demo.dart';
@@ -397,6 +398,11 @@ class HomeScreen extends StatelessWidget {
     AnimationExample(
       title: "Grid Animation",
       builder: (context) => GridAnimatedDemo(),
+      appBarColor: Colors.black,
+    ),
+    AnimationExample(
+      title: "Grid in Motion",
+      builder: (context) => RetroGridDemo(),
       appBarColor: Colors.black,
     ),
   ];
