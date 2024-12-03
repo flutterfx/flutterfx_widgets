@@ -4,6 +4,8 @@ import 'package:fx_2_folder/background-aurora/aurora_widget.dart';
 import 'package:fx_2_folder/background-aurora/aurora_widget_demo.dart';
 import 'package:fx_2_folder/background-beam/background_beam_demo.dart';
 import 'package:fx_2_folder/background-exploding-beam/background_beam_explosion_demo.dart';
+import 'package:fx_2_folder/background-flicker-grid/background_flicker_grid.dart';
+import 'package:fx_2_folder/background-flickering-card/background_flickering_card.dart';
 import 'package:fx_2_folder/background-grid-motion/background_grid_motion.dart';
 import 'package:fx_2_folder/background-orbiral-star/background_orbital_star.dart';
 import 'package:fx_2_folder/butterfly-interactive/butterfly_interactive_demo.dart';
@@ -403,6 +405,17 @@ class HomeScreen extends StatelessWidget {
     AnimationExample(
       title: "Grid in Motion",
       builder: (context) => RetroGridDemo(),
+      appBarColor: Colors.black,
+    ),
+    AnimationExample(
+      title: "Flickering Grid Demo",
+      builder: (context) => FlickeringGridDemo(),
+      appBarColor: Colors.black,
+      isFullScreen: true,
+    ),
+    AnimationExample(
+      title: "Flickering Cards Demo",
+      builder: (context) => ColorfulCardsDemo(),
       appBarColor: Colors.black,
     ),
   ];
