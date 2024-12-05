@@ -12,6 +12,7 @@ import 'package:fx_2_folder/butterfly-interactive/butterfly_interactive_demo.dar
 import 'package:fx_2_folder/decoration-bulbs/decoration_bulbs_demo.dart';
 import 'package:fx_2_folder/decoration-thread/decoration_thread.dart';
 import 'package:fx_2_folder/decoration-thread/decoration_thread_demo_1.dart';
+import 'package:fx_2_folder/fractal-glass/fractal_glass.dart';
 import 'package:fx_2_folder/fx_14_text_chaotic_spring/demo.dart';
 import 'package:fx_2_folder/gemini-splash/gemini_splash_demo.dart';
 import 'package:fx_2_folder/grid-animated/grid_animated.dart';
@@ -66,6 +67,7 @@ import 'package:fx_2_folder/text-3d-pop/text_3d_pop_demo.dart';
 import 'package:fx_2_folder/text-on-path/text_on_path_demo.dart';
 import 'package:fx_2_folder/stacked-cards/stacked_card.dart';
 import 'package:fx_2_folder/thanos-snap/thanos_snap_demo.dart';
+import 'package:fx_2_folder/ticker/ticker.dart';
 import 'package:fx_2_folder/vinyl/vinyl.dart';
 import 'package:fx_2_folder/visibility/blur_fade.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -417,6 +419,17 @@ class HomeScreen extends StatelessWidget {
       title: "Flickering Cards Demo",
       builder: (context) => ColorfulCardsDemo(),
       appBarColor: Colors.black,
+    ),
+    AnimationExample(
+      title: "[WIP] FractalGLass Effect",
+      builder: (context) => FractalGlassDemo(),
+      appBarColor: Colors.black,
+    ),
+    AnimationExample(
+      title: "Moving Ticker Effect",
+      builder: (context) => LayeredTickers(),
+      appBarColor: Colors.black,
+      isFullScreen: true,
     ),
   ];
 
