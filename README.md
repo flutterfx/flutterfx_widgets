@@ -1,6 +1,20 @@
-# FlutterFX Widgets
+# FlutterFX: A Library of Living Animations
 
-A comprehensive collection of beautiful, ready-to-use animated Flutter widgets - from 3D effects to text animations. Each widget is easy to integrate.
+55 Flutter animations, growing daily.
+
+Each one a building block.
+
+Each one open source.
+
+Each one ready for your next project.
+
+Star the repo if you find your next animation.
+
+[📚 View the documentation](https://www.flutterfx.com/docs)
+
+
+
+# Preview
 
 <table>
 <tr>
