@@ -12,6 +12,7 @@ import 'package:fx_2_folder/butterfly-interactive/butterfly_interactive_demo.dar
 import 'package:fx_2_folder/decoration-bulbs/decoration_bulbs_demo.dart';
 import 'package:fx_2_folder/decoration-thread/decoration_thread.dart';
 import 'package:fx_2_folder/decoration-thread/decoration_thread_demo_1.dart';
+import 'package:fx_2_folder/filter-wave/wave_filter.dart';
 import 'package:fx_2_folder/fractal-glass/fractal_glass.dart';
 import 'package:fx_2_folder/fx_14_text_chaotic_spring/demo.dart';
 import 'package:fx_2_folder/gemini-splash/gemini_splash_demo.dart';
@@ -55,6 +56,7 @@ import 'package:fx_2_folder/primitives/primitives_demo.dart';
 import 'package:fx_2_folder/progress-bar/progress_bar_demo.dart';
 import 'package:fx_2_folder/progress-bar/progress_bar_demo_2.dart';
 import 'package:fx_2_folder/scroll-progress/scroll_progress_demo.dart';
+import 'package:fx_2_folder/shader-learning/shader_1.dart';
 import 'package:fx_2_folder/slider/slider.dart';
 import 'package:fx_2_folder/slider/slider_demo.dart';
 import 'package:fx_2_folder/smoke/smoke.dart';
@@ -428,6 +430,12 @@ class HomeScreen extends StatelessWidget {
     AnimationExample(
       title: "Moving Ticker Effect",
       builder: (context) => LayeredTickers(),
+      appBarColor: Colors.black,
+      isFullScreen: true,
+    ),
+    AnimationExample(
+      title: "Simple Shader",
+      builder: (context) => SimpleShaderExample(),
       appBarColor: Colors.black,
       isFullScreen: true,
     ),

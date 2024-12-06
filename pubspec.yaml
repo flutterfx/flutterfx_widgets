@@ -70,3 +70,4 @@ flutter:
 
   shaders:
     - shaders/motion_blur.frag
+    - shaders/simple.frag
