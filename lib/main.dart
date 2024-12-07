@@ -17,6 +17,7 @@ import 'package:fx_2_folder/fractal-glass/fractal_glass.dart';
 import 'package:fx_2_folder/fx_14_text_chaotic_spring/demo.dart';
 import 'package:fx_2_folder/gemini-splash/gemini_splash_demo.dart';
 import 'package:fx_2_folder/grid-animated/grid_animated.dart';
+import 'package:fx_2_folder/infinite-scrolling/infinite_scrolling.dart';
 import 'package:fx_2_folder/loader-avatars/loader_avatars_demo.dart';
 import 'package:fx_2_folder/loader-avatars/loader_avatars_demo_2.dart';
 import 'package:fx_2_folder/loader-square/loader_square_demo.dart';
@@ -436,6 +437,12 @@ class HomeScreen extends StatelessWidget {
     AnimationExample(
       title: "Simple Shader",
       builder: (context) => SimpleShaderExample(),
+      appBarColor: Colors.black,
+      isFullScreen: true,
+    ),
+    AnimationExample(
+      title: "Infinite Scrolling Demo",
+      builder: (context) => MarqueeDemo(),
       appBarColor: Colors.black,
       isFullScreen: true,
     ),
