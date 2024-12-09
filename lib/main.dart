@@ -51,6 +51,7 @@ import 'package:fx_2_folder/globe/3d_cloude_demo.dart';
 import 'package:fx_2_folder/light_effect/light_effect_demo.dart';
 import 'package:fx_2_folder/loader-sphere/loader_sphere_demo.dart';
 import 'package:fx_2_folder/orbit/orbit_demo.dart';
+import 'package:fx_2_folder/page-flip/page_flip.dart';
 import 'package:fx_2_folder/particles-github-spark/particles_github_spark_demo.dart';
 import 'package:fx_2_folder/particles-spark-loader/particles_spark_loader_demo.dart';
 import 'package:fx_2_folder/particles/particles_demo.dart';
@@ -450,6 +451,12 @@ class HomeScreen extends StatelessWidget {
     AnimationExample(
       title: "Infinite Scrolling 3D",
       builder: (context) => Marquee3D(),
+      appBarColor: Colors.black,
+      isFullScreen: true,
+    ),
+    AnimationExample(
+      title: "Page Flip",
+      builder: (context) => const PageFlipDemo(),
       appBarColor: Colors.black,
       isFullScreen: true,
     ),
