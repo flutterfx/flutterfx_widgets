@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fx_2_folder/avatar-circles/avatar_circles.dart';
 import 'package:fx_2_folder/background-aurora/aurora_widget.dart';
 import 'package:fx_2_folder/background-aurora/aurora_widget_demo.dart';
 import 'package:fx_2_folder/background-beam/background_beam_demo.dart';
@@ -460,7 +461,13 @@ class HomeScreen extends StatelessWidget {
       appBarColor: Colors.black,
       isFullScreen: true,
     ),
-  ];
+    AnimationExample(
+      title: "Avatar Circles",
+      builder: (context) => AvatarCirclesShowcase(),
+      appBarColor: Colors.black,
+      isFullScreen: true,
+    ),
+  ]; //AvatarCirclesShowcase
 
   HomeScreen({super.key});
 
