@@ -26,6 +26,7 @@ import 'package:fx_2_folder/loader-square/loader_square_demo.dart';
 import 'package:fx_2_folder/motion-blur/motion_blur_demo.dart';
 import 'package:fx_2_folder/noise/noise.dart';
 import 'package:fx_2_folder/noise/noise_demo.dart';
+import 'package:fx_2_folder/notification-list/notification_list.dart';
 import 'package:fx_2_folder/orbit-blur/orbit_blur.dart';
 import 'package:fx_2_folder/orbit-blur/orbit_blur_demo.dart';
 import 'package:fx_2_folder/book-open/book_open_demo.dart';
@@ -467,7 +468,13 @@ class HomeScreen extends StatelessWidget {
       appBarColor: Colors.black,
       isFullScreen: true,
     ),
-  ]; //AvatarCirclesShowcase
+    AnimationExample(
+      title: "Notification List",
+      builder: (context) => NotificationDemo(),
+      appBarColor: Colors.black,
+      isFullScreen: true,
+    ),
+  ]; //
 
   HomeScreen({super.key});
 
