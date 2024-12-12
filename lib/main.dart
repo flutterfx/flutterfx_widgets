@@ -65,6 +65,7 @@ import 'package:fx_2_folder/shader-learning/shader_1.dart';
 import 'package:fx_2_folder/slider/slider.dart';
 import 'package:fx_2_folder/slider/slider_demo.dart';
 import 'package:fx_2_folder/smoke/smoke.dart';
+import 'package:fx_2_folder/splash-door-open/splash_door_open.dart';
 import 'package:fx_2_folder/splash-reveal/sample_home_screen.dart';
 import 'package:fx_2_folder/splash-reveal/splash_demo.dart';
 import 'package:fx_2_folder/stacked-expand-cards/stacked_expand_card.dart';
@@ -474,7 +475,13 @@ class HomeScreen extends StatelessWidget {
       appBarColor: Colors.black,
       isFullScreen: true,
     ),
-  ]; //
+    AnimationExample(
+      title: "Splash Door Open Reveal",
+      builder: (context) => SplashDoorOpenRevealDemo(),
+      appBarColor: Colors.black,
+      isFullScreen: true,
+    ),
+  ];
 
   HomeScreen({super.key});
 
