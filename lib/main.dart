@@ -9,6 +9,7 @@ import 'package:fx_2_folder/background-flicker-grid/background_flicker_grid.dart
 import 'package:fx_2_folder/background-flickering-card/background_flickering_card.dart';
 import 'package:fx_2_folder/background-grid-motion/background_grid_motion.dart';
 import 'package:fx_2_folder/background-orbiral-star/background_orbital_star.dart';
+import 'package:fx_2_folder/background-ripples/background_ripples.dart';
 import 'package:fx_2_folder/butterfly-interactive/butterfly_interactive_demo.dart';
 import 'package:fx_2_folder/decoration-bulbs/decoration_bulbs_demo.dart';
 import 'package:fx_2_folder/decoration-thread/decoration_thread.dart';
@@ -478,6 +479,12 @@ class HomeScreen extends StatelessWidget {
     AnimationExample(
       title: "Splash Door Open Reveal",
       builder: (context) => SplashDoorOpenRevealDemo(),
+      appBarColor: Colors.black,
+      isFullScreen: true,
+    ),
+    AnimationExample(
+      title: "Background Ripples",
+      builder: (context) => BackgroundRippleDemo(),
       appBarColor: Colors.black,
       isFullScreen: true,
     ),
