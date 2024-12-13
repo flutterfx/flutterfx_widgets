@@ -76,7 +76,7 @@ class _RippleState extends State<Ripple> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return ShaderMask(
       shaderCallback: (bounds) {
-        return LinearGradient(
+        return const LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [Colors.white, Colors.transparent],
@@ -123,9 +123,9 @@ class BackgroundRippleDemo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
+    return const Stack(
       children: [
-        const Center(
+        Center(
           child: Text(
             'Hola!',
             style: TextStyle(
@@ -135,8 +135,8 @@ class BackgroundRippleDemo extends StatelessWidget {
             ),
           ),
         ),
-        const Ripple(
-          color: Colors.blue,
+        Ripple(
+          color: Color.fromARGB(255, 255, 232, 27),
           mainCircleSize: 130,
           mainCircleOpacity: 0.34,
           numCircles: 5,

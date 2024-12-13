@@ -504,20 +504,20 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Automatically navigate to the first example on launch (e.g., "Folder").
-    Future.microtask(() {
-      if (examples.isNotEmpty) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) {
-              return DetailScreen(
-                example: examples[examples.length - 1],
-              ); // Automatically selecting the first example
-            },
-          ),
-        );
-      }
-    });
+    // Future.microtask(() {
+    //   if (examples.isNotEmpty) {
+    //     Navigator.push(
+    //       context,
+    //       MaterialPageRoute(
+    //         builder: (context) {
+    //           return DetailScreen(
+    //             example: examples[examples.length - 1],
+    //           ); // Automatically selecting the first example
+    //         },
+    //       ),
+    //     );
+    //   }
+    // });
     return Scaffold(
       appBar: AppBar(
         title: const Text('Animation Showcase'),
