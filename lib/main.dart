@@ -61,6 +61,7 @@ import 'package:fx_2_folder/particles/particles_demo.dart';
 import 'package:fx_2_folder/primitives/primitives_demo.dart';
 import 'package:fx_2_folder/progress-bar/progress_bar_demo.dart';
 import 'package:fx_2_folder/progress-bar/progress_bar_demo_2.dart';
+import 'package:fx_2_folder/scratch-to-reveal/scratch_to_reveal.dart';
 import 'package:fx_2_folder/scroll-progress/scroll_progress_demo.dart';
 import 'package:fx_2_folder/shader-learning/shader_1.dart';
 import 'package:fx_2_folder/slider/slider.dart';
@@ -485,6 +486,12 @@ class HomeScreen extends StatelessWidget {
     AnimationExample(
       title: "Background Ripples",
       builder: (context) => BackgroundRippleDemo(),
+      appBarColor: Colors.black,
+      isFullScreen: true,
+    ),
+    AnimationExample(
+      title: "Scratch to Reveal",
+      builder: (context) => ScratchToRevealDemo(),
       appBarColor: Colors.black,
       isFullScreen: true,
     ),
