@@ -76,6 +76,7 @@ import 'package:fx_2_folder/light-bulb-night-mode/light_bulb_demo.dart';
 import 'package:fx_2_folder/text-3d-pop/text_3d_pop_demo.dart';
 import 'package:fx_2_folder/text-on-path/text_on_path_demo.dart';
 import 'package:fx_2_folder/stacked-cards/stacked_card.dart';
+import 'package:fx_2_folder/text-shine/text_shine.dart';
 import 'package:fx_2_folder/thanos-snap/thanos_snap_demo.dart';
 import 'package:fx_2_folder/ticker/ticker.dart';
 import 'package:fx_2_folder/vinyl/vinyl.dart';
@@ -495,6 +496,11 @@ class HomeScreen extends StatelessWidget {
       appBarColor: Colors.black,
       isFullScreen: true,
     ),
+    AnimationExample(
+      title: "Shining Text",
+      builder: (context) => TextShiningDemo(),
+      appBarColor: Colors.black,
+    ),
   ];
 
   HomeScreen({super.key});
@@ -511,20 +517,20 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Automatically navigate to the first example on launch (e.g., "Folder").
-    // Future.microtask(() {
-    //   if (examples.isNotEmpty) {
-    //     Navigator.push(
-    //       context,
-    //       MaterialPageRoute(
-    //         builder: (context) {
-    //           return DetailScreen(
-    //             example: examples[examples.length - 1],
-    //           ); // Automatically selecting the first example
-    //         },
-    //       ),
-    //     );
-    //   }
-    // });
+    Future.microtask(() {
+      if (examples.isNotEmpty) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return DetailScreen(
+                example: examples[examples.length - 1],
+              ); // Automatically selecting the first example
+            },
+          ),
+        );
+      }
+    });
     return Scaffold(
       appBar: AppBar(
         title: const Text('Animation Showcase'),
