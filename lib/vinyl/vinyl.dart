@@ -55,6 +55,8 @@ class _TransformAppState extends State<TransformApp>
     super.initState();
 
     initAnimations();
+    animController.forward();
+    isAnimateButtonVisible = false;
   }
 
   @override

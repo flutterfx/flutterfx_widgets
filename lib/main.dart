@@ -11,6 +11,7 @@ import 'package:fx_2_folder/background-grid-motion/background_grid_motion.dart';
 import 'package:fx_2_folder/background-orbiral-star/background_orbital_star.dart';
 import 'package:fx_2_folder/background-ripples/background_ripples.dart';
 import 'package:fx_2_folder/butterfly-interactive/butterfly_interactive_demo.dart';
+import 'package:fx_2_folder/debug-overlay-3D/debug_overlay_3d.dart';
 import 'package:fx_2_folder/decoration-bulbs/decoration_bulbs_demo.dart';
 import 'package:fx_2_folder/decoration-thread/decoration_thread.dart';
 import 'package:fx_2_folder/decoration-thread/decoration_thread_demo_1.dart';
@@ -501,6 +502,12 @@ class HomeScreen extends StatelessWidget {
       builder: (context) => TextShiningDemo(),
       appBarColor: Colors.black,
     ),
+    AnimationExample(
+      title: "Debug Overlay",
+      builder: (context) => OverlayDebugDemo(),
+      appBarColor: Colors.black,
+      isFullScreen: true,
+    ),
   ];
 
   HomeScreen({super.key});
@@ -517,20 +524,20 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Automatically navigate to the first example on launch (e.g., "Folder").
-    // Future.microtask(() {
-    //   if (examples.isNotEmpty) {
-    //     Navigator.push(
-    //       context,
-    //       MaterialPageRoute(
-    //         builder: (context) {
-    //           return DetailScreen(
-    //             example: examples[examples.length - 1],
-    //           ); // Automatically selecting the first example
-    //         },
-    //       ),
-    //     );
-    //   }
-    // });
+    Future.microtask(() {
+      if (examples.isNotEmpty) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return DetailScreen(
+                example: examples[examples.length - 1],
+              ); // Automatically selecting the first example
+            },
+          ),
+        );
+      }
+    });
     return Scaffold(
       appBar: AppBar(
         title: const Text('Animation Showcase'),
