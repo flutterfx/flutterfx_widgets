@@ -7,6 +7,7 @@ import 'package:fx_2_folder/background-beam/background_beam_demo.dart';
 import 'package:fx_2_folder/background-exploding-beam/background_beam_explosion_demo.dart';
 import 'package:fx_2_folder/background-flicker-grid/background_flicker_grid.dart';
 import 'package:fx_2_folder/background-flickering-card/background_flickering_card.dart';
+import 'package:fx_2_folder/background-grid-blinker/background_grid_blinker.dart';
 import 'package:fx_2_folder/background-grid-motion/background_grid_motion.dart';
 import 'package:fx_2_folder/background-orbiral-star/background_orbital_star.dart';
 import 'package:fx_2_folder/background-ripples/background_ripples.dart';
@@ -505,6 +506,12 @@ class HomeScreen extends StatelessWidget {
     AnimationExample(
       title: "Debug Overlay",
       builder: (context) => OverlayDebugDemo(),
+      appBarColor: Colors.black,
+      isFullScreen: true,
+    ),
+    AnimationExample(
+      title: "Grid Blinker",
+      builder: (context) => GridBlinkerDemo(),
       appBarColor: Colors.black,
       isFullScreen: true,
     ),
