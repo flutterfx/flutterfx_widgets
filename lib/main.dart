@@ -81,6 +81,7 @@ import 'package:fx_2_folder/stacked-cards/stacked_card.dart';
 import 'package:fx_2_folder/text-shine/text_shine.dart';
 import 'package:fx_2_folder/thanos-snap/thanos_snap_demo.dart';
 import 'package:fx_2_folder/ticker/ticker.dart';
+import 'package:fx_2_folder/tree/tree.dart';
 import 'package:fx_2_folder/vinyl/vinyl.dart';
 import 'package:fx_2_folder/visibility/blur_fade.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -512,6 +513,12 @@ class HomeScreen extends StatelessWidget {
     AnimationExample(
       title: "Grid Blinker",
       builder: (context) => GridBlinkerDemo(),
+      appBarColor: Colors.black,
+      isFullScreen: true,
+    ),
+    AnimationExample(
+      title: "Tree",
+      builder: (context) => TreeDemo(),
       appBarColor: Colors.black,
       isFullScreen: true,
     ),
