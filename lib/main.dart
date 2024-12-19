@@ -16,6 +16,7 @@ import 'package:fx_2_folder/debug-overlay-3D/debug_overlay_3d.dart';
 import 'package:fx_2_folder/decoration-bulbs/decoration_bulbs_demo.dart';
 import 'package:fx_2_folder/decoration-thread/decoration_thread.dart';
 import 'package:fx_2_folder/decoration-thread/decoration_thread_demo_1.dart';
+import 'package:fx_2_folder/expandable-widget/expandable_widget.dart';
 import 'package:fx_2_folder/filter-wave/wave_filter.dart';
 import 'package:fx_2_folder/fractal-glass/fractal_glass.dart';
 import 'package:fx_2_folder/fx_14_text_chaotic_spring/demo.dart';
@@ -519,6 +520,12 @@ class HomeScreen extends StatelessWidget {
     AnimationExample(
       title: "Tree",
       builder: (context) => TreeDemo(),
+      appBarColor: Colors.black,
+      isFullScreen: true,
+    ),
+    AnimationExample(
+      title: "Expandable Widget",
+      builder: (context) => ExpandableWidgetDemo(),
       appBarColor: Colors.black,
       isFullScreen: true,
     ),
