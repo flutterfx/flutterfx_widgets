@@ -77,6 +77,7 @@ import 'package:fx_2_folder/stacked-expand-cards/stacked_expand_card.dart';
 import 'package:fx_2_folder/stacked-scroll/stacked_scroll_demo.dart';
 import 'package:fx_2_folder/light-bulb-night-mode/light_bulb_demo.dart';
 import 'package:fx_2_folder/text-3d-pop/text_3d_pop_demo.dart';
+import 'package:fx_2_folder/text-morph/text_morph.dart';
 import 'package:fx_2_folder/text-on-path/text_on_path_demo.dart';
 import 'package:fx_2_folder/stacked-cards/stacked_card.dart';
 import 'package:fx_2_folder/text-shine/text_shine.dart';
@@ -526,6 +527,12 @@ class HomeScreen extends StatelessWidget {
     AnimationExample(
       title: "Expandable Widget",
       builder: (context) => ExpandableWidgetDemo(),
+      appBarColor: Colors.black,
+      isFullScreen: true,
+    ),
+    AnimationExample(
+      title: "Text Morph",
+      builder: (context) => TextMorphDemo(),
       appBarColor: Colors.black,
       isFullScreen: true,
     ),
