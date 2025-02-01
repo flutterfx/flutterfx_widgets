@@ -1,14 +1,12 @@
-# FlutterFX: A Library of Living Animations
+# FlutterFX: A collection of beautiful animated effects build with Flutter
 
-55 Flutter animations.
+Multiple Flutter aniamted effects examples with Flutter.
 
 Each one a building block.
 
-Each one open source.
+Feel free to use them for your next project.
 
-Each one ready for your next project.
-
-Star the repo if you find your next animation.
+Star the repo if you find any effect usefull.
 
 [📚 View the documentation](https://www.flutterfx.com/docs)
 
