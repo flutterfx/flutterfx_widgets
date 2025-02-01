@@ -172,7 +172,7 @@ class NotificationCard extends StatelessWidget {
           onTap: () {},
           borderRadius: BorderRadius.circular(16),
           child: Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(14),
             decoration: BoxDecoration(
               color: Theme.of(context).brightness == Brightness.light
                   ? Colors.white
@@ -317,7 +317,7 @@ class NotificationDemo extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(8.0),
           child: AnimatedNotificationList(
             notifications: notifications,
           ),

@@ -402,7 +402,7 @@ class ThemePreviewCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       color: Colors.black,
-      margin: const EdgeInsets.all(16),
+      margin: const EdgeInsets.all(4),
       child: InkWell(
         // Add this InkWell widget
         onTap: () {

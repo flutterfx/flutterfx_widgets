@@ -173,15 +173,18 @@ class ReviewCard extends StatelessWidget {
                             ? Colors.black
                             : Colors.white,
                       ),
+                      softWrap: true,
                     ),
                     Text(
                       username,
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         fontSize: 12,
                         color: Theme.of(context).brightness == Brightness.light
                             ? Colors.black.withOpacity(0.4)
                             : Colors.white.withOpacity(0.4),
                       ),
+                      softWrap: true,
                     ),
                   ],
                 ),
@@ -200,6 +203,7 @@ class ReviewCard extends StatelessWidget {
               ),
               overflow: TextOverflow.ellipsis,
               maxLines: 3,
+              softWrap: true,
             ),
           ),
         ],
