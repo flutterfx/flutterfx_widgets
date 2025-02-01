@@ -1,6 +1,6 @@
 # FlutterFX: A collection of beautiful animated effects build with Flutter
 
-55 Flutter animation examples with Flutter.
+Multiple Flutter aniamted effects examples with Flutter.
 
 Each one a building block.
 
