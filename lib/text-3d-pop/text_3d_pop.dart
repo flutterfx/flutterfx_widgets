@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:sensors/sensors.dart';
 import 'dart:async';
 import 'dart:math' as Math;
+
+import 'package:sensors_plus/sensors_plus.dart';
 
 class Gyro3DText extends StatefulWidget {
   final String text;
