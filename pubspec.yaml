@@ -31,7 +31,7 @@ dependencies:
   vector_math: ^2.1.4
 
   #text-3d-pop
-  sensors: ^2.0.3 
+  sensors_plus: ^6.1.1
 
   #shaders
   flutter_shaders: ^0.1.2
