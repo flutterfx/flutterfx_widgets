@@ -12,18 +12,16 @@ A Flutter widget that animates children with a smooth combined blur and fade eff
 
 - 🎬 Smooth blur-to-sharp transition combined with fade-in
 - ⚡ Zero external dependencies - just Flutter
-- 🎛️ Customizable duration, delay, curve, and blur intensity
+- 🎛️ Customizable duration and delay
+- 🔄 Controllable visibility with reversible animations
 - 📱 Works on all platforms (iOS, Android, Web, Desktop)
-- ♿ Respects accessibility settings
 
 ## Installation
-
 ```bash
 flutter pub add flutterfx_blur_fade
 ```
 
 Or add to your `pubspec.yaml`:
-
 ```yaml
 dependencies:
   flutterfx_blur_fade: ^1.0.0
@@ -32,7 +30,6 @@ dependencies:
 ## Usage
 
 ### Basic Usage
-
 ```dart
 import 'package:flutterfx_blur_fade/flutterfx_blur_fade.dart';
 
@@ -42,13 +39,10 @@ BlurFade(
 ```
 
 ### With Customization
-
 ```dart
 BlurFade(
-  duration: Duration(milliseconds: 600),
+  duration: Duration(milliseconds: 400),
   delay: Duration(milliseconds: 200),
-  blur: 12.0,
-  curve: Curves.easeInOut,
   child: Container(
     padding: EdgeInsets.all(16),
     child: Text('Animated Content'),
@@ -56,8 +50,18 @@ BlurFade(
 )
 ```
 
-### Staggered List Animation
+### Controlled Visibility
 
+You can programmatically control the animation direction using the `isVisible` parameter:
+```dart
+BlurFade(
+  isVisible: _showContent, // true to animate in, false to animate out
+  duration: Duration(milliseconds: 300),
+  child: Text('Toggle me!'),
+)
+```
+
+### Staggered List Animation
 ```dart
 ListView.builder(
   itemCount: items.length,
@@ -77,18 +81,24 @@ ListView.builder(
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 | `child` | `Widget` | **required** | The widget to animate |
-| `duration` | `Duration` | `400ms` | Animation duration |
+| `duration` | `Duration` | `200ms` | Animation duration |
 | `delay` | `Duration` | `0ms` | Delay before animation starts |
-| `curve` | `Curve` | `Curves.easeOut` | Animation curve |
-| `blur` | `double` | `8.0` | Maximum blur sigma value |
+| `isVisible` | `bool?` | `null` | Controls animation direction. `true` animates in, `false` animates out, `null` auto-plays on first build |
 
 ## How It Works
 
-The animation uses two overlapping phases:
-1. **Opacity** (0% - 60% of duration): Fades the widget in
-2. **Blur** (40% - 100% of duration): Transitions from blurred to sharp
+The animation uses two overlapping phases with `Curves.easeOut`:
 
-This overlap creates a seamless, polished effect.
+1. **Opacity** (0% - 60% of duration): Fades the widget from 0 to 1
+2. **Blur** (40% - 100% of duration): Transitions blur sigma from 10 to 0
+
+This overlap creates a seamless, polished effect where the content becomes visible while simultaneously sharpening into focus.
+
+### Visibility Behavior
+
+- When `isVisible` is `null` (default): Animation plays forward automatically on first build
+- When `isVisible` is `true`: Animation plays forward
+- When `isVisible` is `false`: Animation reverses (fades out with blur)
 
 ## More FlutterFX Widgets
 
