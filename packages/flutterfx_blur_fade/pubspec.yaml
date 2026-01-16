@@ -1,6 +1,6 @@
 name: flutterfx_blur_fade
 description: A Flutter widget that animates children with a combined blur and fade effect. Part of the FlutterFX collection of animated widgets.
-version: 1.0.0
+version: 1.0.1
 homepage: https://flutterfx.com
 repository: https://github.com/flutterfx/flutterfx_widgets/tree/main/packages/flutterfx_blur_fade
 issue_tracker: https://github.com/flutterfx/flutterfx_widgets/issues
