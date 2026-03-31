@@ -1,0 +1,26 @@
+name: flutterfx_orbit_blur
+description: A Flutter widget that renders two orbiting icon rings with a frosted-glass blur center. Part of the FlutterFX collection of animated widgets.
+version: 1.1.0
+homepage: https://flutterfx.com
+repository: https://github.com/flutterfx/flutterfx_widgets/tree/main/packages/flutterfx_orbit_blur
+issue_tracker: https://github.com/flutterfx/flutterfx_widgets/issues
+documentation: https://flutterfx.com/docs/components/orbit-blur
+
+topics:
+  - animation
+  - ui
+  - widget
+  - orbit
+
+environment:
+  sdk: ^3.5.0
+  flutter: '>=3.24.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
