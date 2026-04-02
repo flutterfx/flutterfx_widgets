@@ -6,9 +6,9 @@
 
 A Flutter widget that reveals hidden content through a scratch gesture, with a customizable gradient overlay and a satisfying completion animation. Part of the [FlutterFX](https://flutterfx.com) collection.
 
-![ScratchToReveal Demo](https://github.com/flutterfx/flutterfx_widgets/blob/main/external_asset/showcase_scratch_to_reveal.gif?raw=true)
+![ScratchToReveal Demo](https://raw.githubusercontent.com/flutterfx/flutterfx_widgets/main/external_asset/_showcase_scratch_to_reveal.gif)
 
-![ScratchToReveal Screenshot](screenshots/flutterfx_scratch_card.webp)
+![ScratchToReveal Screenshot](https://raw.githubusercontent.com/flutterfx/flutterfx_widgets/main/packages/flutterfx_scratch_to_reveal/screenshots/flutterfx_scratch_card.webp)
 
 ## Features
 
@@ -30,7 +30,7 @@ Or add to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  flutterfx_scratch_to_reveal: ^1.0.1
+  flutterfx_scratch_to_reveal: ^1.0.2
 ```
 
 ## Usage

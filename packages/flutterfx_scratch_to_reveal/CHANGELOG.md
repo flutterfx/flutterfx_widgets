@@ -1,3 +1,7 @@
+## 1.0.2
+
+- Fix README images: correct GIF filename and use absolute GitHub raw URLs so images render on pub.dev
+
 ## 1.0.1
 
 - Fix gradient overlay not rendering when fewer than 3 colors are provided (gradient stops are now computed dynamically)
