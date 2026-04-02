@@ -2,7 +2,7 @@
 
 A Flutter bottom sheet widget with a smooth **scale-and-slide** entrance animation, drag-to-dismiss, and a fully customisable style system. Part of the [FlutterFX](https://flutterfx.com) collection.
 
-![Bottom Sheet Preview](screenshots/demo_screenshot.webp)
+![Bottom Sheet Preview](https://raw.githubusercontent.com/flutterfx/flutterfx_widgets/main/packages/flutterfx_bottom_sheet/screenshots/demo_screenshot.webp)
 
 ---
 

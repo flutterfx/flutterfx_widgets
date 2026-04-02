@@ -1,3 +1,7 @@
+## 1.0.1
+
+* Fix README preview image not displaying on pub.dev (use absolute raw GitHub URL).
+
 ## 1.0.0
 
 * Initial release.
