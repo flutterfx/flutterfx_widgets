@@ -1,0 +1,22 @@
+name: flutterfx_scratch_to_reveal_example
+description: Example app for flutterfx_scratch_to_reveal package.
+publish_to: none
+version: 1.0.0
+
+environment:
+  sdk: ^3.5.0
+  flutter: '>=3.24.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutterfx_scratch_to_reveal:
+    path: ../
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
