@@ -1,0 +1,26 @@
+name: bottom_sheet_fx
+description: A Flutter bottom sheet widget with smooth scale & slide animations, drag-to-dismiss, and fully customizable style. Part of the FlutterFX collection.
+version: 1.0.0
+homepage: https://flutterfx.com
+repository: https://github.com/flutterfx/flutterfx_widgets/tree/main/packages/flutterfx_bottom_sheet
+issue_tracker: https://github.com/flutterfx/flutterfx_widgets/issues
+documentation: https://flutterfx.com/docs/components/bottom-sheet
+
+topics:
+  - animation
+  - ui
+  - widget
+  - bottom-sheet
+
+environment:
+  sdk: ^3.5.0
+  flutter: '>=3.24.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0

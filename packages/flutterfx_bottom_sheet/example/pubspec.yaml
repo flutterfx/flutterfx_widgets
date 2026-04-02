@@ -1,0 +1,21 @@
+name: bottom_sheet_fx_example
+description: Demonstrates how to use the bottom_sheet_fx package.
+publish_to: 'none'
+version: 1.0.0
+
+environment:
+  sdk: ^3.5.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  bottom_sheet_fx:
+    path: ../
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
